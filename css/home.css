@@ -1,0 +1,9 @@
+/* Custom visual box glow effect */
+.visual-box {
+  box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.2);
+}
+
+.visual-box:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  transition: all 0.3s ease;
+}
