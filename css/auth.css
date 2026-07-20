@@ -1,0 +1,10 @@
+/* Styling active states for authentication tabs */
+.tab-active {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.tab-inactive {
+  background-color: transparent !important;
+  color: #9ca3af !important;
+}
