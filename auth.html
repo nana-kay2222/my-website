@@ -7,10 +7,23 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="auth.css">
+
+  <style>
+    /* Direct Shake Animation Fix */
+    @keyframes shakeAnimation {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    .shake {
+      animation: shakeAnimation 0.4s ease-in-out !important;
+    }
+  </style>
 </head>
 <body class="min-h-screen flex flex-col justify-center items-center p-4 my-8 bg-cover bg-center bg-no-repeat bg-fixed text-gray-100 font-sans" style="background-image: url('iingg.png') !important;">
 
-  <div class="w-full max-w-lg bg-gray-900/70 backdrop-blur-md border border-gray-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl">
+  <!-- Main Container Card (Added id="auth-card" for JS shake target) -->
+  <div id="auth-card" class="w-full max-w-lg bg-gray-900/70 backdrop-blur-md border border-gray-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl transition-transform">
     
     <!-- Title -->
     <div class="text-center mb-6">
@@ -33,8 +46,8 @@
       </button>
     </div>
 
-    <!-- Form -->
-    <form id="auth-form" class="space-y-4">
+    <!-- Form (Added novalidate to stop automatic page reload / sanitization) -->
+    <form id="auth-form" class="space-y-4" novalidate>
       
       <!-- SIGN UP EXTRA FIELDS (Hidden on Sign In) -->
       <div id="signup-fields" class="hidden space-y-4">
@@ -86,7 +99,7 @@
       <!-- COMMON FIELDS (Email) -->
       <div>
         <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Email Address</label>
-        <input type="email" id="email" placeholder="you@example.com" required
+        <input type="email" id="email" placeholder="you@example.com"
           class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
       </div>
 
@@ -94,7 +107,7 @@
       <div id="password-group" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Password</label>
-          <input type="password" id="password" placeholder="••••••••" required
+          <input type="password" id="password" placeholder="••••••••"
             class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
         </div>
 
