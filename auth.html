@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign In / Sign Up | Smart Inspector</title>
+  
   <!-- Tailwind CSS -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="auth.css">
 
   <style>
     /* Direct Shake Animation Fix */
@@ -22,7 +22,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-center items-center p-4 my-8 bg-cover bg-center bg-no-repeat bg-fixed text-gray-100 font-sans" style="background-image: url('iingg.png') !important;">
 
-  <!-- Main Container Card (Added id="auth-card" for JS shake target) -->
+  <!-- Main Container Card -->
   <div id="auth-card" class="w-full max-w-lg bg-gray-900/70 backdrop-blur-md border border-gray-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl transition-transform">
     
     <!-- Title -->
@@ -46,7 +46,7 @@
       </button>
     </div>
 
-    <!-- Form (Added novalidate to stop automatic page reload / sanitization) -->
+    <!-- Form -->
     <form id="auth-form" class="space-y-4" novalidate>
       
       <!-- SIGN UP EXTRA FIELDS (Hidden on Sign In) -->
@@ -139,7 +139,8 @@
     </button>
 
   </div>
-<!-- Paste this right above </body> in auth.html -->
+
+  <!-- Embedded JS Handler -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const tabSignIn = document.getElementById('tab-signin');
@@ -223,7 +224,5 @@
       });
     });
   </script>
-  <!-- External JS file -->
-  
 </body>
 </html>
