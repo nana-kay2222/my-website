@@ -5,15 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inspector Workspace | Smart Inspector</title>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="css/auth.css">
+  <!-- Reliable Tailwind CSS CDN (v3.4.1) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gray-950 text-gray-100 font-sans flex flex-col">
 
-  <!-- TOP NAVIGATION HEADER -->
-  <header class="bg-gray-900/90 border-b border-gray-800 sticky top-0 z-50 backdrop-blur-md">
+  <!-- 1. TOP NAVIGATION HEADER -->
+  <header class="bg-gray-900/90 border-b border-gray-800 sticky top-0 z-40 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
       <!-- Logo & App Title -->
@@ -41,7 +39,7 @@
           </div>
         </div>
 
-        <button id="logout-btn" class="py-2 px-3 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg text-xs font-semibold border border-gray-700 transition cursor-pointer flex items-center gap-2">
+        <button id="logout-btn" type="button" class="py-2 px-3 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg text-xs font-semibold border border-gray-700 transition cursor-pointer flex items-center gap-2">
           <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
@@ -55,15 +53,15 @@
   <!-- MAIN CONTENT AREA -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- WELCOME & ACTION BAR -->
+    <!-- WELCOME & SYNC ACTION BAR -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-blue-950/40 via-gray-900 to-indigo-950/30 p-6 rounded-2xl border border-gray-800">
       <div>
         <h2 class="text-2xl font-bold text-white">Assigned Field Tasks</h2>
-        <p class="text-sm text-gray-400 mt-1">Review, update, and resolve citizen infrastructure reports in your designated sector.</p>
+        <p class="text-sm text-gray-400 mt-1">Review, inspect, and update citizen infrastructure reports in real time.</p>
       </div>
       
-      <div class="flex gap-3">
-        <button id="refresh-btn" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl text-xs font-semibold text-gray-300 hover:text-white transition cursor-pointer flex items-center gap-2">
+      <div>
+        <button id="refresh-btn" type="button" class="px-4 py-2.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl text-xs font-semibold text-gray-300 hover:text-white transition cursor-pointer flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -72,14 +70,14 @@
       </div>
     </div>
 
-    <!-- METRICS CARDS -->
+    <!-- 2. METRICS COUNTER CARDS -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
-      <!-- Card 1: Total Assigned -->
+      <!-- Total Assigned -->
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Assigned</div>
-          <div class="text-3xl font-extrabold text-white mt-2">12</div>
+          <div id="cnt-total" class="text-3xl font-extrabold text-white mt-2">3</div>
         </div>
         <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,11 +86,11 @@
         </div>
       </div>
 
-      <!-- Card 2: Critical / Urgent -->
+      <!-- Critical Priority -->
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Critical Priority</div>
-          <div class="text-3xl font-extrabold text-red-400 mt-2">3</div>
+          <div id="cnt-critical" class="text-3xl font-extrabold text-red-400 mt-2">1</div>
         </div>
         <div class="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,11 +99,11 @@
         </div>
       </div>
 
-      <!-- Card 3: In Progress -->
+      <!-- In Progress -->
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">In Progress</div>
-          <div class="text-3xl font-extrabold text-amber-400 mt-2">5</div>
+          <div id="cnt-progress" class="text-3xl font-extrabold text-amber-400 mt-2">1</div>
         </div>
         <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,11 +112,11 @@
         </div>
       </div>
 
-      <!-- Card 4: Resolved Today -->
+      <!-- Resolved -->
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Resolved Today</div>
-          <div class="text-3xl font-extrabold text-emerald-400 mt-2">4</div>
+          <div id="cnt-resolved" class="text-3xl font-extrabold text-emerald-400 mt-2">1</div>
         </div>
         <div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,103 +127,136 @@
 
     </div>
 
-    <!-- FILTER TABS & TASK FEED -->
+    <!-- 3. FILTER & TASK FEED -->
     <div class="bg-gray-900/80 rounded-2xl border border-gray-800 p-6 space-y-6">
       
-      <!-- Filter Bar -->
+      <!-- Filter Bar & Search Input -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
-        <div class="flex gap-2 bg-gray-950 p-1 rounded-xl border border-gray-800 self-start">
-          <button class="filter-tab active py-1.5 px-4 rounded-lg text-xs font-semibold bg-blue-600 text-white transition cursor-pointer">All (12)</button>
-          <button class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">Critical (3)</button>
-          <button class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">In Progress (5)</button>
-          <button class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">Resolved (4)</button>
+        <div class="flex flex-wrap gap-2 bg-gray-950 p-1 rounded-xl border border-gray-800 self-start">
+          <button type="button" data-filter="All" class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold bg-blue-600 text-white transition cursor-pointer">All</button>
+          <button type="button" data-filter="Critical" class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">Critical</button>
+          <button type="button" data-filter="In Progress" class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">In Progress</button>
+          <button type="button" data-filter="Resolved" class="filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer">Resolved</button>
         </div>
 
-        <input type="text" placeholder="Search report ID, location..." class="bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 w-full sm:w-64" />
+        <input type="text" id="search-input" placeholder="Search ID, title, or location..." class="bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 w-full sm:w-64 transition" />
       </div>
 
-      <!-- WORK ORDERS / TASK FEED -->
-      <div class="space-y-4">
+      <!-- 4. WORK ORDERS / TASK CARDS CONTAINER -->
+      <div id="task-feed" class="space-y-4">
 
-        <!-- Task Item 1: Critical -->
-        <div class="bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div class="space-y-2">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-xs font-mono text-gray-500">#REP-2026-089</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-950 text-red-400 border border-red-800/60">CRITICAL</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-950 text-amber-300 border border-amber-800/60">In Progress</span>
-            </div>
-            <h3 class="text-base font-bold text-white">Main Water Pipeline Leak & Ground Subsidence</h3>
-            <p class="text-xs text-gray-400">High-pressure pipe burst causing localized flooding near residential intersection.</p>
-            <div class="flex items-center gap-4 text-xs text-gray-500 pt-1">
-              <span>📍 14th Avenue, Sector 4</span>
-              <span>📅 Reported 2 hrs ago</span>
+        <!-- Card 1: Critical / In Progress -->
+        <div class="task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+             data-id="#REP-2026-089" data-priority="CRITICAL" data-status="In Progress" data-title="Main Water Pipeline Leak &amp; Ground Subsidence" data-location="14th Avenue, Sector 4" data-desc="High-pressure water pipe burst causing localized surface flooding near residential intersection." data-reporter="Kwame Mensah (+233 24 123 4567)" data-img="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&amp;fit=crop&amp;w=600&amp;q=80">
+          
+          <div class="flex items-start sm:items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Leak" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer btn-view-details" />
+
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono text-gray-500">#REP-2026-089</span>
+                <span class="badge-priority px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-950 text-red-400 border border-red-800/60">CRITICAL</span>
+                <span class="badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-950 text-amber-300 border border-amber-800/60">In Progress</span>
+              </div>
+              <h3 class="text-base font-bold text-white">Main Water Pipeline Leak &amp; Ground Subsidence</h3>
+              <p class="text-xs text-gray-400">High-pressure water pipe burst causing localized surface flooding.</p>
+              <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
+                <span>📍 14th Avenue, Sector 4</span>
+                <span>📅 Reported 2 hrs ago</span>
+              </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-3 self-end lg:self-center">
-            <button class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
-            <button class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer">Update Status</button>
+          <div class="flex items-center gap-2 self-end lg:self-center">
+            <button type="button" class="btn-view-details px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
+            <button type="button" class="btn-update-status px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
           </div>
         </div>
 
-        <!-- Task Item 2: Medium Priority -->
-        <div class="bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div class="space-y-2">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-xs font-mono text-gray-500">#REP-2026-074</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950 text-amber-400 border border-amber-800/60">MEDIUM</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950 text-blue-300 border border-blue-800/60">Pending Inspection</span>
-            </div>
-            <h3 class="text-base font-bold text-white">Damaged Streetlight Pole & Exposed Wiring</h3>
-            <p class="text-xs text-gray-400">Pole leaning post-vehicle collision. Electrical hazard reported by residents.</p>
-            <div class="flex items-center gap-4 text-xs text-gray-500 pt-1">
-              <span>📍 Ring Road East, Block B</span>
-              <span>📅 Reported 5 hrs ago</span>
+        <!-- Card 2: Medium / Pending -->
+        <div class="task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+             data-id="#REP-2026-074" data-priority="MEDIUM" data-status="Pending Inspection" data-title="Damaged Streetlight Pole &amp; Exposed Wiring" data-location="Ring Road East, Block B" data-desc="Lighting pole leaning at hazardous angle post-vehicle collision. Live wires exposed." data-reporter="Ama Serwaa (+233 20 987 6543)" data-img="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&amp;fit=crop&amp;w=600&amp;q=80">
+          
+          <div class="flex items-start sm:items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Pole" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer btn-view-details" />
+
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono text-gray-500">#REP-2026-074</span>
+                <span class="badge-priority px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950 text-amber-400 border border-amber-800/60">MEDIUM</span>
+                <span class="badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950 text-blue-300 border border-blue-800/60">Pending Inspection</span>
+              </div>
+              <h3 class="text-base font-bold text-white">Damaged Streetlight Pole &amp; Exposed Wiring</h3>
+              <p class="text-xs text-gray-400">Lighting pole leaning post-collision. Electrical hazard reported.</p>
+              <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
+                <span>📍 Ring Road East, Block B</span>
+                <span>📅 Reported 5 hrs ago</span>
+              </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-3 self-end lg:self-center">
-            <button class="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
-            <button class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer">Update Status</button>
+          <div class="flex items-center gap-2 self-end lg:self-center">
+            <button type="button" class="btn-view-details px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
+            <button type="button" class="btn-update-status px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
+          </div>
+        </div>
+
+        <!-- Card 3: Low / Resolved -->
+        <div class="task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+             data-id="#REP-2026-052" data-priority="LOW" data-status="Resolved" data-title="Deep Road Pothole Impacting Traffic Flow" data-location="Commercial Street, Junction 2" data-desc="Large asphalt pothole patched and resurfaced by road maintenance crew." data-reporter="Kofi Osei (+233 27 555 1212)" data-img="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&amp;fit=crop&amp;w=600&amp;q=80">
+          
+          <div class="flex items-start sm:items-center gap-4">
+            <img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Pothole" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer btn-view-details" />
+
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono text-gray-500">#REP-2026-052</span>
+                <span class="badge-priority px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-800 text-gray-300 border border-gray-700">LOW</span>
+                <span class="badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/60">Resolved</span>
+              </div>
+              <h3 class="text-base font-bold text-white">Deep Road Pothole Impacting Traffic Flow</h3>
+              <p class="text-xs text-gray-400">Large asphalt pothole patched and resurfaced completely.</p>
+              <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
+                <span>📍 Commercial Street, Junction 2</span>
+                <span>📅 Resolved today</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 self-end lg:self-center">
+            <button type="button" class="btn-view-details px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
+            <button type="button" class="btn-update-status px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
           </div>
         </div>
 
       </div>
 
     </div>
-    <!-- UPDATE STATUS MODAL DIALOG -->
+
+  </main>
+
+  <!-- 5. MODAL 1: UPDATE STATUS DIALOG -->
   <div id="update-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-sm transition-all duration-300">
-    
     <div class="bg-gray-900 border border-gray-800 w-full max-w-lg rounded-2xl p-6 shadow-2xl relative space-y-5">
       
-      <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-gray-800 pb-4">
         <div>
           <h3 class="text-lg font-bold text-white">Update Work Order Status</h3>
-          <p id="modal-report-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-2026-089</p>
+          <p id="modal-update-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-2026-000</p>
         </div>
-        <button id="close-modal-btn" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+        <button id="close-update-modal" type="button" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
       </div>
 
-      <!-- Modal Body Form -->
-      <form id="modal-update-form" class="space-y-4">
-        
-        <!-- Task Title Read-only Display -->
+      <form id="update-status-form" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Issue</label>
-          <div id="modal-report-title" class="text-sm text-gray-200 bg-gray-950 p-3 rounded-xl border border-gray-800 font-medium">
-            Main Water Pipeline Leak & Ground Subsidence
-          </div>
+          <div id="modal-update-title" class="text-sm text-gray-200 bg-gray-950 p-3 rounded-xl border border-gray-800 font-medium">Issue Title</div>
         </div>
 
-        <!-- Select New Status -->
         <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">New Status</label>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Select New Status</label>
           <select id="modal-status-select" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-blue-500 focus:outline-none transition">
             <option value="Pending Inspection">Pending Inspection</option>
             <option value="In Progress">In Progress</option>
@@ -234,30 +265,60 @@
           </select>
         </div>
 
-        <!-- Field Notes / Comments -->
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Inspector Notes</label>
-          <textarea id="modal-notes" rows="3" placeholder="Add inspection findings, repair progress, or resolution details..."
+          <textarea id="modal-notes-input" rows="3" placeholder="Log inspection findings, repairs made, or crew instructions..."
             class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition resize-none"></textarea>
         </div>
 
-        <!-- Action Buttons -->
         <div class="flex items-center justify-end gap-3 pt-3 border-t border-gray-800">
-          <button type="button" id="cancel-modal-btn" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold transition cursor-pointer">
-            Cancel
-          </button>
-          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer flex items-center gap-2">
-            Save Status Update
-          </button>
+          <button type="button" id="cancel-update-modal" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold transition cursor-pointer">Cancel</button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Save Status Update</button>
         </div>
-
       </form>
 
     </div>
   </div>
-  </main>
 
-  <!-- JS Logic -->
+  <!-- 6. MODAL 2: PHOTO & DETAILS VIEW DIALOG -->
+  <div id="details-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-sm transition-all duration-300">
+    <div class="bg-gray-900 border border-gray-800 w-full max-w-xl rounded-2xl p-6 shadow-2xl relative space-y-4">
+      
+      <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+        <div>
+          <h3 class="text-base font-bold text-white">Report Detail View</h3>
+          <p id="details-report-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-2026-000</p>
+        </div>
+        <button id="close-details-modal" type="button" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      <!-- High-res Image Preview -->
+      <div class="rounded-xl overflow-hidden border border-gray-800 max-h-64 bg-gray-950 flex items-center justify-center">
+        <img id="details-img" src="" alt="Report Attachment" class="w-full h-full object-cover" />
+      </div>
+
+      <div class="space-y-3">
+        <h4 id="details-title" class="text-lg font-bold text-white">Title</h4>
+        <p id="details-desc" class="text-xs text-gray-300 leading-relaxed bg-gray-950 p-3 rounded-xl border border-gray-800">Description</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+          <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
+            <span class="text-gray-500 block text-[10px] uppercase font-bold">Location</span>
+            <span id="details-location" class="text-gray-200 font-medium">📍 Sector</span>
+          </div>
+          <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
+            <span class="text-gray-500 block text-[10px] uppercase font-bold">Reported By</span>
+            <span id="details-reporter" class="text-gray-200 font-medium">Citizen</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
   <script src="js/dashboard.js"></script>
 </body>
 </html>
