@@ -194,7 +194,67 @@
       </div>
 
     </div>
+    <!-- UPDATE STATUS MODAL DIALOG -->
+  <div id="update-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-sm transition-all duration-300">
+    
+    <div class="bg-gray-900 border border-gray-800 w-full max-w-lg rounded-2xl p-6 shadow-2xl relative space-y-5">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-white">Update Work Order Status</h3>
+          <p id="modal-report-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-2026-089</p>
+        </div>
+        <button id="close-modal-btn" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
+      <!-- Modal Body Form -->
+      <form id="modal-update-form" class="space-y-4">
+        
+        <!-- Task Title Read-only Display -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Issue</label>
+          <div id="modal-report-title" class="text-sm text-gray-200 bg-gray-950 p-3 rounded-xl border border-gray-800 font-medium">
+            Main Water Pipeline Leak & Ground Subsidence
+          </div>
+        </div>
+
+        <!-- Select New Status -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">New Status</label>
+          <select id="modal-status-select" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-sm text-white focus:border-blue-500 focus:outline-none transition">
+            <option value="Pending Inspection">Pending Inspection</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Escalated">Escalated / Requires Team Lead</option>
+          </select>
+        </div>
+
+        <!-- Field Notes / Comments -->
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Inspector Notes</label>
+          <textarea id="modal-notes" rows="3" placeholder="Add inspection findings, repair progress, or resolution details..."
+            class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none transition resize-none"></textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-gray-800">
+          <button type="button" id="cancel-modal-btn" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl text-xs font-semibold transition cursor-pointer">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer flex items-center gap-2">
+            Save Status Update
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
   </main>
 
   <!-- JS Logic -->
