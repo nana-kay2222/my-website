@@ -21,10 +21,18 @@ function showAlert(msg, isError = true) {
 }
 
 // Toggle Tab Logic
+// Toggle Tab Logic
 tabSignUp.onclick = () => {
   isSignUpMode = true;
-  tabSignUp.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition bg-blue-600 text-white shadow cursor-pointer";
-  tabSignIn.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition text-gray-400 hover:text-white cursor-pointer";
+  // Active state for Sign Up tab
+  tabSignUp.classList.add('bg-blue-600', 'text-white', 'shadow');
+  tabSignUp.classList.remove('text-gray-400', 'hover:text-white');
+  
+  // Inactive state for Sign In tab
+  tabSignIn.classList.remove('bg-blue-600', 'text-white', 'shadow');
+  tabSignIn.classList.add('text-gray-400', 'hover:text-white');
+
+  // Show Sign Up fields
   signupFields.classList.remove('hidden');
   confirmPasswordField.classList.remove('hidden');
   signupRequiredInputs.forEach(i => i.setAttribute('required', 'true'));
@@ -33,6 +41,24 @@ tabSignUp.onclick = () => {
   alertBox.classList.add('hidden');
 };
 
+tabSignIn.onclick = () => {
+  isSignUpMode = false;
+  // Active state for Sign In tab
+  tabSignIn.classList.add('bg-blue-600', 'text-white', 'shadow');
+  tabSignIn.classList.remove('text-gray-400', 'hover:text-white');
+  
+  // Inactive state for Sign Up tab
+  tabSignUp.classList.remove('bg-blue-600', 'text-white', 'shadow');
+  tabSignUp.classList.add('text-gray-400', 'hover:text-white');
+
+  // Hide Sign Up fields
+  signupFields.classList.add('hidden');
+  confirmPasswordField.classList.add('hidden');
+  signupRequiredInputs.forEach(i => i.removeAttribute('required'));
+  authSubtitle.innerText = "Sign in to your account to continue";
+  submitBtn.innerText = "Sign In";
+  alertBox.classList.add('hidden');
+};
 tabSignIn.onclick = () => {
   isSignUpMode = false;
   tabSignIn.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition bg-blue-600 text-white shadow cursor-pointer";
