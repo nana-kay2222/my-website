@@ -1,5 +1,22 @@
 /* Styling active states for authentication tabs */
 
+ /* Direct Shake Animation Fix */
+@keyframes shakeAnimation {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+.shake {
+  animation: shakeAnimation 0.4s ease-in-out !important;
+}
+
+/* Smooth field height/opacity transition */
+.field-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
 .tab-active {
   background-color: #E9DCC9 !important;
   color: #ffffff !important;

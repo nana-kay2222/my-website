@@ -7,41 +7,33 @@
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  
+  <link rel="stylesheet" href="css/auth.css">
 
-  <style>
-    /* Direct Shake Animation Fix */
-    @keyframes shakeAnimation {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-10px); }
-      40%, 80% { transform: translateX(10px); }
-    }
-    .shake {
-      animation: shakeAnimation 0.4s ease-in-out !important;
-    }
-  </style>
+
 </head>
 <body class="min-h-screen flex flex-col justify-center items-center p-4 my-8 bg-cover bg-center bg-no-repeat bg-fixed text-gray-100 font-sans" style="background-image: url('iingg.png') !important;">
 
   <!-- Main Container Card -->
-  <div id="auth-card" class="w-full max-w-lg bg-gray-900/70 backdrop-blur-md border border-gray-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl transition-transform">
+  <div id="auth-card" class="w-full max-w-lg bg-gray-900/75 backdrop-blur-md border border-gray-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:border-blue-500/30 hover:shadow-blue-900/10">
     
     <!-- Title -->
     <div class="text-center mb-6">
       <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
         Welcome to Smart Inspector
       </h1>
-      <p id="auth-subtitle" class="text-gray-400 text-sm mt-1">Sign in to your account to continue</p>
+      <p id="auth-subtitle" class="text-gray-400 text-sm mt-1 transition-all duration-300">Sign in to your account to continue</p>
     </div>
 
     <!-- Error/Success Alert Box -->
-    <div id="alert-box" class="hidden mb-4 p-3 rounded-lg text-sm font-semibold text-center"></div>
+    <div id="alert-box" class="hidden mb-4 p-3 rounded-lg text-sm font-semibold text-center transition-all duration-300"></div>
 
     <!-- Toggle Tabs (Sign In / Sign Up) -->
-    <div class="flex bg-gray-900 p-1 rounded-xl mb-6 border border-gray-700">
-      <button type="button" id="tab-signin" class="w-1/2 py-2.5 rounded-lg font-semibold text-sm transition bg-blue-600 text-white shadow cursor-pointer">
+    <div class="flex bg-gray-900/90 p-1 rounded-xl mb-6 border border-gray-700/80">
+      <button type="button" id="tab-signin" class="w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white shadow cursor-pointer">
         Sign In
       </button>
-      <button type="button" id="tab-signup" class="w-1/2 py-2.5 rounded-lg font-semibold text-sm transition text-gray-400 hover:text-white cursor-pointer">
+      <button type="button" id="tab-signup" class="w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-400 hover:text-white cursor-pointer">
         Sign Up
       </button>
     </div>
@@ -50,24 +42,24 @@
     <form id="auth-form" class="space-y-4" novalidate>
       
       <!-- SIGN UP EXTRA FIELDS (Hidden on Sign In) -->
-      <div id="signup-fields" class="hidden space-y-4">
+      <div id="signup-fields" class="hidden space-y-4 field-transition">
         
         <!-- Name Group: First, Middle, Last -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">First Name</label>
             <input type="text" id="first-name" placeholder="John"
-              class="signup-req w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
           </div>
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Middle Name</label>
             <input type="text" id="middle-name" placeholder="K."
-              class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
           </div>
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Last Name</label>
             <input type="text" id="last-name" placeholder="Doe"
-              class="signup-req w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
           </div>
         </div>
 
@@ -76,19 +68,19 @@
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Phone Number</label>
             <input type="tel" id="phone" placeholder="+233 20 000 0000"
-              class="signup-req w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
           </div>
           <div>
             <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Home Address</label>
             <input type="text" id="address" placeholder="123 Street, City"
-              class="signup-req w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
           </div>
         </div>
 
         <!-- Account Type -->
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">I am registering as:</label>
-          <select id="user-role" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none">
+          <select id="user-role" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition">
             <option value="citizen">Citizen / Resident</option>
             <option value="worker">Field Inspector / Maintenance Worker</option>
           </select>
@@ -100,35 +92,56 @@
       <div>
         <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Email Address</label>
         <input type="email" id="email" placeholder="you@example.com"
-          class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+          class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
       </div>
 
       <!-- Password Fields -->
       <div id="password-group" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Password</label>
-          <input type="password" id="password" placeholder="••••••••"
-            class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+          <div class="relative">
+            <input type="password" id="password" placeholder="••••••••"
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 pr-10 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
+            <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 focus:outline-none" data-target="password">
+              <!-- Eye Icon -->
+              <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Confirm Password (Hidden on Sign In) -->
-        <div id="confirm-password-field" class="hidden">
+        <div id="confirm-password-field" class="hidden field-transition">
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Confirm Password</label>
-          <input type="password" id="confirm-password" placeholder="••••••••"
-            class="signup-req w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:outline-none"/>
+          <div class="relative">
+            <input type="password" id="confirm-password" placeholder="••••••••"
+              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 pr-10 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
+            <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 focus:outline-none" data-target="confirm-password">
+              <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" id="submit-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-bold text-sm transition cursor-pointer">
-        Sign In
+      <button type="submit" id="submit-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white rounded-lg font-bold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20">
+        <span id="btn-text">Sign In</span>
+        <svg id="btn-spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </button>
     </form>
 
-    <div class="my-4 text-center text-xs text-gray-500 font-bold uppercase">Or</div>
+    <div class="my-4 text-center text-xs text-gray-500 font-bold uppercase tracking-wider">Or</div>
 
     <!-- Google Sign In Button -->
-    <button type="button" id="google-btn" class="w-full py-3 bg-gray-900 hover:bg-gray-700 border border-gray-700 text-white rounded-lg text-sm flex items-center justify-center gap-3 transition cursor-pointer">
+    <button type="button" id="google-btn" class="w-full py-3 bg-gray-900/90 hover:bg-gray-800 border border-gray-700/80 hover:border-gray-500 text-white rounded-lg text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-200 cursor-pointer hover:shadow-lg active:scale-[0.99]">
       <svg class="w-5 h-5" viewBox="0 0 24 24">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -140,123 +153,7 @@
 
   </div>
 
-  <!-- Embedded JS Handler -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const tabSignIn = document.getElementById('tab-signin');
-      const tabSignUp = document.getElementById('tab-signup');
-      const signupFields = document.getElementById('signup-fields');
-      const confirmPasswordField = document.getElementById('confirm-password-field');
-      const authSubtitle = document.getElementById('auth-subtitle');
-      const submitBtn = document.getElementById('submit-btn');
-      const authForm = document.getElementById('auth-form');
-      const alertBox = document.getElementById('alert-box');
-      const authCard = document.getElementById('auth-card');
-
-      let isSignUpMode = false;
-
-      function showError(msg) {
-        alertBox.innerText = msg;
-        alertBox.className = "mb-4 p-3 rounded-lg text-sm font-semibold text-center block bg-red-900/90 text-red-100 border border-red-600";
-        
-        // Shake Animation
-        if (authCard) {
-          authCard.classList.remove('shake');
-          void authCard.offsetWidth; // Force CSS reflow
-          authCard.classList.add('shake');
-        }
-
-        // SMOOTH SCROLL TO ERROR ALERT
-        alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-      function showSuccess(msg) {
-        alertBox.innerText = msg;
-        alertBox.className = "mb-4 p-3 rounded-lg text-sm font-semibold text-center block bg-green-900/90 text-green-100 border border-green-600";
-        alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-
-      // --- TAB SWITCHING ---
-      tabSignUp.addEventListener('click', () => {
-        isSignUpMode = true;
-        tabSignUp.classList.add('bg-blue-600', 'text-white');
-        tabSignUp.classList.remove('text-gray-400');
-
-        tabSignIn.classList.remove('bg-blue-600', 'text-white');
-        tabSignIn.classList.add('text-gray-400');
-
-        signupFields.classList.remove('hidden');
-        confirmPasswordField.classList.remove('hidden');
-
-        authSubtitle.innerText = "Create a new account to get started";
-        submitBtn.innerText = "Create Account";
-        alertBox.classList.add('hidden');
-      });
-
-      tabSignIn.addEventListener('click', () => {
-        isSignUpMode = false;
-        tabSignIn.classList.add('bg-blue-600', 'text-white');
-        tabSignIn.classList.remove('text-gray-400');
-
-        tabSignUp.classList.remove('bg-blue-600', 'text-white');
-        tabSignUp.classList.add('text-gray-400');
-
-        signupFields.classList.add('hidden');
-        confirmPasswordField.classList.add('hidden');
-
-        authSubtitle.innerText = "Sign in to your account to continue";
-        submitBtn.innerText = "Sign In";
-        alertBox.classList.add('hidden');
-      });
-
-      // --- FORM SUBMISSION ---
-      authForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        // Basic Empty Field Checks
-        if (!email) return showError("Please enter your email address.");
-        if (!password) return showError("Please enter your password.");
-
-        if (isSignUpMode) {
-          // SIGN UP VALIDATION
-          const firstName = document.getElementById('first-name').value.trim();
-          const lastName = document.getElementById('last-name').value.trim();
-          const phone = document.getElementById('phone').value.trim();
-          const address = document.getElementById('address').value.trim();
-          const confirmPassword = document.getElementById('confirm-password').value;
-
-          if (!firstName || !lastName || !phone || !address) {
-            return showError("Please fill out all required personal fields.");
-          }
-
-          if (password !== confirmPassword) {
-            return showError("Passwords do not match!");
-          }
-
-          showSuccess("Account created successfully! Redirecting...");
-
-          // REDIRECT AFTER SIGN UP (Change 'dashboard.html' to your page name)
-          setTimeout(() => {
-            window.location.href = "dashboard.html"; // <-- CHANGE THIS URL IF NEEDED
-          }, 1500);
-
-        } else {
-          // SIGN IN LOGIC
-          // Note: Real account lookup requires backend / Firebase auth.
-          // To test error handling right now, let's block unregistered test emails or redirect on success:
-          
-          showSuccess("Sign in successful! Redirecting...");
-
-          // REDIRECT AFTER SIGN IN (Change 'dashboard.html' to your page name)
-          setTimeout(() => {
-            window.location.href = "dashboard.html"; // <-- CHANGE THIS URL IF NEEDED
-          }, 1500);
-        }
-      });
-    });
-  </script>
+  <!-- JS Logic -->
+  <script src ='js/auth.js'></script>
 </body>
 </html>
