@@ -3,157 +3,83 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign In / Sign Up | Smart Inspector</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  
-  <link rel="stylesheet" href="css/auth.css">
+  <title>Login &amp; Sign Up | Smart Inspector</title>
 
-
+  <!-- Reliable Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Optional Dashboard Custom CSS -->
+  <link rel="stylesheet" href="css/auth.css" />
 </head>
-<body class="min-h-screen flex flex-col justify-center items-center p-4 my-8 bg-cover bg-center bg-no-repeat bg-fixed text-gray-100 font-sans" style="background-image: url('iingg.png') !important;">
+<body class="min-h-screen bg-gray-950 text-gray-100 font-sans flex items-center justify-center p-4">
 
-  <!-- Main Container Card -->
-  <div id="auth-card" class="w-full max-w-lg bg-gray-900/75 backdrop-blur-md border border-gray-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl transition-all duration-300 hover:border-blue-500/30 hover:shadow-blue-900/10">
+  <!-- AUTH CONTAINER CARD -->
+  <div class="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 space-y-6">
     
-    <!-- Title -->
-    <div class="text-center mb-6">
-      <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-        Welcome to Smart Inspector
-      </h1>
-      <p id="auth-subtitle" class="text-gray-400 text-sm mt-1 transition-all duration-300">Sign in to your account to continue</p>
-    </div>
-
-    <!-- Error/Success Alert Box -->
-    <div id="alert-box" class="hidden mb-4 p-3 rounded-lg text-sm font-semibold text-center transition-all duration-300"></div>
-
-    <!-- Toggle Tabs (Sign In / Sign Up) -->
-    <div class="flex bg-gray-900/90 p-1 rounded-xl mb-6 border border-gray-700/80">
-      <button type="button" id="tab-signin" class="w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white shadow cursor-pointer">
-        Sign In
-      </button>
-      <button type="button" id="tab-signup" class="w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-400 hover:text-white cursor-pointer">
-        Sign Up
-      </button>
-    </div>
-
-    <!-- Form -->
-    <form id="auth-form" class="space-y-4" novalidate>
-      
-      <!-- SIGN UP EXTRA FIELDS (Hidden on Sign In) -->
-      <div id="signup-fields" class="hidden space-y-4 field-transition">
-        
-        <!-- Name Group: First, Middle, Last -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">First Name</label>
-            <input type="text" id="first-name" placeholder="John"
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Middle Name</label>
-            <input type="text" id="middle-name" placeholder="K."
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Last Name</label>
-            <input type="text" id="last-name" placeholder="Doe"
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-          </div>
-        </div>
-
-        <!-- Phone & Address -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Phone Number</label>
-            <input type="tel" id="phone" placeholder="+233 20 000 0000"
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Home Address</label>
-            <input type="text" id="address" placeholder="123 Street, City"
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-          </div>
-        </div>
-
-        <!-- Account Type -->
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">I am registering as:</label>
-          <select id="user-role" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition">
-            <option value="citizen">Citizen / Resident</option>
-            <option value="worker">Field Inspector / Maintenance Worker</option>
-          </select>
-        </div>
-
-      </div>
-
-      <!-- COMMON FIELDS (Email) -->
-      <div>
-        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Email Address</label>
-        <input type="email" id="email" placeholder="you@example.com"
-          class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-      </div>
-
-      <!-- Password Fields -->
-      <div id="password-group" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Password</label>
-          <div class="relative">
-            <input type="password" id="password" placeholder="••••••••"
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 pr-10 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-            <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 focus:outline-none" data-target="password">
-              <!-- Eye Icon -->
-              <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Confirm Password (Hidden on Sign In) -->
-        <div id="confirm-password-field" class="hidden field-transition">
-          <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Confirm Password</label>
-          <div class="relative">
-            <input type="password" id="confirm-password" placeholder="••••••••"
-              class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 pr-10 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none transition"/>
-            <button type="button" class="toggle-password absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 focus:outline-none" data-target="confirm-password">
-              <svg class="w-5 h-5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <button type="submit" id="submit-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white rounded-lg font-bold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20">
-        <span id="btn-text">Sign In</span>
-        <svg id="btn-spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    <!-- APP BRANDING HEADER -->
+    <div class="text-center space-y-2">
+      <div class="inline-flex p-3 bg-blue-600/20 border border-blue-500/30 rounded-2xl mb-1">
+        <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
         </svg>
+      </div>
+      <h1 class="text-2xl font-extrabold text-white">Smart Inspector</h1>
+      <p class="text-xs text-gray-400">Community Infrastructure Reporting &amp; Field Dispatch</p>
+    </div>
+
+    <!-- ROLE SELECTOR SWITCH -->
+    <div class="space-y-2">
+      <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 text-center">Select Your Account Role</label>
+      <div class="grid grid-cols-2 gap-2 bg-gray-950 p-1.5 rounded-xl border border-gray-800">
+        <button type="button" id="role-citizen-btn" class="role-btn py-2 text-xs font-bold rounded-lg bg-blue-600 text-white transition cursor-pointer flex items-center justify-center gap-1.5">
+          <span>🏠</span> Citizen
+        </button>
+        <button type="button" id="role-inspector-btn" class="role-btn py-2 text-xs font-bold rounded-lg text-gray-400 hover:text-white transition cursor-pointer flex items-center justify-center gap-1.5">
+          <span>🛠️</span> Inspector
+        </button>
+      </div>
+    </div>
+
+    <!-- AUTH MODE TABS (LOGIN VS SIGN UP) -->
+    <div class="flex border-b border-gray-800 text-sm font-semibold text-center">
+      <button type="button" id="tab-login" class="flex-1 pb-3 text-blue-400 border-b-2 border-blue-500 transition cursor-pointer">Sign In</button>
+      <button type="button" id="tab-signup" class="flex-1 pb-3 text-gray-500 hover:text-gray-300 transition cursor-pointer">Create Account</button>
+    </div>
+
+    <!-- AUTHENTICATION FORM -->
+    <form id="auth-form" class="space-y-4">
+      
+      <!-- Full Name (Only visible during Sign Up) -->
+      <div id="field-fullname" class="hidden space-y-1">
+        <label class="block text-xs font-semibold text-gray-300">Full Name</label>
+        <input type="text" id="input-fullname" placeholder="John Doe" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition" />
+      </div>
+
+      <!-- Email Input -->
+      <div class="space-y-1">
+        <label class="block text-xs font-semibold text-gray-300">Email Address</label>
+        <input type="email" id="input-email" required placeholder="name@domain.com" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition" />
+      </div>
+
+      <!-- Password Input -->
+      <div class="space-y-1">
+        <label class="block text-xs font-semibold text-gray-300">Password</label>
+        <input type="password" id="input-password" required placeholder="••••••••" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition" />
+      </div>
+
+      <!-- Dynamic Action Button -->
+      <button type="submit" id="submit-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer mt-2">
+        Sign In as Citizen
       </button>
+
     </form>
 
-    <div class="my-4 text-center text-xs text-gray-500 font-bold uppercase tracking-wider">Or</div>
-
-    <!-- Google Sign In Button -->
-    <button type="button" id="google-btn" class="w-full py-3 bg-gray-900/90 hover:bg-gray-800 border border-gray-700/80 hover:border-gray-500 text-white rounded-lg text-sm font-semibold flex items-center justify-center gap-3 transition-all duration-200 cursor-pointer hover:shadow-lg active:scale-[0.99]">
-      <svg class="w-5 h-5" viewBox="0 0 24 24">
-        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-      </svg>
-      Sign in with Google
-    </button>
+    <!-- FOOTER HINT -->
+    <div class="text-center text-[11px] text-gray-500 border-t border-gray-800/80 pt-4">
+      <p>Demo Mode: Click <span class="text-blue-400 font-semibold">Sign In</span> to navigate directly into your dashboard workspace.</p>
+    </div>
 
   </div>
 
-  <!-- JS Logic -->
-  <script src ='js/auth.js'></script>
+  <script src="js/auth.js"></script>
 </body>
 </html>
