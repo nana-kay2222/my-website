@@ -1,9 +1,4 @@
 /* Styling active states for authentication tabs */
-body {
-  background-color: #0f172a !important; /* Put your desired color hex code here */
-}
-
-
 .tab-active {
   background-color: #E9DCC9 !important;
   color: #ffffff !important;
