@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentMode = 'signin';
 
   // 🌐 Wired straight to your teammate's machine IP
-  const API_BASE_URL = 'http://172.16.170.8:5000/api/auth';
+  const API_BASE_URL = 'http://192.168.74.245:5000/api/auth';
 
   // --- 2. Tab Switching Logic ---
   tabSignin.addEventListener('click', () => setMode('signin'));
