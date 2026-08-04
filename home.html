@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>We've got you.</title>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS v4 -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
   <style>
+    /* Force Tailwind v4 class-based dark mode */
+    @custom-variant dark (&:where(.dark, .dark *));
+
     .bg-brand-blue {
       background-color: #2563eb;
     }
@@ -54,13 +57,13 @@
       <div class="flex items-center gap-4">
         
         <!-- Dark Mode Toggle Button -->
-        <button id="theme-toggle" class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer" aria-label="Toggle Theme">
-          <!-- Sun Icon (for dark mode) -->
+        <button id="theme-toggle" type="button" class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer" aria-label="Toggle Theme">
+          <!-- Sun Icon (shows when dark mode is active to switch to light) -->
           <svg id="theme-toggle-sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Moon Icon (for light mode) -->
-          <svg id="theme-toggle-moon-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Moon Icon (shows when light mode is active to switch to dark) -->
+          <svg id="theme-toggle-moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
         </button>
@@ -102,7 +105,7 @@
         <a href="auth.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold text-lg px-7 py-3.5 rounded-xl shadow-lg shadow-blue-600/25 transition-all duration-200 active:scale-[0.98]">
           Get Help Now
         </a>
-        <a href="#how-it-works" class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-800 dark:text-gray-200 font-semibold text-lg px-7 py-3.5 rounded-xl transition-all duration-200">
+        <a href="#how-it-works" class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 text-gray-800 dark:text-gray-200 font-semibold text-lg px-7 py-3.5 rounded-xl transition-all duration-200">
           Learn More
         </a>
       </div>
@@ -236,41 +239,52 @@
 
   <!-- Scripts: Theme Toggle & Synchronized Slideshow -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      
-      /* --- 1. DARK MODE TOGGLE LOGIC --- */
-      const themeToggleBtn = document.getElementById('theme-toggle');
+    // --- Dark Mode Logic ---
+    function setDarkMode(isDark) {
+      const html = document.documentElement;
       const sunIcon = document.getElementById('theme-toggle-sun-icon');
       const moonIcon = document.getElementById('theme-toggle-moon-icon');
 
-      function applyTheme(isDark) {
-        if (isDark) {
-          document.documentElement.classList.add('dark');
-          sunIcon.classList.remove('hidden');
-          moonIcon.classList.add('hidden');
-        } else {
-          document.documentElement.classList.remove('dark');
-          sunIcon.classList.add('hidden');
-          moonIcon.classList.remove('hidden');
-        }
+      if (isDark) {
+        html.classList.add('dark');
+        if (sunIcon) sunIcon.classList.remove('hidden');
+        if (moonIcon) moonIcon.classList.add('hidden');
+        localStorage.setItem('color-theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        if (sunIcon) sunIcon.classList.add('hidden');
+        if (moonIcon) moonIcon.classList.remove('hidden');
+        localStorage.setItem('color-theme', 'light');
+      }
+    }
+
+    // Initialize Theme immediately
+    const savedTheme = localStorage.getItem('color-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+    
+    // Set theme on load
+    if (initialDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync icons with initial state
+      const isCurrentlyDark = document.documentElement.classList.contains('dark');
+      setDarkMode(isCurrentlyDark);
+
+      // Button Event Listener
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.contains('dark');
+          setDarkMode(!isDark);
+        });
       }
 
-      // Check saved preference or fallback to OS theme setting
-      const savedTheme = localStorage.getItem('color-theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialDark = savedTheme ? savedTheme === 'dark' : prefersDark;
-
-      applyTheme(initialDark);
-
-      themeToggleBtn.addEventListener('click', () => {
-        const isDarkNow = document.documentElement.classList.contains('dark');
-        const nextDark = !isDarkNow;
-        applyTheme(nextDark);
-        localStorage.setItem('color-theme', nextDark ? 'dark' : 'light');
-      });
-
-
-      /* --- 2. SLIDESHOW LOGIC --- */
+      /* --- Slideshow Logic --- */
       const slides = [
         {
           title: "Car trouble?<br /><span>We've got you.</span>",
