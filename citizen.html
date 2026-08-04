@@ -16,6 +16,16 @@
       color: #2563eb;
     }
   </style>
+
+  <!-- Script to force light mode instantly before paint to avoid any flash -->
+  <script>
+    if (localStorage.getItem('color-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('color-theme', 'light');
+    }
+  </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans min-h-screen flex flex-col justify-between antialiased transition-colors duration-300 pt-20">
 
@@ -36,11 +46,11 @@
       <div class="flex items-center gap-3">
         <!-- Dark Mode Toggle Button -->
         <button id="theme-toggle" type="button" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer" aria-label="Toggle Theme">
-          <!-- Sun Icon (visible in dark mode to switch to light) -->
+          <!-- Sun Icon (visible in dark mode) -->
           <svg id="theme-toggle-sun-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Moon Icon (visible in light mode to switch to dark) -->
+          <!-- Moon Icon (visible in light mode) -->
           <svg id="theme-toggle-moon-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
@@ -174,11 +184,13 @@
     </div>
   </nav>
 
-  <!-- Script: Fixed Theme Toggle Logic (Light Default, Toggleable) -->
+  <!-- Script: Theme Toggle Controller -->
   <script>
-    function updateThemeIcons(isDark) {
+    function updateThemeUI() {
+      const isDark = document.documentElement.classList.contains('dark');
       const sunIcon = document.getElementById('theme-toggle-sun-icon');
       const moonIcon = document.getElementById('theme-toggle-moon-icon');
+      
       if (isDark) {
         if (sunIcon) sunIcon.classList.remove('hidden');
         if (moonIcon) moonIcon.classList.add('hidden');
@@ -188,33 +200,20 @@
       }
     }
 
-    function applyTheme(isDark) {
-      const html = document.documentElement;
-      if (isDark) {
-        html.classList.add('dark');
-        localStorage.setItem('color-theme', 'dark');
-      } else {
-        html.classList.remove('dark');
-        localStorage.setItem('color-theme', 'light');
-      }
-      updateThemeIcons(isDark);
-    }
-
-    // Default to Light Mode unless saved preference is explicitly 'dark'
-    const savedTheme = localStorage.getItem('color-theme');
-    const initialDark = savedTheme === 'dark';
-
-    applyTheme(initialDark);
-
     document.addEventListener('DOMContentLoaded', () => {
-      const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      updateThemeIcons(isCurrentlyDark);
+      updateThemeUI();
 
       const themeToggleBtn = document.getElementById('theme-toggle');
       if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
-          const isDark = document.documentElement.classList.contains('dark');
-          applyTheme(!isDark);
+          if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+          } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+          }
+          updateThemeUI();
         });
       }
     });
