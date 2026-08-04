@@ -3,49 +3,186 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Inspector | Welcome</title>
+  <title>Fixit - We've got you.</title>
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="home.css">
-</head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen flex flex-col justify-between items-center p-6">
 
-  <!-- Main Container -->
-  <main class="max-w-3xl w-full text-center my-auto flex flex-col items-center gap-8">
+  <style>
+    .bg-brand-blue {
+      background-color: #2563eb;
+    }
+    .text-brand-blue {
+      color: #2563eb;
+    }
     
-    <!-- Header Title & Brief Description -->
-    <div>
-      <h1 class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-4">
-        Smart Inspector AI
-      </h1>
-      <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-        The intelligent portal connecting citizens, households, and maintenance crews. Report city hazards instantly, get virtual assistance for home fixes, or join local response teams.
-      </p>
+    /* Fade Transition Styles */
+    .fade-content {
+      opacity: 1;
+      transition: opacity 0.6s ease-in-out;
+    }
+    .fade-out {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- Navigation Bar -->
+  <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='home.html'">
+      <div class="w-9 h-9 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-xl shadow-md">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+        </svg>
+      </div>
+      <span class="text-2xl font-extrabold tracking-tight text-gray-900">Fixit</span>
     </div>
 
-    <!-- Visual Box: Infrastructure & People -->
-    <div class="visual-box w-full bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-      <div class="grid grid-cols-2 gap-4 items-center justify-center">
-        <!-- Infrastructure Visual -->
-        <div class="bg-gray-800/80 p-6 rounded-xl border border-blue-500/30 flex flex-col items-center gap-2">
-          <span class="text-5xl">🏙️</span>
-          <span class="text-xs font-semibold text-blue-400 uppercase tracking-wide">Infrastructure</span>
-        </div>
-        <!-- People / Community Visual -->
-        <div class="bg-gray-800/80 p-6 rounded-xl border border-indigo-500/30 flex flex-col items-center gap-2">
-          <span class="text-5xl">👥</span>
-          <span class="text-xs font-semibold text-indigo-400 uppercase tracking-wide">Community & Workers</span>
-        </div>
+    <!-- Nav Links -->
+    <nav class="hidden md:flex items-center gap-10 font-medium text-gray-600">
+      <a href="home.html" class="text-gray-900 hover:text-brand-blue transition-colors">Home</a>
+      <a href="#how-it-works" class="hover:text-brand-blue transition-colors">How it works</a>
+      <a href="#about" class="hover:text-brand-blue transition-colors">About</a>
+    </nav>
+
+    <!-- Auth Button -->
+    <a href="index.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm transition-all duration-200">
+      Sign in
+    </a>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="w-full max-w-7xl mx-auto px-6 py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center flex-1">
+    
+    <!-- Left Hero Content (Dynamic Slideshow Text) -->
+    <div class="space-y-6 text-left">
+      <div id="slide-text" class="fade-content">
+        <h1 id="hero-headline" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.15] tracking-tight">
+          Car trouble?<br />
+          <span class="text-gray-900">We've got you.</span>
+        </h1>
+
+        <p id="hero-subtext" class="text-gray-600 text-lg sm:text-xl max-w-md leading-relaxed mt-4">
+          Connect with the nearest trusted technician and get AI guidance while help is on the way.
+        </p>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="index.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold text-lg px-7 py-3.5 rounded-xl shadow-md transition-all duration-200 active:scale-[0.98]">
+          Get Help Now
+        </a>
+        <a href="#how-it-works" class="bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-800 font-semibold text-lg px-7 py-3.5 rounded-xl transition-all duration-200">
+          Learn More
+        </a>
       </div>
     </div>
 
-    <!-- Get Started Button -->
-    <a href="auth.html" class="w-full max-w-md py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-lg rounded-xl shadow-xl text-center block transition-all duration-200 transform hover:scale-[1.02]">
-  🚀 Get Started / Try Out
-</a>
+    <!-- Right Hero Graphic (Dynamic Slideshow Image) -->
+    <div class="flex justify-center items-center">
+      <img id="hero-image" src="car.png" alt="Hero Slide" class="w-full max-w-xl object-contain drop-shadow-sm fade-content" />
+    </div>
 
   </main>
 
-  <script src="home.js"></script>
+  <!-- Features Footer Bar -->
+  <footer class="w-full bg-gray-50/80 border-t border-gray-100 py-10 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+      
+      <!-- Feature 1: AI Guidance -->
+      <div class="flex items-start gap-4">
+        <div class="p-2 rounded-full border-2 border-gray-900 text-gray-900 mt-0.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 text-base">AI Guidance</h3>
+          <p class="text-gray-500 text-sm mt-0.5">Instant steps while you wait</p>
+        </div>
+      </div>
+
+      <!-- Feature 2: Nearest Technicians -->
+      <div class="flex items-start gap-4">
+        <div class="p-2.5 rounded-full bg-gray-900 text-white mt-0.5">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5-2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 text-base">Nearest Technicians</h3>
+          <p class="text-gray-500 text-sm mt-0.5">Quick connection to trusted pros</p>
+        </div>
+      </div>
+
+      <!-- Feature 3: Real-time Tracking -->
+      <div class="flex items-start gap-4">
+        <div class="p-2 rounded-full border-2 border-gray-900 text-gray-900 mt-0.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-gray-900 text-base">Real-time Tracking</h3>
+          <p class="text-gray-500 text-sm mt-0.5">Track technician on the map.</p>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Slideshow Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = [
+        {
+          title: "Car trouble?<br /><span class='text-gray-900'>We've got you.</span>",
+          subtext: "Connect with the nearest trusted technician and get AI guidance while help is on the way.",
+          image: "car.png"
+        },
+        {
+          title: "Leaking sink?<br /><span class='text-gray-900'>We've got you.</span>",
+          subtext: "Find experienced local plumbers nearby to resolve water leaks and plumbing emergencies.",
+          image: "plumb.png"
+        },
+        {
+          title: "Just take a pic<br /><span class='text-gray-900'>and report.</span>",
+          subtext: "Snap a photo of any issue around your home or neighborhood and get instant field support.",
+          image: "report.png"
+        }
+      ];
+
+      let currentIndex = 0;
+      const slideText = document.getElementById('slide-text');
+      const headline = document.getElementById('hero-headline');
+      const subtext = document.getElementById('hero-subtext');
+      const heroImage = document.getElementById('hero-image');
+
+      function nextSlide() {
+        // Step 1: Fade Out text & image
+        slideText.classList.add('fade-out');
+        heroImage.classList.add('fade-out');
+
+        // Step 2: Swap content mid-fade (after 600ms)
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          
+          headline.innerHTML = slides[currentIndex].title;
+          subtext.textContent = slides[currentIndex].subtext;
+          heroImage.src = slides[currentIndex].image;
+
+          // Step 3: Fade Back In
+          slideText.classList.remove('fade-out');
+          heroImage.classList.remove('fade-out');
+        }, 600);
+      }
+
+      // Automatically transition every 4 seconds
+      setInterval(nextSlide, 4000);
+    });
+  </script>
 </body>
 </html>
