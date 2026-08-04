@@ -65,20 +65,20 @@
       </button>
     </div>
 
-   <!-- Report an Issue Banner Card with Click Action -->
-<button onclick="openReportModal()" class="w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8 rounded-3xl shadow-lg shadow-blue-500/10 text-white relative overflow-hidden group hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer">
-  <div class="flex items-center justify-between relative z-10">
-    <div class="space-y-1">
-      <h3 class="text-lg sm:text-xl font-bold">Report an Issue</h3>
-      <p class="text-xs sm:text-sm text-blue-100 max-w-sm leading-relaxed">
-        Tap to report a problem in your community or request technician help.
-      </p>
-    </div>
-    <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold text-xl shadow-inner group-hover:rotate-90 transition-transform duration-300">
-      +
-    </div>
-  </div>
-</button>
+    <!-- Report an Issue Banner Card with Modal Trigger & Animation -->
+    <button onclick="openReportModal()" class="w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8 rounded-3xl shadow-lg shadow-blue-500/10 text-white relative overflow-hidden group hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer">
+      <div class="flex items-center justify-between relative z-10">
+        <div class="space-y-1">
+          <h3 class="text-lg sm:text-xl font-bold">Report an Issue</h3>
+          <p class="text-xs sm:text-sm text-blue-100 max-w-sm leading-relaxed">
+            Tap to report a problem in your community or request technician help.
+          </p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold text-xl shadow-inner group-hover:rotate-90 transition-transform duration-300">
+          +
+        </div>
+      </div>
+    </button>
 
     <!-- Quick Actions Section -->
     <div class="space-y-3">
@@ -168,9 +168,9 @@
       </a>
 
       <!-- Floating Center Plus Button -->
-      <a href="report.html" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-brand-blue text-white shadow-lg shadow-blue-500/40 hover:scale-105 transition-transform">
+      <button onclick="openReportModal()" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-brand-blue text-white shadow-lg shadow-blue-500/40 hover:scale-105 active:scale-95 transition-transform cursor-pointer">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-      </a>
+      </button>
 
       <!-- Reports -->
       <a href="#" class="flex flex-col items-center gap-0.5 hover:text-zinc-200 transition-colors">
@@ -186,6 +186,64 @@
 
     </nav>
   </div>
+
+  <!-- Report Type Selection Modal -->
+  <div id="reportTypeModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center px-4 hidden opacity-0 transition-opacity duration-300">
+    <div id="modalContent" class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl transform scale-95 transition-transform duration-300">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-white">Select Report Type</h3>
+        <button onclick="closeReportModal()" class="p-2 rounded-xl bg-zinc-800 text-zinc-400 hover:text-white cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <!-- Community Problem Choice -->
+        <a href="report.html?type=community" class="flex items-center gap-4 p-4 rounded-2xl bg-zinc-800/50 border border-zinc-700/50 hover:border-blue-500 hover:bg-zinc-800 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+            🌍
+          </div>
+          <div>
+            <h4 class="font-bold text-white text-sm">Community Problem</h4>
+            <p class="text-xs text-zinc-400">Potholes, broken streetlights, waste, etc.</p>
+          </div>
+        </a>
+
+        <!-- Technical Help Choice -->
+        <a href="report.html?type=technical" class="flex items-center gap-4 p-4 rounded-2xl bg-zinc-800/50 border border-zinc-700/50 hover:border-purple-500 hover:bg-zinc-800 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-purple-600/20 text-purple-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+            🔧
+          </div>
+          <div>
+            <h4 class="font-bold text-white text-sm">Technical Help</h4>
+            <p class="text-xs text-zinc-400">Request specialized technician assistance</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openReportModal() {
+      const modal = document.getElementById('reportTypeModal');
+      const content = document.getElementById('modalContent');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        content.classList.remove('scale-95');
+      }, 10);
+    }
+
+    function closeReportModal() {
+      const modal = document.getElementById('reportTypeModal');
+      const content = document.getElementById('modalContent');
+      modal.classList.add('opacity-0');
+      content.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+  </script>
 
 </body>
 </html>
