@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Report an Issue - Citizen Dashboard</title>
+
+  <!-- Tailwind CSS v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    .bg-brand-blue { background-color: #2563eb; }
+    .text-brand-blue { color: #3b82f6; }
+  </style>
+</head>
+<body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between antialiased pt-6 pb-12 px-4 sm:px-6">
+
+  <!-- Top Navigation Header -->
+  <header class="max-w-xl mx-auto w-full flex items-center justify-between py-4 border-b border-zinc-800">
+    <a href="citizen.html" class="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white transition-all cursor-pointer">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </a>
+    <h1 id="headerTitle" class="text-base font-bold text-white tracking-wide">Report an Issue</h1>
+    <a href="citizen.html" class="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white transition-all cursor-pointer">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </a>
+  </header>
+
+  <!-- Main Multi-Step Container -->
+  <main class="max-w-xl mx-auto w-full flex-1 py-6 space-y-6">
+
+    <!-- Stepper Indicator -->
+    <div class="flex items-center justify-between px-2">
+      <!-- Step 1 -->
+      <div class="flex flex-col items-center space-y-1">
+        <div id="step-indicator-1" class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-blue-500/30 transition-all">1</div>
+        <span class="text-[11px] font-medium text-blue-400">Photo</span>
+      </div>
+      <div class="flex-1 h-0.5 bg-zinc-800 mx-2 -mt-4"></div>
+      <!-- Step 2 -->
+      <div class="flex flex-col items-center space-y-1">
+        <div id="step-indicator-2" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all">2</div>
+        <span class="text-[11px] font-medium text-zinc-500">Details</span>
+      </div>
+      <div class="flex-1 h-0.5 bg-zinc-800 mx-2 -mt-4"></div>
+      <!-- Step 3 -->
+      <div class="flex flex-col items-center space-y-1">
+        <div id="step-indicator-3" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all">3</div>
+        <span class="text-[11px] font-medium text-zinc-500">Location</span>
+      </div>
+      <div class="flex-1 h-0.5 bg-zinc-800 mx-2 -mt-4"></div>
+      <!-- Step 4 -->
+      <div class="flex flex-col items-center space-y-1">
+        <div id="step-indicator-4" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all">4</div>
+        <span class="text-[11px] font-medium text-zinc-500">Submit</span>
+      </div>
+    </div>
+
+    <!-- STEP 1: PHOTO -->
+    <div id="step-content-1" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-5 shadow-xl">
+      <div>
+        <h2 class="text-lg font-bold text-white">Take a Photo</h2>
+        <p class="text-xs text-zinc-400 mt-0.5">Clear photos help AI identify the problem faster.</p>
+      </div>
+
+      <!-- Preview Box -->
+      <div class="relative h-56 rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center group">
+        <img id="imagePreview" src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f8?auto=format&fit=crop&q=80&w=800" alt="Issue Preview" class="w-full h-full object-cover">
+        <div class="absolute bottom-3 right-3 p-2 bg-black/60 backdrop-blur-md rounded-xl text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-3">
+        <label class="w-full py-3.5 px-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/20 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Take Photo
+          <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
+        </label>
+        <div class="text-center text-xs text-zinc-500 font-medium">— OR —</div>
+        <label class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
+          <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Choose from Gallery
+          <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+        </label>
+      </div>
+    </div>
+
+    <!-- STEP 2: DETAILS -->
+    <div id="step-content-2" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-5 hidden shadow-xl">
+      <div>
+        <h2 class="text-lg font-bold text-white">Issue Details</h2>
+        <p class="text-xs text-zinc-400 mt-0.5">Provide a description or record a voice note, plus a contact number.</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Description</label>
+          <textarea id="issueDescription" rows="3" placeholder="Describe what is wrong..." class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl p-4 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Voice Note (Optional)</label>
+          <button type="button" onclick="toggleRecord()" id="recordBtn" class="w-full py-3 px-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-zinc-300 text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span id="recordDot" class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span id="recordText">Tap to Record Voice Note</span>
+          </button>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Contact Phone Number</label>
+          <input type="tel" id="phoneNumber" placeholder="+233 XX XXX XXXX" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500">
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: LOCATION -->
+    <div id="step-content-3" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-5 hidden shadow-xl">
+      <div>
+        <h2 class="text-lg font-bold text-white">Location & Address</h2>
+        <p class="text-xs text-zinc-400 mt-0.5">Detect your current GPS coordinates and specify landmarks.</p>
+      </div>
+
+      <div class="space-y-4">
+        <button type="button" onclick="fetchGPS()" class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer">
+          <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Detect Current GPS Location
+        </button>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">GPS Coordinates</label>
+          <input type="text" id="gpsCoords" readonly placeholder="Lat: 5.6037, Lng: -0.1870" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-4 py-3 text-sm text-zinc-400 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Street Address / Landmark</label>
+          <input type="text" id="streetAddress" placeholder="e.g., Near Cafe-Bar Noir, Dzorwulu, Accra" class="w-full bg-zinc-950 border border-zinc-800 rounded-2xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500">
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: SUBMIT SUMMARY -->
+    <div id="step-content-4" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-5 hidden shadow-xl">
+      <div>
+        <h2 class="text-lg font-bold text-white">Review & Submit</h2>
+        <p class="text-xs text-zinc-400 mt-0.5">Please confirm your summary before sending.</p>
+      </div>
+
+      <div class="space-y-3 bg-zinc-950 border border-zinc-800/80 rounded-2xl p-4 text-xs">
+        <div class="flex justify-between py-1.5 border-b border-zinc-800">
+          <span class="text-zinc-500 font-medium">Category:</span>
+          <span id="sumType" class="text-white font-semibold">Community Problem</span>
+        </div>
+        <div class="flex justify-between py-1.5 border-b border-zinc-800">
+          <span class="text-zinc-500 font-medium">Phone:</span>
+          <span id="sumPhone" class="text-white font-semibold">—</span>
+        </div>
+        <div class="flex justify-between py-1.5 border-b border-zinc-800">
+          <span class="text-zinc-500 font-medium">Address:</span>
+          <span id="sumAddress" class="text-white font-semibold text-right max-w-[200px] truncate">—</span>
+        </div>
+        <div class="flex justify-between py-1.5">
+          <span class="text-zinc-500 font-medium">Description:</span>
+          <span id="sumDesc" class="text-white font-semibold text-right max-w-[200px] truncate">No description</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Controls -->
+    <div class="flex items-center gap-3 pt-2">
+      <button id="prevBtn" type="button" onclick="prevStep()" class="w-1/3 py-4 rounded-2xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-semibold text-sm transition-all hidden cursor-pointer">
+        Back
+      </button>
+      <button id="nextBtn" type="button" onclick="nextStep()" class="w-full py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all cursor-pointer">
+        <span>Next</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+  </main>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    let reportData = {
+      type: 'Community Problem',
+      image: '',
+      description: '',
+      phone: '',
+      gps: '',
+      address: ''
+    };
+
+    // Check URL parameters for report type
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+    if (typeParam === 'technical') {
+      reportData.type = 'Technical Help';
+      document.getElementById('headerTitle').textContent = 'Request Technical Help';
+    }
+
+    function updateView() {
+      for (let i = 1; i <= totalSteps; i++) {
+        document.getElementById(`step-content-${i}`).classList.add('hidden');
+        const indicator = document.getElementById(`step-indicator-${i}`);
+        indicator.className = "w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all";
+      }
+
+      document.getElementById(`step-content-${currentStep}`).classList.remove('hidden');
+      const activeIndicator = document.getElementById(`step-indicator-${currentStep}`);
+      activeIndicator.className = "w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-blue-500/30 transition-all";
+
+      const prevBtn = document.getElementById('prevBtn');
+      if (currentStep > 1) {
+        prevBtn.classList.remove('hidden');
+        document.getElementById('nextBtn').classList.remove('w-full');
+        document.getElementById('nextBtn').classList.add('w-2/3');
+      } else {
+        prevBtn.classList.add('hidden');
+        document.getElementById('nextBtn').classList.remove('w-2/3');
+        document.getElementById('nextBtn').classList.add('w-full');
+      }
+
+      const nextBtnText = document.querySelector('#nextBtn span');
+      if (currentStep === totalSteps) {
+        nextBtnText.textContent = "Submit Report";
+        document.getElementById('sumType').textContent = reportData.type;
+        document.getElementById('sumPhone').textContent = document.getElementById('phoneNumber').value || 'Not provided';
+        document.getElementById('sumAddress').textContent = document.getElementById('streetAddress').value || 'Not provided';
+        document.getElementById('sumDesc').textContent = document.getElementById('issueDescription').value || 'None';
+      } else {
+        nextBtnText.textContent = "Next";
+      }
+    }
+
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateView();
+      } else {
+        alert('Report successfully submitted! Redirecting to dashboard...');
+        window.location.href = 'citizen.html';
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateView();
+      }
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagePreview').src = e.target.result;
+          reportData.image = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    let isRecording = false;
+    function toggleRecord() {
+      isRecording = !isRecording;
+      const dot = document.getElementById('recordDot');
+      const text = document.getElementById('recordText');
+      const btn = document.getElementById('recordBtn');
+      if (isRecording) {
+        dot.classList.add('animate-ping');
+        text.textContent = "Recording voice note... (Tap to stop)";
+        btn.classList.add('border-red-500', 'bg-red-950/20');
+      } else {
+        dot.classList.remove('animate-ping');
+        text.textContent = "Voice note recorded successfully ✓";
+        btn.classList.remove('border-red-500', 'bg-red-950/20');
+        btn.classList.add('border-emerald-500', 'text-emerald-400');
+      }
+    }
+
+    function fetchGPS() {
+      const gpsInput = document.getElementById('gpsCoords');
+      gpsInput.value = "Detecting GPS...";
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude.toFixed(4);
+            const lng = position.coords.longitude.toFixed(4);
+            gpsInput.value = `Lat: ${lat}, Lng: ${lng}`;
+            reportData.gps = gpsInput.value;
+          },
+          () => {
+            gpsInput.value = "Lat: 5.6037, Lng: -0.1870 (Mocked)";
+            reportData.gps = gpsInput.value;
+          }
+        );
+      } else {
+        gpsInput.value = "Lat: 5.6037, Lng: -0.1870 (Mocked)";
+      }
+    }
+  </script>
+</body>
+</html>
