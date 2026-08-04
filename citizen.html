@@ -66,7 +66,7 @@
     </div>
 
     <!-- Report an Issue Banner Card with Modal Trigger & Animation -->
-    <button onclick="openReportModal()" class="w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8 rounded-3xl shadow-lg shadow-blue-500/10 text-white relative overflow-hidden group hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer">
+    <button type="button" onclick="openReportModal()" class="w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8 rounded-3xl shadow-lg shadow-blue-500/10 text-white relative overflow-hidden group hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer">
       <div class="flex items-center justify-between relative z-10">
         <div class="space-y-1">
           <h3 class="text-lg sm:text-xl font-bold">Report an Issue</h3>
@@ -168,7 +168,7 @@
       </a>
 
       <!-- Floating Center Plus Button -->
-      <button onclick="openReportModal()" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-brand-blue text-white shadow-lg shadow-blue-500/40 hover:scale-105 active:scale-95 transition-transform cursor-pointer">
+      <button type="button" onclick="openReportModal()" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-brand-blue text-white shadow-lg shadow-blue-500/40 hover:scale-105 active:scale-95 transition-transform cursor-pointer">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       </button>
 
@@ -192,7 +192,7 @@
     <div id="modalContent" class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-md w-full p-6 space-y-6 shadow-2xl transform scale-95 transition-transform duration-300">
       <div class="flex items-center justify-between">
         <h3 class="text-lg font-bold text-white">Select Report Type</h3>
-        <button onclick="closeReportModal()" class="p-2 rounded-xl bg-zinc-800 text-zinc-400 hover:text-white cursor-pointer">
+        <button type="button" onclick="closeReportModal()" class="p-2 rounded-xl bg-zinc-800 text-zinc-400 hover:text-white cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
