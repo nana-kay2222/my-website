@@ -16,16 +16,6 @@
       color: #2563eb;
     }
   </style>
-
-  <!-- Script to force light mode instantly before paint to avoid any flash -->
-  <script>
-    if (localStorage.getItem('color-theme') === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('color-theme', 'light');
-    }
-  </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans min-h-screen flex flex-col justify-between antialiased transition-colors duration-300 pt-20">
 
@@ -184,38 +174,31 @@
     </div>
   </nav>
 
-  <!-- Script: Theme Toggle Controller -->
+  <!-- Script: Pure In-Memory Theme Switcher (No localStorage) -->
   <script>
-    function updateThemeUI() {
-      const isDark = document.documentElement.classList.contains('dark');
+    // Ensure light mode on initial render
+    document.documentElement.classList.remove('dark');
+
+    function updateIcons(isDark) {
       const sunIcon = document.getElementById('theme-toggle-sun-icon');
       const moonIcon = document.getElementById('theme-toggle-moon-icon');
-      
       if (isDark) {
-        if (sunIcon) sunIcon.classList.remove('hidden');
-        if (moonIcon) moonIcon.classList.add('hidden');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
       } else {
-        if (sunIcon) sunIcon.classList.add('hidden');
-        if (moonIcon) moonIcon.classList.remove('hidden');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      updateThemeUI();
-
       const themeToggleBtn = document.getElementById('theme-toggle');
-      if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
-          if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('color-theme', 'light');
-          } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('color-theme', 'dark');
-          }
-          updateThemeUI();
-        });
-      }
+      
+      themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        updateIcons(isDark);
+      });
     });
   </script>
 </body>
