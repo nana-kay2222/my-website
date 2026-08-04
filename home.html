@@ -16,7 +16,7 @@
       color: #2563eb;
     }
     
-    /* Fade & Slide Transition Styles */
+    /* Smooth Fade & Slide Transition Styles */
     .fade-content {
       opacity: 1;
       transform: translateY(0);
@@ -33,8 +33,8 @@
   <!-- Navigation Bar -->
   <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
     <!-- Logo (Icon only) -->
-    <div class="flex items-center cursor-pointer" onclick="window.location.href='home.html'">
-      <div class="w-9 h-9 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-xl shadow-md">
+    <div class="flex items-center cursor-pointer transform hover:scale-105 transition-transform" onclick="window.location.href='home.html'">
+      <div class="w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-xl shadow-md shadow-blue-500/20">
         <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
         </svg>
@@ -49,7 +49,7 @@
     </nav>
 
     <!-- Auth Button -->
-    <a href="auth.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm transition-all duration-200">
+    <a href="auth.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg transition-all duration-200 active:scale-95">
       Sign in
     </a>
   </header>
@@ -72,25 +72,25 @@
 
       <!-- Slideshow Indicator Dots -->
       <div class="flex items-center gap-2 pt-1">
-        <button class="dot-btn w-7 h-2.5 rounded-full bg-brand-blue transition-all duration-300" data-index="0"></button>
-        <button class="dot-btn w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all duration-300" data-index="1"></button>
-        <button class="dot-btn w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all duration-300" data-index="2"></button>
+        <button class="dot-btn w-7 h-2.5 rounded-full bg-brand-blue transition-all duration-300 cursor-pointer" data-index="0"></button>
+        <button class="dot-btn w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all duration-300 cursor-pointer" data-index="1"></button>
+        <button class="dot-btn w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all duration-300 cursor-pointer" data-index="2"></button>
       </div>
 
       <!-- CTA Buttons -->
       <div class="flex flex-wrap items-center gap-4 pt-2">
-        <a href="auth.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold text-lg px-7 py-3.5 rounded-xl shadow-md transition-all duration-200 active:scale-[0.98]">
+        <a href="auth.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold text-lg px-7 py-3.5 rounded-xl shadow-lg shadow-blue-600/25 transition-all duration-200 active:scale-[0.98]">
           Get Help Now
         </a>
-        <a href="#how-it-works" class="bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-800 font-semibold text-lg px-7 py-3.5 rounded-xl transition-all duration-200">
+        <a href="#how-it-works" class="bg-white border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-800 font-semibold text-lg px-7 py-3.5 rounded-xl transition-all duration-200">
           Learn More
         </a>
       </div>
     </div>
 
-    <!-- Right Hero Graphic (Clean Image without container boxes) -->
+    <!-- Right Hero Graphic (Seamless & Borderless) -->
     <div class="flex justify-center items-center">
-      <img id="hero-image" src="car.png" alt="Hero Slide" class="w-full max-w-xl object-contain drop-shadow-sm fade-content" />
+      <img id="hero-image" src="car.png" alt="Hero Slide" class="w-full max-w-xl max-h-[420px] object-contain drop-shadow-sm fade-content" />
     </div>
 
   </main>
@@ -99,7 +99,7 @@
   <footer class="w-full bg-gray-50/80 border-t border-gray-100 py-10 mt-auto">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
       
-      <!-- Feature 1 -->
+      <!-- Feature 1: AI Guidance -->
       <div class="flex items-start gap-4">
         <div class="p-2 rounded-full border-2 border-gray-900 text-gray-900 mt-0.5">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@
         </div>
       </div>
 
-      <!-- Feature 2 -->
+      <!-- Feature 2: Nearest Technicians -->
       <div class="flex items-start gap-4">
         <div class="p-2.5 rounded-full bg-gray-900 text-white mt-0.5">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -125,7 +125,7 @@
         </div>
       </div>
 
-      <!-- Feature 3 -->
+      <!-- Feature 3: Real-time Tracking -->
       <div class="flex items-start gap-4">
         <div class="p-2 rounded-full border-2 border-gray-900 text-gray-900 mt-0.5">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -142,7 +142,7 @@
     </div>
   </footer>
 
-  <!-- Slideshow Logic -->
+  <!-- Synchronized Slideshow Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const slides = [
@@ -175,9 +175,9 @@
       function updateDots(index) {
         dots.forEach((dot, idx) => {
           if (idx === index) {
-            dot.className = "dot-btn w-7 h-2.5 rounded-full bg-brand-blue transition-all duration-300";
+            dot.className = "dot-btn w-7 h-2.5 rounded-full bg-brand-blue transition-all duration-300 cursor-pointer";
           } else {
-            dot.className = "dot-btn w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all duration-300";
+            dot.className = "dot-btn w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all duration-300 cursor-pointer";
           }
         });
       }
