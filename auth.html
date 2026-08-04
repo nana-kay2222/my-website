@@ -154,6 +154,115 @@
   </div>
 
   <!-- JS Logic -->
-  <script src ='js/auth'> </script>
+  <!-- JS Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Grab HTML Elements
+      const authForm = document.getElementById('auth-form');
+      const tabSignin = document.getElementById('tab-signin');
+      const tabSignup = document.getElementById('tab-signup');
+      const signupFields = document.getElementById('signup-fields');
+      const confirmPasswordField = document.getElementById('confirm-password-field');
+      const authSubtitle = document.getElementById('auth-subtitle');
+      const btnText = document.getElementById('btn-text');
+      const alertBox = document.getElementById('alert-box');
+      const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+
+      let isSignUpMode = false;
+
+      // 2. Tab Switching Logic
+      if (tabSignin && tabSignup) {
+        // Switch to Sign In Tab
+        tabSignin.addEventListener('click', () => {
+          isSignUpMode = false;
+
+          // Update active tab styles
+          tabSignin.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white shadow cursor-pointer";
+          tabSignup.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-400 hover:text-white cursor-pointer";
+
+          // Hide sign up extra fields
+          signupFields.classList.add('hidden');
+          confirmPasswordField.classList.add('hidden');
+
+          // Update text
+          authSubtitle.textContent = "Sign in to your account to continue";
+          btnText.textContent = "Sign In";
+          hideAlert();
+        });
+
+        // Switch to Sign Up Tab
+        tabSignup.addEventListener('click', () => {
+          isSignUpMode = true;
+
+          // Update active tab styles
+          tabSignup.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white shadow cursor-pointer";
+          tabSignin.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-400 hover:text-white cursor-pointer";
+
+          // Show sign up extra fields
+          signupFields.classList.remove('hidden');
+          confirmPasswordField.classList.remove('hidden');
+
+          // Update text
+          authSubtitle.textContent = "Create a new account to get started";
+          btnText.textContent = "Sign Up";
+          hideAlert();
+        });
+      }
+
+      // 3. Password Show/Hide Toggle (Eye Icons)
+      togglePasswordBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const input = document.getElementById(targetId);
+          if (input) {
+            input.type = input.type === 'password' ? 'text' : 'password';
+          }
+        });
+      });
+
+      // 4. Form Submit Handler (Stops Page Reload)
+      if (authForm) {
+        authForm.addEventListener('submit', (e) => {
+          // Stops the browser from reloading the page and wiping inputs
+          e.preventDefault();
+
+          const email = document.getElementById('email')?.value;
+          const password = document.getElementById('password')?.value;
+
+          if (isSignUpMode) {
+            const firstName = document.getElementById('first-name')?.value || 'User';
+            const role = document.getElementById('user-role')?.value || 'citizen';
+            const confirmPassword = document.getElementById('confirm-password')?.value;
+
+            if (password !== confirmPassword) {
+              showAlert("Passwords do not match!", "error");
+              return;
+            }
+
+            showAlert(`Success! Created local account for ${firstName} (${email}) as ${role}.`, "success");
+          } else {
+            showAlert(`Signed in as ${email}!`, "success");
+          }
+        });
+      }
+
+      // Helper functions for alerts
+      function showAlert(message, type) {
+        if (!alertBox) return;
+        alertBox.textContent = message;
+        alertBox.classList.remove('hidden', 'bg-red-500/20', 'text-red-300', 'border-red-500/40', 'bg-green-500/20', 'text-green-300', 'border-green-500/40');
+
+        if (type === 'success') {
+          alertBox.classList.add('bg-green-500/20', 'text-green-300', 'border', 'border-green-500/40');
+        } else {
+          alertBox.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/40');
+        }
+      }
+
+      function hideAlert() {
+        if (alertBox) alertBox.classList.add('hidden');
+      }
+    });
+  </script>
 </body>
 </html>
