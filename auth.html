@@ -154,6 +154,29 @@
   </div>
 
   <!-- JS Logic -->
-  <script src ='js/auth.js'></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("Inline script running!");
+
+    const signupForm = document.getElementById('signupForm');
+    const signupModal = document.getElementById('signupModal');
+
+    if (signupForm) {
+      signupForm.addEventListener('submit', (e) => {
+        // 1. MUST BE FIRST: Stops browser from reloading page
+        e.preventDefault();
+
+        console.log("Form submission caught!");
+        alert("Success! Form submitted locally without reloading.");
+
+        if (signupModal) {
+          signupModal.classList.remove('active');
+        }
+      });
+    } else {
+      console.error("Could not find <form id=\"signupForm\"> in HTML.");
+    }
+  });
+</script>
 </body>
 </html>
