@@ -9,6 +9,18 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   
   <link rel="stylesheet" href="css/auth.css">
+
+  <style>
+    /* Shake animation for error feedback */
+    @keyframes cardShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+    .animate-shake {
+      animation: cardShake 0.4s ease-in-out;
+    }
+  </style>
 </head>
 <body class="min-h-screen flex flex-col justify-center items-center p-4 my-8 bg-cover bg-center bg-no-repeat bg-fixed text-gray-100 font-sans" style="background-image: url('iingg.png') !important;">
 
@@ -150,10 +162,10 @@
 
   </div>
 
-  <!-- Clean JS Logic -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const authForm = document.getElementById('auth-form');
+      const authCard = document.getElementById('auth-card');
       const tabSignin = document.getElementById('tab-signin');
       const tabSignup = document.getElementById('tab-signup');
       const signupFields = document.getElementById('signup-fields');
@@ -207,16 +219,22 @@
         });
       });
 
-      // Form Submit
+      // Form Submit & Navigation
       if (authForm) {
         authForm.addEventListener('submit', (e) => {
           e.preventDefault();
 
-          const email = document.getElementById('email')?.value || 'user';
+          const email = document.getElementById('email')?.value.trim();
           const password = document.getElementById('password')?.value;
 
+          // Simple Validation Checks
+          if (!email || !password) {
+            showAlert("Please enter your email and password!", "error");
+            return;
+          }
+
           if (isSignUpMode) {
-            const firstName = document.getElementById('first-name')?.value || 'User';
+            const firstName = document.getElementById('first-name')?.value.trim() || 'User';
             const role = document.getElementById('user-role')?.value || 'citizen';
             const confirmPassword = document.getElementById('confirm-password')?.value;
 
@@ -225,15 +243,32 @@
               return;
             }
 
-            showAlert(`Success! Created account for ${firstName} (${email}) as ${role}.`, "success");
+            showAlert(`Success! Account created for ${firstName}. Redirecting...`, "success");
+
+            // Redirect based on role after 1 second delay
+            setTimeout(() => {
+              if (role === 'worker') {
+                window.location.href = 'dashboard.html';
+              } else {
+                window.location.href = 'citizen.html';
+              }
+            }, 1000);
+
           } else {
-            showAlert(`Signed in as ${email}!`, "success");
+            showAlert("Signed in successfully! Redirecting...", "success");
+
+            // Redirect on successful login
+            setTimeout(() => {
+              window.location.href = 'citizen.html';
+            }, 1000);
           }
         });
       }
 
+      // Alert function handling smooth scroll and card shake
       function showAlert(message, type) {
         if (!alertBox) return;
+
         alertBox.textContent = message;
         alertBox.className = "mb-4 p-3 rounded-lg text-sm font-semibold text-center transition-all duration-300";
 
@@ -241,7 +276,17 @@
           alertBox.classList.add('bg-green-500/20', 'text-green-300', 'border', 'border-green-500/40');
         } else {
           alertBox.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/40');
+
+          // Trigger card shake on error
+          if (authCard) {
+            authCard.classList.remove('animate-shake');
+            void authCard.offsetWidth; // Force CSS reflow to restart animation
+            authCard.classList.add('animate-shake');
+          }
         }
+
+        // Scroll to the top of the card smoothly to make alert visible
+        authCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
       function hideAlert() {
