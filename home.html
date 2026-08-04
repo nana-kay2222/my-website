@@ -16,7 +16,7 @@
       color: #2563eb;
     }
     
-    /* Smooth Fade & Slide Transition Styles */
+    /* Smooth Fade Transition Styles */
     .fade-content {
       opacity: 1;
       transform: translateY(0);
@@ -31,7 +31,7 @@
 <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col justify-between antialiased">
 
   <!-- Navigation Bar -->
-  <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+  <header class="w-full max-w-7xl mx-auto px-6 pt-4 pb-2 flex items-center justify-between">
     <!-- Logo (Icon only) -->
     <div class="flex items-center cursor-pointer transform hover:scale-105 transition-transform" onclick="window.location.href='home.html'">
       <div class="w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-xl shadow-md shadow-blue-500/20">
@@ -55,17 +55,17 @@
   </header>
 
   <!-- Hero Section -->
-  <main class="w-full max-w-7xl mx-auto px-6 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center flex-1">
+  <main class="w-full max-w-7xl mx-auto px-6 pt-2 pb-8 lg:pt-4 lg:pb-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center flex-1">
     
     <!-- Left Hero Content -->
-    <div class="space-y-6 text-left">
+    <div class="space-y-5 text-left">
       <div id="slide-text" class="fade-content">
         <h1 id="hero-headline" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.12] tracking-tight">
           Car trouble?<br />
           <span class="text-gray-900">We've got you.</span>
         </h1>
 
-        <p id="hero-subtext" class="text-gray-600 text-lg sm:text-xl max-w-md leading-relaxed mt-4">
+        <p id="hero-subtext" class="text-gray-600 text-lg sm:text-xl max-w-md leading-relaxed mt-3">
           Connect with the nearest trusted technician and get AI guidance while help is on the way.
         </p>
       </div>
@@ -78,7 +78,7 @@
       </div>
 
       <!-- CTA Buttons -->
-      <div class="flex flex-wrap items-center gap-4 pt-2">
+      <div class="flex flex-wrap items-center gap-4 pt-1">
         <a href="auth.html" class="bg-brand-blue hover:bg-blue-700 text-white font-semibold text-lg px-7 py-3.5 rounded-xl shadow-lg shadow-blue-600/25 transition-all duration-200 active:scale-[0.98]">
           Get Help Now
         </a>
@@ -88,15 +88,32 @@
       </div>
     </div>
 
-    <!-- Right Hero Graphic (Seamless & Borderless) -->
+    <!-- Right Hero Graphic Container (Grey Card Frame Restored) -->
     <div class="flex justify-center items-center">
-      <img id="hero-image" src="car.png" alt="Hero Slide" class="w-full max-w-xl max-h-[420px] object-contain drop-shadow-sm fade-content" />
+      <div class="w-full max-w-xl bg-slate-100/70 p-4 sm:p-6 rounded-3xl border border-slate-200/80 shadow-sm">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/60 shadow-inner flex flex-col items-center">
+          
+          <!-- Image -->
+          <div class="w-full min-h-[300px] flex items-center justify-center">
+            <img id="hero-image" src="car.png" alt="Hero Slide" class="max-h-[340px] w-auto object-contain fade-content" />
+          </div>
+
+          <!-- Bottom Card Frame Navigation Pills -->
+          <div class="flex items-center justify-center gap-4 w-full pt-4 border-t border-slate-100">
+            <div class="w-6 h-6 rounded-full bg-slate-200/70"></div>
+            <div class="w-16 h-3 rounded-full bg-slate-200/70"></div>
+            <div class="w-6 h-6 rounded-full bg-slate-200/70"></div>
+            <div class="w-6 h-6 rounded-full bg-slate-200/70"></div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
   </main>
 
   <!-- Features Footer Bar -->
-  <footer class="w-full bg-gray-50/80 border-t border-gray-100 py-10 mt-auto">
+  <footer class="w-full bg-gray-50/80 border-t border-gray-100 py-8 mt-auto">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
       
       <!-- Feature 1: AI Guidance -->
@@ -216,6 +233,7 @@
         });
       });
 
+      updateDots(0);
       startAutoSlide();
     });
   </script>
