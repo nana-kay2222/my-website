@@ -1,235 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Citizen Hub | Smart Inspector</title>
+  <title>Citizen Dashboard - We've got you.</title>
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS v4 -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="css/citizen.css" />
-</head>
-<body class="min-h-screen bg-gray-950 text-gray-100 font-sans flex flex-col">
 
-  <!-- TOP NAVIGATION HEADER -->
-  <header class="bg-gray-900/90 border-b border-gray-800 sticky top-0 z-40 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <style>
+    .bg-brand-blue {
+      background-color: #2563eb;
+    }
+    .text-brand-blue {
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- Fixed Top Navigation Bar -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-xs">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       
       <!-- Logo -->
-      <div class="flex items-center gap-3">
-        <div class="p-2 bg-blue-600/20 border border-blue-500/30 rounded-xl">
-          <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+      <div class="flex items-center cursor-pointer transform hover:scale-105 transition-transform" onclick="window.location.href='home.html'">
+        <div class="w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-xl shadow-md shadow-blue-500/20">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
           </svg>
         </div>
-        <div>
-          <h1 class="font-bold text-lg text-white leading-tight">Smart Inspector</h1>
-          <span class="text-xs text-blue-400 font-medium">Citizen & Service Portal</span>
-        </div>
       </div>
 
-      <!-- User Profile / Sign Out -->
-      <div class="flex items-center gap-4">
-        <span class="hidden sm:inline-block text-xs bg-blue-900/40 text-blue-300 border border-blue-700/50 px-3 py-1 rounded-full font-semibold">📍 Haatso Proximity</span>
-        <button id="logout-btn" class="text-xs text-gray-400 hover:text-white transition cursor-pointer">Sign Out</button>
+      <!-- Dashboard Title / User Info -->
+      <div class="flex items-center gap-6">
+        <span class="hidden sm:inline font-medium text-gray-600 text-sm">Welcome back, <strong class="text-gray-900">Nana</strong></span>
+        
+        <!-- Logout / Profile Pill -->
+        <a href="home.html" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-xl transition-all text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Sign out
+        </a>
       </div>
-    </div>
 
-    <!-- WORKSPACE TABS -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-2 border-t border-gray-800/60 overflow-x-auto">
-      <button id="tab-report" class="tab-btn py-3 px-4 text-xs font-bold border-b-2 border-blue-500 text-blue-400 flex items-center gap-2 whitespace-nowrap cursor-pointer">
-        <span>🚨</span> Public Infrastructure
-      </button>
-      <button id="tab-request-help" class="tab-btn py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap cursor-pointer">
-        <span>🛠️</span> Request Handyman
-      </button>
-      <button id="tab-handyman-jobs" class="tab-btn py-3 px-4 text-xs font-bold border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2 whitespace-nowrap cursor-pointer">
-        <span>💼</span> Find Jobs (Pro Mode)
-      </button>
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+  <!-- Main Dashboard Content -->
+  <main class="w-full max-w-7xl mx-auto px-6 pt-28 pb-16 flex-1">
+    
+    <!-- Top Welcome & Action Banner -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 bg-white p-8 rounded-3xl border border-gray-200/80 shadow-sm">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+          Your Service Dashboard
+        </h1>
+        <p class="text-gray-500 text-sm sm:text-base mt-1">
+          Monitor active technician dispatches, track field arrivals, or report a new issue instantly.
+        </p>
+      </div>
+      <div>
+        <a href="report.html" class="inline-flex items-center gap-2 bg-brand-blue hover:bg-blue-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg shadow-blue-600/25 transition-all duration-200 active:scale-[0.98]">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          New Report / Request Help
+        </a>
+      </div>
+    </div>
 
-    <!-- ======================================================== -->
-    <!-- SECTION 1: PUBLIC INFRASTRUCTURE REPORTING -->
-    <!-- ======================================================== -->
-    <section id="sec-report" class="space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <!-- Form: Submit Infrastructure Issue -->
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-          <h2 class="text-lg font-bold text-white mb-1">Report Public Issue</h2>
-          <p class="text-xs text-gray-400 mb-4">Log potholes, broken lights, or leaks for field inspectors.</p>
+    <!-- Grid Layout: Active Requests vs. History -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left 2 Columns: Active Dispatches / Real-time Tracker -->
+      <div class="lg:col-span-2 space-y-6">
+        <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+          Active Dispatches
+        </h2>
 
-          <form id="public-issue-form" class="space-y-4">
-            <div>
-              <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Issue Category</label>
-              <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:border-blue-500 focus:outline-none">
-                <option>Road Damage / Pothole</option>
-                <option>Broken Streetlight</option>
-                <option>Water Leakage / Pipe Burst</option>
-                <option>Waste / Garbage Dumping</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Location Details</label>
-              <input type="text" placeholder="e.g., Near Haatso Station" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:border-blue-500 focus:outline-none" required/>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Description</label>
-              <textarea rows="3" placeholder="Describe the issue..." class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:border-blue-500 focus:outline-none" required></textarea>
-            </div>
-
-            <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer">
-              Submit Public Report
-            </button>
-          </form>
-        </div>
-
-        <!-- Recent Public Reports Feed -->
-        <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-          <h2 class="text-lg font-bold text-white mb-4">My Submitted Reports</h2>
-          <div class="space-y-3">
-            <div class="bg-gray-950 border border-gray-800/80 rounded-xl p-4 flex items-center justify-between">
+        <!-- Active Request Card -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/80 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
+            <div class="flex items-center gap-4">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-brand-blue flex items-center justify-center font-bold text-xl">
+                🚗
+              </div>
               <div>
-                <span class="text-[10px] bg-yellow-900/40 text-yellow-300 border border-yellow-700/50 px-2 py-0.5 rounded font-bold uppercase">Pending Inspection</span>
-                <h3 class="text-sm font-bold text-white mt-1">Deep Pothole on Main Street</h3>
-                <p class="text-xs text-gray-400">Haatso High St • Reported 2 hours ago</p>
+                <span class="text-xs font-semibold uppercase tracking-wider text-brand-blue bg-blue-50 px-2.5 py-1 rounded-md">Car Breakdown</span>
+                <h3 class="text-lg font-bold text-gray-900 mt-1">Engine Overheat / Battery Failure</h3>
+                <p class="text-gray-500 text-xs sm:text-sm">Requested Today at 4:15 PM • Dzorwulu, Accra</p>
               </div>
-              <span class="text-xs text-gray-500">ID: #INF-8821</span>
             </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- SECTION 2: REQUEST PERSONAL HELP (BOLT FOR HANDYMEN) -->
-    <!-- ======================================================== -->
-    <section id="sec-request-help" class="hidden space-y-6">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        <!-- Post Urgent Job Form -->
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-          <h2 class="text-lg font-bold text-white mb-1">Request Local Service</h2>
-          <p class="text-xs text-gray-400 mb-4">Find a trusted worker nearby instantly.</p>
-
-          <form id="personal-job-form" class="space-y-4">
-            <div>
-              <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Service Needed</label>
-              <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:border-blue-500 focus:outline-none">
-                <option>Plumbing Repair</option>
-                <option>Electrical Fixing</option>
-                <option>Carpentry / Furniture</option>
-                <option>AC / Appliance Repair</option>
-                <option>General Painting</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Estimated Budget (GHS)</label>
-              <input type="number" placeholder="e.g. 150" class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:border-blue-500 focus:outline-none" required/>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold uppercase text-gray-400 mb-1">Urgency</label>
-              <select class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white focus:border-blue-500 focus:outline-none">
-                <option>Immediate (Next 1-2 hours)</option>
-                <option>Today</option>
-                <option>Flexible</option>
-              </select>
-            </div>
-
-            <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg cursor-pointer flex items-center justify-center gap-2">
-              <span>📡</span> Broadcast Help Request
-            </button>
-          </form>
-        </div>
-
-        <!-- Active Handymen Nearby Radar -->
-        <div class="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl space-y-4">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-bold text-white">Pros Nearby You</h2>
-            <span class="text-xs text-emerald-400 font-semibold animate-pulse">● 4 Pros Active</span>
+            <span class="inline-flex items-center justify-center bg-amber-50 text-amber-700 font-semibold text-xs px-3 py-1.5 rounded-full border border-amber-200/60">
+              Technician En Route
+            </span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <!-- Pro Card 1 -->
-            <div class="bg-gray-950 border border-gray-800 rounded-xl p-4 space-y-3">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold">KW</div>
-                  <div>
-                    <h4 class="text-xs font-bold text-white">Kwame Mensah</h4>
-                    <p class="text-[11px] text-gray-400">Master Plumber ★ 4.9</p>
-                  </div>
-                </div>
-                <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-bold">0.8 km away</span>
+          <!-- Live Tracker / Status Steps -->
+          <div class="space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400">Dispatch Progress</h4>
+            
+            <div class="grid grid-cols-3 gap-2 text-center text-xs font-semibold">
+              <div class="bg-blue-600 text-white py-2 rounded-xl">1. Request Sent</div>
+              <div class="bg-blue-600 text-white py-2 rounded-xl">2. Pro Assigned</div>
+              <div class="bg-blue-100 text-brand-blue py-2 rounded-xl animate-pulse">3. Arriving</div>
+            </div>
+          </div>
+
+          <!-- Assigned Technician Info Box -->
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200/60 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gray-300 font-bold text-gray-700 flex items-center justify-center">
+                KO
               </div>
-              <button class="w-full py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer">
-                Direct Request
-              </button>
+              <div>
+                <h5 class="font-bold text-gray-900 text-sm">Kofi Ofori</h5>
+                <p class="text-gray-500 text-xs">Master Auto Mechanic • 4.9 ★ (120 reviews)</p>
+              </div>
             </div>
+            <a href="tel:+233000000000" class="bg-white hover:bg-gray-100 border border-gray-200 text-gray-800 p-2.5 rounded-xl transition-all shadow-xs">
+              <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+            </a>
           </div>
-        </div>
 
-      </div>
-    </section>
-
-    <!-- ======================================================== -->
-    <!-- SECTION 3: HANDYMAN JOB FINDER (PRO MODE) -->
-    <!-- ======================================================== -->
-    <section id="sec-handyman-jobs" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gray-900 p-4 rounded-2xl border border-gray-800">
-        <div>
-          <h2 class="text-lg font-bold text-white">Nearby Job Market</h2>
-          <p class="text-xs text-gray-400">Browse live requests from residents in your area.</p>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-xs text-gray-400">Distance Filter:</span>
-          <select class="bg-gray-950 border border-gray-800 rounded-lg p-2 text-xs text-white">
-            <option>Within 5 km</option>
-            <option>Within 10 km</option>
-            <option>All Region</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Job Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        
-        <!-- Job Card Sample -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-5 space-y-4 hover:border-emerald-500/40 transition">
-          <div class="flex items-start justify-between">
+          <!-- AI Guidance Banner -->
+          <div class="bg-blue-50/70 border border-blue-100 p-4 rounded-2xl flex items-start gap-3">
+            <div class="text-brand-blue font-bold text-lg mt-0.5">💡</div>
             <div>
-              <span class="text-[10px] bg-blue-900/40 text-blue-300 border border-blue-700/50 px-2 py-0.5 rounded font-bold uppercase">Plumbing</span>
-              <h3 class="text-sm font-bold text-white mt-1">Leaking Sink Pipeline Repair</h3>
+              <h5 class="text-sm font-bold text-brand-blue">Active AI Guidance Tip</h5>
+              <p class="text-xs text-gray-600 mt-0.5">Turn off your AC and heating fully to reduce strain on the engine battery while waiting for Kofi.</p>
             </div>
-            <span class="text-sm font-extrabold text-emerald-400">GHS 150</span>
           </div>
 
-          <p class="text-xs text-gray-400">Pipe under kitchen sink burst completely. Need immediate replacement.</p>
+        </div>
+      </div>
 
-          <div class="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t border-gray-800">
-            <span>📍 Haatso (1.2 km away)</span>
-            <span>⚡ Urgent</span>
+      <!-- Right Column: Quick Stats & History -->
+      <div class="space-y-6">
+        
+        <!-- Account Status Box -->
+        <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <h3 class="font-bold text-gray-900 text-base">Account Overview</h3>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between py-2 border-b border-gray-100">
+              <span class="text-gray-500">Total Requests</span>
+              <span class="font-bold text-gray-900">3</span>
+            </div>
+            <div class="flex justify-between py-2 border-b border-gray-100">
+              <span class="text-gray-500">Verified Citizen</span>
+              <span class="font-bold text-emerald-600">Active</span>
+            </div>
+            <div class="flex justify-between py-2">
+              <span class="text-gray-500">Saved Location</span>
+              <span class="font-bold text-gray-900">Accra, Ghana</span>
+            </div>
           </div>
+        </div>
 
-          <button class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition cursor-pointer">
-            Accept &amp; Connect
-          </button>
+        <!-- Recent History -->
+        <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+          <h3 class="font-bold text-gray-900 text-base">Past Services</h3>
+          
+          <div class="space-y-3">
+            <div class="p-3 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
+              <div>
+                <h5 class="text-sm font-bold text-gray-900">Plumbing Leak</h5>
+                <p class="text-xs text-gray-400">May 12, 2026</p>
+              </div>
+              <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">Completed</span>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between">
+              <div>
+                <h5 class="text-sm font-bold text-gray-900">Zcash Node Setup</h5>
+                <p class="text-xs text-gray-400">Dec 21, 2025</p>
+              </div>
+              <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">Completed</span>
+            </div>
+          </div>
         </div>
 
       </div>
-    </section>
+
+    </div>
 
   </main>
 
-  <script src="js/citizen.js"></script>
+  <!-- Footer -->
+  <footer class="w-full bg-white border-t border-gray-100 py-6 mt-auto text-center text-gray-400 text-xs">
+    <p>&copy; 2026 We've got you. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>
