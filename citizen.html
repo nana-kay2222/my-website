@@ -48,8 +48,8 @@
     <!-- Greeting Header & Notification Bell -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 id="user-greeting" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Hi, Citizen
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          Hi, User
         </h1>
         <p class="text-zinc-400 text-xs sm:text-sm mt-0.5">
           Let's keep our city safe.
@@ -186,12 +186,6 @@
 
     </nav>
   </div>
-
-  <!-- Dynamic Name Script -->
-  <script>
-    const loggedInUser = localStorage.getItem('userName') || 'Citizen';
-    document.getElementById('user-greeting').textContent = `Hi, ${loggedInUser}`;
-  </script>
 
 </body>
 </html>
