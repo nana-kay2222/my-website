@@ -65,8 +65,8 @@
       </button>
     </div>
 
-    <!-- Report an Issue Banner Card with Modal Trigger & Animation -->
-    <button type="button" onclick="openReportModal()" class="w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8 rounded-3xl shadow-lg shadow-blue-500/10 text-white relative overflow-hidden group hover:scale-[1.01] active:scale-[0.98] transition-all cursor-pointer">
+    <!-- Report an Issue Banner Card links directly to report.html -->
+    <a href="report.html" class="block w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 p-6 sm:p-8 rounded-3xl shadow-lg shadow-blue-500/10 text-white relative overflow-hidden group hover:scale-[1.01] transition-all">
       <div class="flex items-center justify-between relative z-10">
         <div class="space-y-1">
           <h3 class="text-lg sm:text-xl font-bold">Report an Issue</h3>
@@ -78,7 +78,7 @@
           +
         </div>
       </div>
-    </button>
+    </a>
 
     <!-- Quick Actions Section -->
     <div class="space-y-3">
@@ -167,7 +167,7 @@
         <span class="text-[10px]">Map</span>
       </a>
 
-      <!-- Floating Center Plus Button -->
+      <!-- Floating Center Plus Button triggers the Modal -->
       <button type="button" onclick="openReportModal()" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-brand-blue text-white shadow-lg shadow-blue-500/40 hover:scale-105 active:scale-95 transition-transform cursor-pointer">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       </button>
