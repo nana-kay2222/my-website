@@ -36,11 +36,11 @@
       <div class="flex items-center gap-3">
         <!-- Dark Mode Toggle Button -->
         <button id="theme-toggle" type="button" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer" aria-label="Toggle Theme">
-          <!-- Sun Icon -->
+          <!-- Sun Icon (visible in dark mode to switch to light) -->
           <svg id="theme-toggle-sun-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Moon Icon -->
+          <!-- Moon Icon (visible in light mode to switch to dark) -->
           <svg id="theme-toggle-moon-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
@@ -134,72 +134,13 @@
         <!-- Action 4: Emergency -->
         <a href="#emergency" class="bg-white dark:bg-gray-900 p-5 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-xs hover:border-red-500/50 hover:shadow-md transition-all flex flex-col justify-between space-y-4">
           <div class="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
           </div>
           <div>
             <h4 class="font-bold text-gray-900 dark:text-white text-sm">Emergency</h4>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Call response team</p>
           </div>
         </a>
-
-      </div>
-    </div>
-
-    <!-- Additional UX Considerations Section -->
-    <div class="bg-white dark:bg-gray-900 p-6 sm:p-8 rounded-3xl border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-6">
-      <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Additional UX Considerations</h3>
-      
-      <div class="space-y-4 text-sm">
-        
-        <div class="flex items-start gap-4 pb-4 border-b border-gray-100 dark:border-gray-800">
-          <div class="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Emergency Mode</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">One-tap SOS for urgent situations.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-4 pb-4 border-b border-gray-100 dark:border-gray-800">
-          <div class="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-brand-blue dark:text-blue-400 shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.858 15.355-5.858 21.213 0"/></svg>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Offline Support</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Allow users to access guidance offline.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-4 pb-4 border-b border-gray-100 dark:border-gray-800">
-          <div class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.690h4.915c.969 0 1.371 1.24.588 1.810l-3.970 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.970-2.888a1 1 0 00-1.176 0l-3.970 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.970-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.690l1.519-4.674z"/></svg>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Ratings & Reviews</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Build trust with verified reviews.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-4 pb-4 border-b border-gray-100 dark:border-gray-800">
-          <div class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Secure & Private</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Ensure data privacy and secure payments.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-4">
-          <div class="p-2.5 rounded-xl bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-          </div>
-          <div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Notifications</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Real-time updates on technician status.</p>
-          </div>
-        </div>
 
       </div>
     </div>
@@ -233,46 +174,47 @@
     </div>
   </nav>
 
-  <!-- Script: Theme Toggle Logic -->
+  <!-- Script: Fixed Theme Toggle Logic (Light Default, Toggleable) -->
   <script>
-    function setDarkMode(isDark) {
-      const html = document.documentElement;
+    function updateThemeIcons(isDark) {
       const sunIcon = document.getElementById('theme-toggle-sun-icon');
       const moonIcon = document.getElementById('theme-toggle-moon-icon');
-
       if (isDark) {
-        html.classList.add('dark');
         if (sunIcon) sunIcon.classList.remove('hidden');
         if (moonIcon) moonIcon.classList.add('hidden');
-        localStorage.setItem('color-theme', 'dark');
       } else {
-        html.classList.remove('dark');
         if (sunIcon) sunIcon.classList.add('hidden');
         if (moonIcon) moonIcon.classList.remove('hidden');
-        localStorage.setItem('color-theme', 'light');
       }
     }
 
-    // Initialize Theme immediately to prevent flash
-    const savedTheme = localStorage.getItem('color-theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-    
-    if (initialDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    function applyTheme(isDark) {
+      const html = document.documentElement;
+      if (isDark) {
+        html.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      }
+      updateThemeIcons(isDark);
     }
+
+    // Default to Light Mode unless saved preference is explicitly 'dark'
+    const savedTheme = localStorage.getItem('color-theme');
+    const initialDark = savedTheme === 'dark';
+
+    applyTheme(initialDark);
 
     document.addEventListener('DOMContentLoaded', () => {
       const isCurrentlyDark = document.documentElement.classList.contains('dark');
-      setDarkMode(isCurrentlyDark);
+      updateThemeIcons(isCurrentlyDark);
 
       const themeToggleBtn = document.getElementById('theme-toggle');
       if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
           const isDark = document.documentElement.classList.contains('dark');
-          setDarkMode(!isDark);
+          applyTheme(!isDark);
         });
       }
     });
