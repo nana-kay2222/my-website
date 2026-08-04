@@ -9,9 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
   <style>
-    /* Force Tailwind v4 class-based dark mode */
-    @custom-variant dark (&:where(.dark, .dark *));
-
     .bg-brand-blue {
       background-color: #2563eb;
     }
@@ -58,11 +55,11 @@
         
         <!-- Dark Mode Toggle Button -->
         <button id="theme-toggle" type="button" class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all cursor-pointer" aria-label="Toggle Theme">
-          <!-- Sun Icon (shows when dark mode is active to switch to light) -->
+          <!-- Sun Icon -->
           <svg id="theme-toggle-sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Moon Icon (shows when light mode is active to switch to dark) -->
+          <!-- Moon Icon -->
           <svg id="theme-toggle-moon-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
@@ -237,9 +234,8 @@
     </div>
   </footer>
 
-  <!-- Scripts: Theme Toggle & Synchronized Slideshow -->
+  <!-- Scripts -->
   <script>
-    // --- Dark Mode Logic ---
     function setDarkMode(isDark) {
       const html = document.documentElement;
       const sunIcon = document.getElementById('theme-toggle-sun-icon');
@@ -258,12 +254,11 @@
       }
     }
 
-    // Initialize Theme immediately
+    // Initialize Theme immediately to prevent flash
     const savedTheme = localStorage.getItem('color-theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initialDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
     
-    // Set theme on load
     if (initialDark) {
       document.documentElement.classList.add('dark');
     } else {
@@ -271,11 +266,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Sync icons with initial state
       const isCurrentlyDark = document.documentElement.classList.contains('dark');
       setDarkMode(isCurrentlyDark);
 
-      // Button Event Listener
       const themeToggleBtn = document.getElementById('theme-toggle');
       if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
