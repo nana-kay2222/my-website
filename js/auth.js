@@ -1,72 +1,105 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Grab Modal Elements
-  const signupModal = document.getElementById('signupModal');
-  const signinModal = document.getElementById('signinModal');
+  // Grab elements from your HTML
+  const authForm = document.getElementById('auth-form');
+  const tabSignin = document.getElementById('tab-signin');
+  const tabSignup = document.getElementById('tab-signup');
+  const signupFields = document.getElementById('signup-fields');
+  const confirmPasswordField = document.getElementById('confirm-password-field');
+  const authSubtitle = document.getElementById('auth-subtitle');
+  const btnText = document.getElementById('btn-text');
+  const alertBox = document.getElementById('alert-box');
+  const togglePasswordBtns = document.querySelectorAll('.toggle-password');
 
-  // Grab Buttons to Open Modals
-  const openSignupBtn = document.getElementById('openSignup') || document.getElementById('navSignupBtn') || document.getElementById('heroSignupBtn');
-  const openSigninBtn = document.getElementById('openSignin') || document.getElementById('navSigninBtn');
+  let isSignUpMode = false;
 
-  // Grab Buttons to Close Modals
-  const closeSignupBtn = document.getElementById('closeSignup');
-  const closeSigninBtn = document.getElementById('closeSignin');
+  // 1. Tab Switching Logic (Sign In vs Sign Up)
+  if (tabSignin && tabSignup) {
+    tabSignin.addEventListener('click', () => {
+      isSignUpMode = false;
 
-  // Grab Forms
-  const signupForm = document.getElementById('signupForm');
-  const signinForm = document.getElementById('signinForm');
+      // Update Tab Styles
+      tabSignin.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white shadow cursor-pointer";
+      tabSignup.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-400 hover:text-white cursor-pointer";
 
-  // Modal Open/Close Logic
-  if (openSignupBtn && signupModal) {
-    openSignupBtn.addEventListener('click', () => signupModal.classList.add('active'));
+      // Hide Extra Fields
+      signupFields.classList.add('hidden');
+      confirmPasswordField.classList.add('hidden');
+
+      // Update Labels
+      authSubtitle.textContent = "Sign in to your account to continue";
+      btnText.textContent = "Sign In";
+      hideAlert();
+    });
+
+    tabSignup.addEventListener('click', () => {
+      isSignUpMode = true;
+
+      // Update Tab Styles
+      tabSignup.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 bg-blue-600 text-white shadow cursor-pointer";
+      tabSignin.className = "w-1/2 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 text-gray-400 hover:text-white cursor-pointer";
+
+      // Show Extra Fields
+      signupFields.classList.remove('hidden');
+      confirmPasswordField.classList.remove('hidden');
+
+      // Update Labels
+      authSubtitle.textContent = "Create a new account to get started";
+      btnText.textContent = "Sign Up";
+      hideAlert();
+    });
   }
-  if (closeSignupBtn && signupModal) {
-    closeSignupBtn.addEventListener('click', () => signupModal.classList.remove('active'));
-  }
 
-  if (openSigninBtn && signinModal) {
-    openSigninBtn.addEventListener('click', () => signinModal.classList.add('active'));
-  }
-  if (closeSigninBtn && signinModal) {
-    closeSigninBtn.addEventListener('click', () => signinModal.classList.remove('active'));
-  }
-
-  // Close modals on background click
-  window.addEventListener('click', (e) => {
-    if (e.target === signupModal) signupModal.classList.remove('active');
-    if (e.target === signinModal) signinModal.classList.remove('active');
+  // 2. Password Show/Hide Eye Icon Toggle
+  togglePasswordBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      const input = document.getElementById(targetId);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    });
   });
 
-  // Handle Sign Up Form Submission (Pure Frontend / No Server)
-  if (signupForm) {
-    signupForm.addEventListener('submit', (e) => {
-      // 1. STOPS THE PAGE REFRESH (Critical!)
+  // 3. Form Submission Handler (Stops Page Reload & Local Testing)
+  if (authForm) {
+    authForm.addEventListener('submit', (e) => {
+      // PREVENTS PAGE REFRESH AND SANITIZATION
       e.preventDefault();
 
-      // 2. Safely read input values
-      const name = document.getElementById('name')?.value || document.getElementById('signupName')?.value || 'User';
-      const email = document.getElementById('email')?.value || document.getElementById('signupEmail')?.value || 'email';
-      const role = document.getElementById('role')?.value || document.getElementById('signupRole')?.value || 'Client';
+      const email = document.getElementById('email')?.value;
+      const password = document.getElementById('password')?.value;
 
-      // 3. Temporary success response
-      alert(`Success! Account registered locally for ${name} (${email}) as ${role}.`);
+      if (isSignUpMode) {
+        const firstName = document.getElementById('first-name')?.value || 'User';
+        const role = document.getElementById('user-role')?.value || 'citizen';
+        const confirmPassword = document.getElementById('confirm-password')?.value;
 
-      // 4. Reset form & close modal
-      signupForm.reset();
-      if (signupModal) signupModal.classList.remove('active');
+        if (password !== confirmPassword) {
+          showAlert("Passwords do not match!", "error");
+          return;
+        }
+
+        showAlert(`Success! Local account registered for ${firstName} (${email}) as ${role}.`, "success");
+      } else {
+        showAlert(`Welcome back! Signed in locally as ${email}.`, "success");
+      }
     });
   }
 
-  // Handle Sign In Form Submission (Pure Frontend / No Server)
-  if (signinForm) {
-    signinForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+  // Alert helpers to display messages in your #alert-box div
+  function showAlert(message, type) {
+    if (!alertBox) return;
+    alertBox.textContent = message;
+    alertBox.classList.remove('hidden', 'bg-red-500/20', 'text-red-300', 'border-red-500/40', 'bg-green-500/20', 'text-green-300', 'border-green-500/40');
 
-      const email = document.getElementById('signinEmail')?.value || document.getElementById('email')?.value || 'User';
+    if (type === 'success') {
+      alertBox.classList.add('bg-green-500/20', 'text-green-300', 'border', 'border-green-500/40');
+    } else {
+      alertBox.classList.add('bg-red-500/20', 'text-red-300', 'border', 'border-red-500/40');
+    }
+  }
 
-      alert(`Welcome back! Signed in locally as ${email}.`);
-
-      signinForm.reset();
-      if (signinModal) signinModal.classList.remove('active');
-    });
+  function hideAlert() {
+    if (alertBox) alertBox.classList.add('hidden');
   }
 });
