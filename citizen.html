@@ -81,53 +81,70 @@
       </div>
     </a>
 
-    <!-- Quick Actions Section (Responsive Grid) -->
+    <!-- Quick Actions Section (Uber-style Vector Card Grid with Internal Text) -->
     <div class="space-y-3">
       <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-500">Quick Actions</h3>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         <!-- Action 1: Track Report -->
-        <a href="#track" class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-xs hover:border-blue-500/50 hover:bg-zinc-800/80 transition-all flex flex-col justify-between space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-950/60 text-blue-400 flex items-center justify-center">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        <a href="#track" class="bg-zinc-900 rounded-3xl border border-zinc-800/80 overflow-hidden group hover:border-blue-500/50 transition-all flex flex-col p-2">
+          <!-- Top Vector Banner -->
+          <div class="h-32 bg-gradient-to-br from-blue-900/40 to-zinc-950 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden">
+            <svg class="w-16 h-16 text-blue-400 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
           </div>
-          <div>
+          <!-- Text inside button container -->
+          <div class="p-3.5">
             <h4 class="font-bold text-white text-sm">Track Report</h4>
-            <p class="text-xs text-zinc-400 mt-0.5">Check your report status</p>
+            <p class="text-[11px] text-zinc-400 mt-0.5">Check your report status</p>
           </div>
         </a>
 
         <!-- Action 2: Report History -->
-        <a href="#history" class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-xs hover:border-emerald-500/50 hover:bg-zinc-800/80 transition-all flex flex-col justify-between space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-emerald-950/60 text-emerald-400 flex items-center justify-center">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <a href="#history" class="bg-zinc-900 rounded-3xl border border-zinc-800/80 overflow-hidden group hover:border-emerald-500/50 transition-all flex flex-col p-2">
+          <!-- Top Vector Banner -->
+          <div class="h-32 bg-gradient-to-br from-emerald-900/40 to-zinc-950 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden">
+            <svg class="w-16 h-16 text-emerald-400 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
-          <div>
+          <!-- Text inside button container -->
+          <div class="p-3.5">
             <h4 class="font-bold text-white text-sm">Report History</h4>
-            <p class="text-xs text-zinc-400 mt-0.5">View past reports</p>
+            <p class="text-[11px] text-zinc-400 mt-0.5">View past reports</p>
           </div>
         </a>
 
         <!-- Action 3: AI Assistant -->
-        <a href="#ai" class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-xs hover:border-purple-500/50 hover:bg-zinc-800/80 transition-all flex flex-col justify-between space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-purple-950/60 text-purple-400 flex items-center justify-center">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <a href="#ai" class="bg-zinc-900 rounded-3xl border border-zinc-800/80 overflow-hidden group hover:border-purple-500/50 transition-all flex flex-col p-2">
+          <!-- Top Vector Banner -->
+          <div class="h-32 bg-gradient-to-br from-purple-900/40 to-zinc-950 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden">
+            <svg class="w-16 h-16 text-purple-400 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
           </div>
-          <div>
+          <!-- Text inside button container -->
+          <div class="p-3.5">
             <h4 class="font-bold text-white text-sm">AI Assistant</h4>
-            <p class="text-xs text-zinc-400 mt-0.5">Get help & advice</p>
+            <p class="text-[11px] text-zinc-400 mt-0.5">Get help & advice</p>
           </div>
         </a>
 
         <!-- Action 4: Emergency -->
-        <a href="#emergency" class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-xs hover:border-red-500/50 hover:bg-zinc-800/80 transition-all flex flex-col justify-between space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-red-950/60 text-red-400 flex items-center justify-center">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <a href="#emergency" class="bg-zinc-900 rounded-3xl border border-zinc-800/80 overflow-hidden group hover:border-red-500/50 transition-all flex flex-col p-2">
+          <!-- Top Vector Banner -->
+          <div class="h-32 bg-gradient-to-br from-red-900/40 to-zinc-950 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden">
+            <svg class="w-16 h-16 text-red-400 group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
           </div>
-          <div>
+          <!-- Text inside button container -->
+          <div class="p-3.5">
             <h4 class="font-bold text-white text-sm">Emergency</h4>
-            <p class="text-xs text-zinc-400 mt-0.5">Call response team</p>
+            <p class="text-[11px] text-zinc-400 mt-0.5">Call response team</p>
           </div>
         </a>
 
@@ -136,7 +153,7 @@
 
   </main>
 
-  <!-- UNIVERSAL FLOATING PILL NAVIGATION DOCK (ALL SCREENS) -->
+  <!-- UNIVERSAL FLOATING PILL NAVIGATION DOCK -->
   <div class="fixed bottom-5 left-0 w-full z-40 px-4 pointer-events-none">
     <nav class="max-w-md mx-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/80 rounded-full py-2.5 px-4 shadow-2xl shadow-black pointer-events-auto flex items-center justify-between text-center text-xs font-medium text-zinc-400">
       
