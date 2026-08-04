@@ -1,74 +1,72 @@
 document.addEventListener('DOMContentLoaded', () => {
-      // Modals
-      const signupModal = document.getElementById('signupModal');
-      const signinModal = document.getElementById('signinModal');
+  // Grab Modal Elements
+  const signupModal = document.getElementById('signupModal');
+  const signinModal = document.getElementById('signinModal');
 
-      // Open Buttons
-      const navSignupBtn = document.getElementById('navSignupBtn');
-      const heroSignupBtn = document.getElementById('heroSignupBtn');
-      const navSigninBtn = document.getElementById('navSigninBtn');
+  // Grab Buttons to Open Modals
+  const openSignupBtn = document.getElementById('openSignup') || document.getElementById('navSignupBtn') || document.getElementById('heroSignupBtn');
+  const openSigninBtn = document.getElementById('openSignin') || document.getElementById('navSigninBtn');
 
-      // Close Buttons
-      const closeSignup = document.getElementById('closeSignup');
-      const closeSignin = document.getElementById('closeSignin');
+  // Grab Buttons to Close Modals
+  const closeSignupBtn = document.getElementById('closeSignup');
+  const closeSigninBtn = document.getElementById('closeSignin');
 
-      // Forms
-      const signupForm = document.getElementById('signupForm');
-      const signinForm = document.getElementById('signinForm');
+  // Grab Forms
+  const signupForm = document.getElementById('signupForm');
+  const signinForm = document.getElementById('signinForm');
 
-      // Helper function to show/hide modal
-      function openModal(modal) {
-        if (modal) modal.classList.add('active');
-      }
+  // Modal Open/Close Logic
+  if (openSignupBtn && signupModal) {
+    openSignupBtn.addEventListener('click', () => signupModal.classList.add('active'));
+  }
+  if (closeSignupBtn && signupModal) {
+    closeSignupBtn.addEventListener('click', () => signupModal.classList.remove('active'));
+  }
 
-      function closeModal(modal) {
-        if (modal) modal.classList.remove('active');
-      }
+  if (openSigninBtn && signinModal) {
+    openSigninBtn.addEventListener('click', () => signinModal.classList.add('active'));
+  }
+  if (closeSigninBtn && signinModal) {
+    closeSigninBtn.addEventListener('click', () => signinModal.classList.remove('active'));
+  }
 
-      // Event Listeners for Opening Modals
-      if (navSignupBtn) navSignupBtn.addEventListener('click', () => openModal(signupModal));
-      if (heroSignupBtn) heroSignupBtn.addEventListener('click', () => openModal(signupModal));
-      if (navSigninBtn) navSigninBtn.addEventListener('click', () => openModal(signinModal));
+  // Close modals on background click
+  window.addEventListener('click', (e) => {
+    if (e.target === signupModal) signupModal.classList.remove('active');
+    if (e.target === signinModal) signinModal.classList.remove('active');
+  });
 
-      // Event Listeners for Closing Modals
-      if (closeSignup) closeSignup.addEventListener('click', () => closeModal(signupModal));
-      if (closeSignin) closeSignin.addEventListener('click', () => closeModal(signinModal));
+  // Handle Sign Up Form Submission (Pure Frontend / No Server)
+  if (signupForm) {
+    signupForm.addEventListener('submit', (e) => {
+      // 1. STOPS THE PAGE REFRESH (Critical!)
+      e.preventDefault();
 
-      // Close when clicking outside modal box
-      window.addEventListener('click', (e) => {
-        if (e.target === signupModal) closeModal(signupModal);
-        if (e.target === signinModal) closeModal(signinModal);
-      });
+      // 2. Safely read input values
+      const name = document.getElementById('name')?.value || document.getElementById('signupName')?.value || 'User';
+      const email = document.getElementById('email')?.value || document.getElementById('signupEmail')?.value || 'email';
+      const role = document.getElementById('role')?.value || document.getElementById('signupRole')?.value || 'Client';
 
-      // Handle Sign Up (100% Frontend - No Server Fetch)
-      if (signupForm) {
-        signupForm.addEventListener('submit', (e) => {
-          // Prevent browser page reload
-          e.preventDefault();
+      // 3. Temporary success response
+      alert(`Success! Account registered locally for ${name} (${email}) as ${role}.`);
 
-          const name = document.getElementById('signupName').value;
-          const email = document.getElementById('signupEmail').value;
-          const role = document.getElementById('signupRole').value;
-
-          alert(`Success! Created local account for ${name} (${email}) as ${role}.`);
-
-          signupForm.reset();
-          closeModal(signupModal);
-        });
-      }
-
-      // Handle Sign In (100% Frontend - No Server Fetch)
-      if (signinForm) {
-        signinForm.addEventListener('submit', (e) => {
-          // Prevent browser page reload
-          e.preventDefault();
-
-          const email = document.getElementById('signinEmail').value;
-
-          alert(`Welcome back! Signed in as ${email}.`);
-
-          signinForm.reset();
-          closeModal(signinModal);
-        });
-      }
+      // 4. Reset form & close modal
+      signupForm.reset();
+      if (signupModal) signupModal.classList.remove('active');
     });
+  }
+
+  // Handle Sign In Form Submission (Pure Frontend / No Server)
+  if (signinForm) {
+    signinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('signinEmail')?.value || document.getElementById('email')?.value || 'User';
+
+      alert(`Welcome back! Signed in locally as ${email}.`);
+
+      signinForm.reset();
+      if (signinModal) signinModal.classList.remove('active');
+    });
+  }
+});
