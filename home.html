@@ -21,9 +21,11 @@
 <body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between antialiased pt-20">
 
   <!-- Navigation Bar -->
-  <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800 shadow-xs">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='home.html'">
+      
+      <!-- Logo -->
+      <div class="flex items-center gap-2.5 cursor-pointer transform hover:scale-105 transition-transform" onclick="window.location.href='home.html'">
         <div class="w-9 h-9 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
@@ -32,28 +34,34 @@
         <span class="font-bold text-lg tracking-tight text-white">CitizenApp</span>
       </div>
 
+      <!-- Right Action -->
       <div class="flex items-center gap-3">
         <a href="citizen.html" class="text-xs sm:text-sm font-semibold bg-brand-blue hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20">
           Open Dashboard
         </a>
       </div>
+
     </div>
   </header>
 
-  <main class="w-full">
+  <!-- Main Content -->
+  <main class="w-full space-y-16 sm:space-y-24">
 
     <!-- HERO SECTION -->
-    <section class="max-w-6xl mx-auto px-6 py-16 sm:py-24 text-center space-y-6">
+    <section class="max-w-4xl mx-auto px-6 pt-12 text-center space-y-6">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/60 border border-blue-800/50 text-blue-400 text-xs font-semibold">
         <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
         Empowering Local Communities
       </div>
+
       <h1 class="text-3xl sm:text-6xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight text-white">
         Report Issues. Request Technicians. Keep Your Neighborhood Safe.
       </h1>
-      <p class="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+
+      <p class="text-zinc-400 text-xs sm:text-base max-w-xl mx-auto leading-relaxed">
         A fast, transparent civic platform connecting citizens directly with municipal response teams and certified specialists.
       </p>
+
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
         <a href="citizen.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/30 transition-all">
           Report an Issue Now
@@ -64,12 +72,12 @@
       </div>
     </section>
 
-    <!-- LIVE MAP SECTION (ADDED BEFORE HOW IT WORKS) -->
+    <!-- LIVE MAP SECTION (BEFORE HOW IT WORKS) -->
     <section id="live-map" class="border-t border-zinc-800/80 bg-zinc-950/50 py-16 sm:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
-          <!-- Left Content & Issue List -->
+          <!-- Left Content & Issue Cards -->
           <div class="lg:col-span-5 space-y-6">
             <div class="space-y-3">
               <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -80,7 +88,7 @@
               </p>
             </div>
 
-            <!-- Geolocation Trigger Button -->
+            <!-- GPS Location Button -->
             <button type="button" onclick="locateUser()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-blue-500 text-xs font-semibold text-blue-400 transition-all cursor-pointer">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               <span>Use My GPS Location</span>
@@ -89,7 +97,7 @@
             <!-- Local Issue Cards (Ghana Context) -->
             <div class="space-y-3">
               
-              <!-- Issue 1: Agbogba -->
+              <!-- Agbogba Card -->
               <div onclick="focusMap(5.6792, -0.1934, 'Agbogba Road Repair')" class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800/80 hover:border-blue-500/50 transition-all cursor-pointer flex items-center gap-4 group">
                 <div class="w-10 h-10 rounded-xl bg-blue-950 text-blue-400 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-110 transition-transform">
                   📍
@@ -100,7 +108,7 @@
                 </div>
               </div>
 
-              <!-- Issue 2: Haatso Water Pipe Leak -->
+              <!-- Haatso Burst Pipe Card -->
               <div onclick="focusMap(5.6744, -0.1989, 'Haatso Water Pipe Leak')" class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800/80 hover:border-emerald-500/50 transition-all cursor-pointer flex items-center gap-4 group">
                 <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-110 transition-transform">
                   💧
@@ -111,7 +119,7 @@
                 </div>
               </div>
 
-              <!-- Issue 3: Haatso Streetlight -->
+              <!-- Haatso Streetlight Card -->
               <div onclick="focusMap(5.6698, -0.2031, 'Haatso Streetlight Outage')" class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800/80 hover:border-amber-500/50 transition-all cursor-pointer flex items-center gap-4 group">
                 <div class="w-10 h-10 rounded-xl bg-amber-950 text-amber-400 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-110 transition-transform">
                   💡
@@ -124,23 +132,23 @@
 
             </div>
 
-            <a href="citizen.html" class="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">
+            <a href="citizen.html" class="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors pt-2">
               <span>View Full Interactive Map</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
           </div>
 
-          <!-- Right Interactive Map Container -->
+          <!-- Right Map Embed Container -->
           <div class="lg:col-span-7">
             <div class="relative w-full h-[400px] sm:h-[480px] rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl">
               
-              <!-- Live Badge Overlay -->
+              <!-- Live Indicator Overlay -->
               <div class="absolute top-4 left-4 z-20 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-zinc-700 text-xs font-semibold text-emerald-400 flex items-center gap-2 shadow-lg">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 Live Feed Active (Haatso & Agbogba)
               </div>
 
-              <!-- Map Div -->
+              <!-- Interactive Map Div -->
               <div id="map" class="w-full h-full bg-zinc-900"></div>
             </div>
           </div>
@@ -150,7 +158,7 @@
     </section>
 
     <!-- HOW IT WORKS SECTION -->
-    <section class="max-w-6xl mx-auto px-6 py-16 sm:py-24 border-t border-zinc-800/80 space-y-12">
+    <section class="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-800/80 space-y-12">
       <div class="text-center space-y-2">
         <h2 class="text-2xl sm:text-4xl font-extrabold text-white">How It Works</h2>
         <p class="text-zinc-400 text-xs sm:text-sm">Three simple steps to make an impact in your area.</p>
@@ -180,23 +188,23 @@
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500">
+  <footer class="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500 mt-12">
     <p>© 2026 CitizenApp. Dedicated to safer communities across Ghana.</p>
   </footer>
 
   <!-- Leaflet Map Script -->
   <script>
-    // Initialize map centered on Haatso/Agbogba area
+    // Initialize map centered on Haatso / Agbogba
     const map = L.map('map').setView([5.6744, -0.1989], 14);
 
-    // Dark Mode Tile Layer (CartoDB Dark Matter)
+    // Dark Mode Tiles (CartoDB Dark Matter)
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap &copy; CARTO',
       subdomains: 'abcd',
       maxZoom: 19
     }).addTo(map);
 
-    // Ghana Issues Coordinates & Popups
+    // Ghana Issues Coordinates & Info
     const issues = [
       { lat: 5.6792, lng: -0.1934, title: "Road Repair - Agbogba", status: "In Progress (Contractor Assigned)" },
       { lat: 5.6744, lng: -0.1989, title: "Water Pipe Burst - Haatso", status: "Assigned (Ghana Water Team)" },
@@ -217,7 +225,7 @@
       markers.push(marker);
     });
 
-    // Function to fly map to specific issue card click
+    // Fly map to selected issue card
     function focusMap(lat, lng, title) {
       map.flyTo([lat, lng], 16, { animate: true, duration: 1.5 });
       markers.forEach(m => {
@@ -227,7 +235,7 @@
       });
     }
 
-    // Browser Real GPS Location integration
+    // Geolocation API
     function locateUser() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -244,7 +252,7 @@
             }).addTo(map).bindPopup("<b>You are here</b>").openPopup();
           },
           () => {
-            alert("Could not detect GPS location. Showing default Haatso map view.");
+            alert("Could not detect GPS location. Showing default Haatso view.");
           }
         );
       } else {
