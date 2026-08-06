@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Citizen Service Platform - Home</title>
+
+  <!-- Tailwind CSS v4 -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+
+  <style>
+    .bg-brand-blue { background-color: #2563eb; }
+    .text-brand-blue { color: #3b82f6; }
+    #map { 
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      z-index: 10; 
+    }
+  </style>
+</head>
+<body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between antialiased pt-20">
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='home.html'">
+        <div class="w-9 h-9 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+        </div>
+        <span class="font-bold text-lg tracking-tight text-white">CitizenApp</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="citizen.html" class="text-xs sm:text-sm font-semibold bg-brand-blue hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20">
+          Open Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full space-y-16">
+
+    <!-- Hero Section -->
+    <section class="max-w-4xl mx-auto px-6 pt-8 text-center space-y-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/60 border border-blue-800/50 text-blue-400 text-xs font-semibold">
+        <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+        Empowering Local Communities
+      </div>
+
+      <h1 class="text-3xl sm:text-6xl font-extrabold tracking-tight max-w-3xl mx-auto leading-tight text-white">
+        Report Issues. Request Technicians. Keep Your Neighborhood Safe.
+      </h1>
+
+      <p class="text-zinc-400 text-xs sm:text-base max-w-xl mx-auto leading-relaxed">
+        A fast, transparent civic platform connecting citizens directly with municipal response teams and certified specialists.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+        <a href="citizen.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/30 transition-all">
+          Report an Issue Now
+        </a>
+        <a href="#live-map" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-semibold text-sm transition-all">
+          Explore Live Map
+        </a>
+      </div>
+    </section>
+
+    <!-- NEW MAP SECTION -->
+    <section id="live-map" class="border-t border-zinc-800/80 bg-zinc-950/50 py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <div class="lg:col-span-5 space-y-6">
+            <div class="space-y-3">
+              <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                See What's Happening in Your Area
+              </h2>
+              <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                Explore the live issue map to view current reports, track ongoing repairs, and discover infrastructure improvements near you. Transparency is built-in.
+              </p>
+            </div>
+
+            <button type="button" onclick="locateUser()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-blue-500 text-xs font-semibold text-blue-400 transition-all cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Use My GPS Location</span>
+            </button>
+
+            <!-- Cards -->
+            <div class="space-y-3">
+              <div onclick="focusMap(5.6792, -0.1934, 'Agbogba Road Repair')" class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800/80 hover:border-blue-500/50 transition-all cursor-pointer flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-blue-950 text-blue-400 flex items-center justify-center font-bold flex-shrink-0">📍</div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Road Repair - Agbogba</h4>
+                  <p class="text-[11px] text-zinc-400 mt-0.5">Status: <span class="text-amber-400 font-semibold">In Progress</span> • Reported 2 days ago</p>
+                </div>
+              </div>
+
+              <div onclick="focusMap(5.6744, -0.1989, 'Haatso Water Pipe Leak')" class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800/80 hover:border-emerald-500/50 transition-all cursor-pointer flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center font-bold flex-shrink-0">💧</div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Water Pipe Burst - Haatso</h4>
+                  <p class="text-[11px] text-zinc-400 mt-0.5">Status: <span class="text-purple-400 font-semibold">Assigned</span> • Reported 5 hours ago</p>
+                </div>
+              </div>
+
+              <div onclick="focusMap(5.6698, -0.2031, 'Haatso Streetlight Outage')" class="p-4 rounded-2xl bg-zinc-900 border border-zinc-800/80 hover:border-amber-500/50 transition-all cursor-pointer flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-amber-950 text-amber-400 flex items-center justify-center font-bold flex-shrink-0">💡</div>
+                <div>
+                  <h4 class="font-bold text-white text-sm">Streetlight Outage - Haatso Main Rd</h4>
+                  <p class="text-[11px] text-zinc-400 mt-0.5">Status: <span class="text-blue-400 font-semibold">Submitted</span> • Reported 1 hour ago</p>
+                </div>
+              </div>
+            </div>
+
+            <a href="citizen.html" class="inline-flex items-center gap-2 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors pt-2">
+              <span>View Full Interactive Map</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+
+          <!-- Map Box -->
+          <div class="lg:col-span-7">
+            <div class="relative w-full h-[420px] rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl">
+              <div class="absolute top-4 left-4 z-20 px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-zinc-700 text-xs font-semibold text-emerald-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Live Feed Active (Haatso & Agbogba)
+              </div>
+              <div id="map" class="bg-zinc-900"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-800/80 space-y-12">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-white">How It Works</h2>
+        <p class="text-zinc-400 text-xs sm:text-sm">Three simple steps to make an impact in your area.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-zinc-900 border border-zinc-800/80 rounded-3xl p-6 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center">1</div>
+          <h3 class="font-bold text-white text-base">Capture & Record</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Take photos, upload videos, or record a quick voice note explaining the problem in your neighborhood.</p>
+        </div>
+
+        <div class="bg-zinc-900 border border-zinc-800/80 rounded-3xl p-6 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-600/20 text-purple-400 font-bold flex items-center justify-center">2</div>
+          <h3 class="font-bold text-white text-base">Pin Location</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Use browser GPS to pin the exact coordinates or add landmark details like streets and markets.</p>
+        </div>
+
+        <div class="bg-zinc-900 border border-zinc-800/80 rounded-3xl p-6 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-600/20 text-emerald-400 font-bold flex items-center justify-center">3</div>
+          <h3 class="font-bold text-white text-base">Track Progress</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">Get real-time updates as technicians and local municipal teams get assigned and resolve your report.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500 mt-12">
+    <p>© 2026 CitizenApp. Dedicated to safer communities across Ghana.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const map = L.map('map').setView([5.6744, -0.1989], 14);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(map);
+
+      const issues = [
+        { lat: 5.6792, lng: -0.1934, title: "Road Repair - Agbogba", status: "In Progress (Contractor Assigned)" },
+        { lat: 5.6744, lng: -0.1989, title: "Water Pipe Burst - Haatso", status: "Assigned (Ghana Water Team)" },
+        { lat: 5.6698, lng: -0.2031, title: "Streetlight Outage - Haatso Main Rd", status: "Submitted" }
+      ];
+
+      const markers = [];
+
+      issues.forEach((issue) => {
+        const marker = L.marker([issue.lat, issue.lng]).addTo(map)
+          .bindPopup(`
+            <div style="color: #000; font-family: sans-serif;">
+              <strong style="font-size: 13px;">${issue.title}</strong><br/>
+              <span style="font-size: 11px; color: #555;">${issue.status}</span>
+            </div>
+          `);
+        markers.push(marker);
+      });
+
+      window.focusMap = function(lat, lng, title) {
+        map.flyTo([lat, lng], 16, { animate: true, duration: 1.5 });
+        markers.forEach(m => {
+          if (m.getLatLng().lat === lat && m.getLatLng().lng === lng) {
+            m.openPopup();
+          }
+        });
+      };
+
+      window.locateUser = function() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              map.flyTo([userLat, userLng], 15, { animate: true });
+              
+              L.circle([userLat, userLng], {
+                color: '#3b82f6',
+                fillColor: '#2563eb',
+                fillOpacity: 0.4,
+                radius: 100
+              }).addTo(map).bindPopup("<b>You are here</b>").openPopup();
+            },
+            () => { alert("Could not detect GPS location."); }
+          );
+        }
+      };
+    });
+  </script>
+</body>
+</html>
