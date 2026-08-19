@@ -16,10 +16,12 @@
   <!-- Header Navigation -->
   <header class="w-full max-w-7xl mx-auto flex items-center justify-between pb-6 border-b border-zinc-800">
     <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='citizen.html'">
-      <div class="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center">
-        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <div class="w-9 h-9 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center shadow-lg shadow-teal-500/10">
+        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H9m4 0V5" />
+        </svg>
       </div>
-      <span class="font-bold text-lg text-white">Citizen App</span>
+      <span class="font-black text-xl tracking-tight text-white">Citizen App</span>
     </div>
     <a href="reports.html" class="px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 transition-all">Back to Reports</a>
   </header>
@@ -76,7 +78,7 @@
   <!-- VIEW 3: LIVE STATUS TRACKER -->
   <main id="tracker-view" class="hidden w-full max-w-7xl mx-auto flex-1 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <!-- Left Panel: Stepper & Chat -->
+    <!-- Left Panel: Stepper, Tech Card & Chat -->
     <div class="lg:col-span-5 bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 flex flex-col justify-between shadow-2xl space-y-6">
       <div>
         <div class="flex items-center justify-between mb-6">
@@ -86,33 +88,42 @@
         <div id="stepper-container" class="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-zinc-800"></div>
       </div>
 
-      <!-- Tech Info -->
-      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex items-center gap-3">
-        <img src="https://i.pravatar.cc/100?img=12" class="w-12 h-12 rounded-full border border-teal-500/50 object-cover" />
-        <div>
-          <h5 class="text-xs font-bold text-white">Marcus Vance</h5>
-          <div class="text-[10px] text-amber-400">★ 4.8 <span class="text-zinc-500">(124 jobs)</span></div>
-          <span class="text-[9px] font-bold text-zinc-400 uppercase" id="tech-role-label">Lead Technician</span>
+      <!-- Tech Info Card with Phone Call Button -->
+      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="https://i.pravatar.cc/100?img=12" class="w-12 h-12 rounded-full border border-teal-500/50 object-cover" />
+          <div>
+            <h5 class="text-xs font-bold text-white">Marcus Vance</h5>
+            <div class="text-[10px] text-amber-400">★ 4.8 <span class="text-zinc-500">(124 jobs)</span></div>
+            <span class="text-[9px] font-bold text-zinc-400 uppercase" id="tech-role-label">Lead Technician</span>
+          </div>
         </div>
+
+        <!-- Working Direct Call Link -->
+        <a href="tel:0209093938" class="w-10 h-10 rounded-full bg-zinc-900 border border-zinc-800 hover:border-teal-500/50 flex items-center justify-center text-teal-400 hover:bg-teal-500/10 transition-all" title="Call Technician">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+          </svg>
+        </a>
       </div>
 
       <!-- Chat Box -->
-      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col h-40 justify-between">
+      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col h-44 justify-between">
         <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Live Chat</span>
-        <div id="chat-box" class="flex-1 overflow-y-auto space-y-2 text-xs my-2">
+        <div id="chat-box" class="flex-1 overflow-y-auto space-y-2 text-xs my-2 pr-1">
           <div class="bg-zinc-800 text-zinc-200 p-2 rounded-lg max-w-[80%]">
             <span class="block text-[9px] text-teal-400 font-bold">Tech</span>
             Hello! I am on my way to fix the issue.
           </div>
         </div>
         <div class="flex gap-2">
-          <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-zinc-900 border border-zinc-800 text-xs text-white px-3 py-1 rounded-lg focus:outline-none" />
-          <button onclick="sendMsg()" class="bg-teal-500 text-black text-xs font-bold px-3 py-1 rounded-lg">Send</button>
+          <input type="text" id="chat-input" onkeypress="if(event.key==='Enter') sendMsg()" placeholder="Type a message..." class="flex-1 bg-zinc-900 border border-zinc-800 text-xs text-white px-3 py-1.5 rounded-lg focus:outline-none focus:border-teal-500" />
+          <button onclick="sendMsg()" class="bg-teal-500 text-black text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-teal-400 transition-colors">Send</button>
         </div>
       </div>
     </div>
 
-    <!-- Right Panel: Ticket Info & Map -->
+    <!-- Right Panel: Ticket Info, Cedis Pricing & Map -->
     <div class="lg:col-span-7 flex flex-col gap-6">
       <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 shadow-2xl">
         <div class="flex justify-between items-center">
@@ -123,9 +134,16 @@
         <p class="text-xs text-zinc-400 mt-1" id="ticket-desc-text">Description loading...</p>
       </div>
 
-      <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-4 shadow-2xl">
-        <span class="text-[10px] font-black uppercase text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/20">AI Gemini Inspection</span>
-        <p class="text-xs text-zinc-300 mt-2">Verified location and technician assigned based on proximity.</p>
+      <!-- AI Gemini Inspection Card with Ghana Cedis Budget -->
+      <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-4 shadow-2xl flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-black uppercase text-teal-400 bg-teal-500/10 px-2.5 py-0.5 rounded-full border border-teal-500/20">AI Gemini Inspection</span>
+          <p class="text-xs text-zinc-300 mt-2">Verified location and technician assigned based on proximity.</p>
+        </div>
+        <div class="text-right">
+          <span class="text-[10px] font-bold text-zinc-500 uppercase block">Est. Cost</span>
+          <span class="text-xs font-extrabold text-amber-400">GH₵ 250 - GH₵ 450</span>
+        </div>
       </div>
 
       <div class="flex-1 min-h-[300px] rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl relative">
@@ -223,13 +241,24 @@
       }, 3000);
     }
 
+    // Interactive Chat Logic with Automatic Response
     function sendMsg() {
       const input = document.getElementById('chat-input');
-      if (!input.value.trim()) return;
+      const val = input.value.trim();
+      if (!val) return;
+
       const box = document.getElementById('chat-box');
-      box.innerHTML += `<div class="bg-teal-600/30 text-teal-100 p-2 rounded-lg max-w-[80%] ml-auto text-right"><span class="block text-[9px] text-teal-300 font-bold">You</span>${input.value}</div>`;
+      
+      // Append user message
+      box.innerHTML += `<div class="bg-teal-600/30 text-teal-100 p-2 rounded-lg max-w-[80%] ml-auto text-right"><span class="block text-[9px] text-teal-300 font-bold">You</span>${val}</div>`;
       input.value = '';
       box.scrollTop = box.scrollHeight;
+
+      // Simulated Tech Automated Reply
+      setTimeout(() => {
+        box.innerHTML += `<div class="bg-zinc-800 text-zinc-200 p-2 rounded-lg max-w-[80%]"><span class="block text-[9px] text-teal-400 font-bold">Tech</span>hey, iaam on my way</div>`;
+        box.scrollTop = box.scrollHeight;
+      }, 1000);
     }
 
     // Router Logic
