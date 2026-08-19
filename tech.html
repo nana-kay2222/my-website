@@ -3,215 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Citizen App - Technical Ticket Tracker</title>
-
-  <!-- Tailwind CSS -->
+  <title>Citizen App - Request Technician</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
   <style>
-    body {
-      background-color: #0b0f17;
-      color: #ffffff;
-    }
-    #tracking-map {
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+    body { background-color: #0b0f17; color: #ffffff; }
   </style>
 </head>
 <body class="font-sans antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6 pb-24">
 
-  <!-- Header Navigation -->
-  <header class="w-full max-w-7xl mx-auto flex items-center justify-between pb-6 border-b border-zinc-800">
+  <!-- Navigation Bar -->
+  <header class="w-full max-w-2xl mx-auto flex items-center justify-between pb-6 border-b border-zinc-800">
     <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='citizen.html'">
       <div class="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center">
-        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
+        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       </div>
       <span class="font-bold text-lg text-white">Citizen App</span>
     </div>
-
-    <div class="flex items-center gap-3">
-      <a href="reports.html" class="px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 transition-all">
-        Back to Reports
-      </a>
-    </div>
+    <a href="reports.html" class="px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 transition-all">Back to Reports</a>
   </header>
 
-  <!-- Main Tracking Dashboard -->
-  <main class="w-full max-w-7xl mx-auto flex-1 mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-    <!-- LEFT COLUMN: Status Timeline, Technician Details & Live Chat -->
-    <div class="lg:col-span-5 bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 flex flex-col justify-between shadow-2xl space-y-6">
-      
-      <!-- Status Timeline -->
+  <!-- Main View Area -->
+  <main class="w-full max-w-2xl mx-auto flex-1 mt-6">
+    
+    <!-- STEP 1: REQUEST FORM -->
+    <div id="form-card" class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 shadow-2xl space-y-6">
       <div>
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-bold text-white flex items-center gap-2">
-            Status Tracker
-          </h2>
-          <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-teal-500/20 text-teal-400 border border-teal-500/40">
-            Live
-          </span>
-        </div>
-
-        <div class="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-zinc-800">
-          <!-- Step 1: Completed -->
-          <div class="relative">
-            <div class="absolute -left-6 top-0 w-5 h-5 rounded-full bg-teal-500 text-black flex items-center justify-center text-xs font-bold">✓</div>
-            <h4 class="text-xs font-bold text-white">Request Submitted</h4>
-            <p class="text-[10px] text-zinc-400" id="step1-time">Oct 24, 09:14 AM</p>
-            <p class="text-xs text-zinc-400 mt-1">System acknowledged report and generated AI analysis.</p>
-          </div>
-
-          <!-- Step 2: Completed -->
-          <div class="relative">
-            <div class="absolute -left-6 top-0 w-5 h-5 rounded-full bg-teal-500 text-black flex items-center justify-center text-xs font-bold">✓</div>
-            <h4 class="text-xs font-bold text-white">Assigned to Crew</h4>
-            <p class="text-[10px] text-zinc-400">Oct 24, 11:30 AM</p>
-            <p class="text-xs text-zinc-400 mt-1">Work order dispatched to electrical team.</p>
-          </div>
-
-          <!-- Step 3: Active Phase -->
-          <div class="relative">
-            <div class="absolute -left-6 top-0 w-5 h-5 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-bold animate-pulse">⟳</div>
-            <h4 class="text-xs font-bold text-blue-400">In Progress</h4>
-            <p class="text-[10px] text-blue-400/80 font-semibold">Current Phase</p>
-            <p class="text-xs text-zinc-300 mt-1">Technician is en route to site. Estimated arrival in 15 mins.</p>
-          </div>
-
-          <!-- Step 4: Pending -->
-          <div class="relative opacity-40">
-            <div class="absolute -left-6 top-0 w-5 h-5 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-500 flex items-center justify-center text-xs font-bold">○</div>
-            <h4 class="text-xs font-bold text-zinc-400">Resolved</h4>
-            <p class="text-[10px] text-zinc-500">Pending</p>
-          </div>
-        </div>
+        <h1 class="text-xl font-black text-white">Request Technician Assistance</h1>
+        <p class="text-xs text-zinc-400 mt-1">Select your issue category and provide details to locate an available specialist near you.</p>
       </div>
 
-      <!-- Technician Profile Card -->
-      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <img id="tech-avatar" src="https://i.pravatar.cc/100?img=12" alt="Technician" class="w-12 h-12 rounded-full border border-teal-500/50 object-cover" />
-          <div>
-            <h5 class="text-xs font-bold text-white" id="tech-name">Marcus Vance</h5>
-            <div class="flex items-center gap-1 text-[10px] text-amber-400">
-              <span id="tech-rating">★ 4.8</span>
-              <span class="text-zinc-500" id="tech-jobs">(124 jobs)</span>
-            </div>
-            <span class="text-[9px] font-bold text-zinc-400 tracking-wider uppercase block mt-0.5" id="tech-role">Lead Electrician</span>
-          </div>
-        </div>
-        
-        <div class="flex items-center gap-2">
-          <a id="tech-phone-btn" href="tel:1234567890" class="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-300 hover:text-white hover:bg-zinc-700 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Live Interactive Chat Interface -->
-      <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-4 flex flex-col h-48 justify-between">
-        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-2">Live Chat with Technician</span>
-        
-        <div id="chat-box" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
-          <div class="bg-zinc-800 text-zinc-200 p-2 rounded-lg max-w-[80%] self-start">
-            <span class="block text-[9px] text-teal-400 font-bold">Tech - Marcus</span>
-            Hello! I'm on my way to fix the issue.
-          </div>
+      <form onsubmit="processTechnicianRequest(event)" class="space-y-4">
+        <!-- Service Category Selector -->
+        <div>
+          <label class="block text-xs font-bold text-zinc-300 mb-2">Service Category</label>
+          <select id="tech-category" class="w-full bg-zinc-950 border border-zinc-800 text-white rounded-xl p-3 text-xs focus:outline-none focus:border-teal-500">
+            <option value="Plumbing Issue">🔧 Plumbing Issue</option>
+            <option value="Vehicle Repair">🚗 Vehicle Repair</option>
+            <option value="Electrical Repair" selected>⚡ Electrical Repair</option>
+            <option value="Building Repair">🏗️ Building Repair</option>
+            <option value="AC & Refrigeration">❄️ AC & Refrigeration</option>
+            <option value="Carpentry & Roofing">🪵 Carpentry & Roofing</option>
+          </select>
         </div>
 
-        <div class="flex items-center gap-2 mt-2">
-          <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-zinc-900 border border-zinc-800 text-xs text-white px-3 py-1.5 rounded-lg focus:outline-none focus:border-teal-500" />
-          <button onclick="sendChatMessage()" class="bg-teal-500 hover:bg-teal-600 text-black text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
-            Send
-          </button>
+        <!-- Issue Description -->
+        <div>
+          <label class="block text-xs font-bold text-zinc-300 mb-2">Description</label>
+          <textarea id="tech-desc" rows="3" required placeholder="Describe the specific malfunction or repair needed..." class="w-full bg-zinc-950 border border-zinc-800 text-white rounded-xl p-3 text-xs focus:outline-none focus:border-teal-500"></textarea>
         </div>
-      </div>
 
+        <!-- File / Video Upload -->
+        <div>
+          <label class="block text-xs font-bold text-zinc-300 mb-2">Upload Photo / Optional Video</label>
+          <input type="file" id="tech-media" accept="image/*,video/*" class="w-full bg-zinc-950 border border-zinc-800 text-zinc-400 rounded-xl p-2 text-xs focus:outline-none" />
+        </div>
+
+        <button type="submit" class="w-full bg-teal-500 hover:bg-teal-600 text-black font-bold p-3 rounded-xl transition-colors text-xs uppercase tracking-wider">
+          Find Nearby Technician
+        </button>
+      </form>
     </div>
 
-    <!-- RIGHT COLUMN: Ticket Summary, Gemini AI Report & Map -->
-    <div class="lg:col-span-7 flex flex-col gap-6">
-
-      <!-- Ticket Overview Header Card -->
-      <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div class="flex items-center gap-3">
-            <h1 class="text-2xl font-black text-white" id="ticket-id">Ticket #739-A</h1>
-            <span class="text-xs text-zinc-400 bg-zinc-800 border border-zinc-700 px-3 py-0.5 rounded-full" id="ticket-date">
-              Submitted Oct 24, 2023 at 09:14 AM
-            </span>
-          </div>
-          <div class="flex items-center gap-3 mt-3">
-            <div class="w-8 h-8 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
-              💡
-            </div>
-            <div>
-              <h3 class="text-base font-bold text-white" id="ticket-title">Streetlight Outage</h3>
-              <p class="text-xs text-zinc-400" id="ticket-address">1420 Civic Center Blvd, North District</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-6 border-t sm:border-t-0 sm:border-l border-zinc-800 pt-4 sm:pt-0 sm:pl-6">
-          <div>
-            <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Severity</span>
-            <span class="text-xs font-bold text-amber-400" id="ticket-severity">Medium</span>
-          </div>
-          <div>
-            <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Reported By</span>
-            <span class="text-xs font-bold text-white">Citizen App</span>
-          </div>
-        </div>
+    <!-- STEP 2: SEARCHING ANIMATION (PoC SIMULATION) -->
+    <div id="searching-card" class="hidden bg-zinc-900/90 border border-zinc-800 rounded-3xl p-10 shadow-2xl flex-col items-center justify-center text-center space-y-4">
+      <div class="relative w-16 h-16 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border-4 border-teal-500/20 border-t-teal-500 animate-spin"></div>
+        <span class="text-2xl">📡</span>
       </div>
+      <h3 class="text-base font-bold text-white">Searching for nearby workers...</h3>
+      <p class="text-xs text-zinc-400 max-w-xs">Connecting to available technicians within your area. Please wait a moment.</p>
+    </div>
 
-      <!-- Gemini AI Assessment & Budget Card -->
-      <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-5 shadow-2xl space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-[10px] font-black uppercase tracking-wider text-teal-400 bg-teal-500/10 border border-teal-500/20 px-2.5 py-0.5 rounded-full">
-            AI Gemini Vision Inspection
-          </span>
-          <span class="text-xs font-bold text-amber-400" id="estimated-budget">
-            Est. Budget: $150 - $250
-          </span>
-        </div>
-        <p class="text-xs text-zinc-300 leading-relaxed" id="ai-report-text">
-          Photo analysis confirms physical housing damage and exposed wiring near the bulb fixture. High-priority risk for night visibility.
-        </p>
-      </div>
-
-      <!-- Interactive Tracking Map Frame -->
-      <div class="relative flex-1 min-h-[350px] rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl">
-        <div id="tracking-map"></div>
-
-        <!-- Floating ETA Overlay -->
-        <div class="absolute bottom-4 left-4 right-4 sm:right-auto z-20 bg-zinc-900/95 backdrop-blur-md border border-zinc-800 rounded-2xl p-3 shadow-2xl flex items-center gap-3">
-          <div class="w-8 h-8 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center text-teal-400 shrink-0">
-            🚚
-          </div>
-          <div>
-            <h5 class="text-xs font-bold text-white">Technician En Route</h5>
-            <p class="text-[10px] text-zinc-400" id="traffic-info">0.8 miles away • Traffic light</p>
-          </div>
-          <div class="ml-auto text-right pl-3 border-l border-zinc-800">
-            <span class="text-sm font-black text-teal-400 block leading-tight" id="eta-time">15m</span>
-            <span class="text-[8px] font-bold text-zinc-500 uppercase">Est. Arrival</span>
-          </div>
-        </div>
-      </div>
-
+    <!-- STEP 3: TRACKER VIEW (Loaded via JS) -->
+    <div id="tracker-view" class="hidden grid grid-cols-1 gap-6">
+      <!-- Renders Stepper, Map & Chat upon match -->
     </div>
 
   </main>
 
-  <!-- Bottom Nav Dock -->
+  <!-- Bottom Navigation Dock -->
   <div class="fixed bottom-5 left-0 w-full z-40 px-4 pointer-events-none">
     <nav class="max-w-md mx-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/80 rounded-full py-2.5 px-6 shadow-2xl shadow-black pointer-events-auto flex items-center justify-between text-center text-xs font-medium text-zinc-400">
       <a href="citizen.html" class="flex flex-col items-center gap-0.5 hover:text-zinc-200 transition-colors">
@@ -236,121 +106,38 @@
     </nav>
   </div>
 
-  <!-- Leaflet JavaScript -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <script>
-    let map, incidentMarker, techMarker;
+    function processTechnicianRequest(e) {
+      e.preventDefault();
+      
+      const formCard = document.getElementById('form-card');
+      const searchingCard = document.getElementById('searching-card');
+      
+      formCard.classList.add('hidden');
+      searchingCard.classList.remove('hidden');
+      searchingCard.classList.add('flex');
 
-    // Front-End Local Mock Data (Simulates Database Response)
-    const mockTicketData = {
-      report_id: "739-A",
-      submitted_at: "Oct 24, 2023 at 09:14 AM",
-      title: "Streetlight Outage",
-      address: "1420 Civic Center Blvd, North District",
-      severity: "Medium",
-      ai_report: "Photo analysis confirms physical housing damage and exposed wiring near bulb fixture. High priority risk.",
-      estimated_budget: "$150 - $250",
-      incident_lat: 5.6020,
-      incident_lng: -0.1870,
-      technician: {
-        name: "Marcus Vance",
-        role: "Lead Electrician",
-        rating: "★ 4.8",
-        jobs: "(124 jobs)",
-        avatar: "https://i.pravatar.cc/100?img=12",
-        tech_lat: 5.6080,
-        tech_lng: -0.1820,
-        eta: "15m",
-        traffic: "0.8 miles away • Traffic light"
-      }
-    };
-
-    function loadTicketData() {
-      // Extract ticket ID parameter if present (e.g., tech.html?id=739-A)
-      const urlParams = new URLSearchParams(window.location.search);
-      const ticketId = urlParams.get('id') || '739-A';
-
-      // Check localStorage first, fallback to mock object
-      const localReports = JSON.parse(localStorage.getItem('user_reports') || '[]');
-      const savedItem = localReports.find(r => r.id === ticketId) || mockTicketData;
-
-      const data = {
-        report_id: ticketId,
-        submitted_at: savedItem.date || mockTicketData.submitted_at,
-        title: savedItem.type || savedItem.title || mockTicketData.title,
-        address: savedItem.address || mockTicketData.address,
-        severity: savedItem.severity || mockTicketData.severity,
-        ai_report: savedItem.description || mockTicketData.ai_report,
-        estimated_budget: mockTicketData.estimated_budget,
-        incident_lat: savedItem.lat || mockTicketData.incident_lat,
-        incident_lng: savedItem.lng || mockTicketData.incident_lng,
-        technician: mockTicketData.technician
+      const ticketId = "TECH-" + Math.floor(1000 + Math.random() * 9000);
+      const newReport = {
+        id: ticketId,
+        type: document.getElementById('tech-category').value,
+        description: document.getElementById('tech-desc').value,
+        category: "Technician Request",
+        lat: 5.6037,
+        lng: -0.1870,
+        date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
 
-      // Populate UI Fields
-      document.getElementById('ticket-id').innerText = "Ticket #" + data.report_id;
-      document.getElementById('ticket-date').innerText = "Submitted " + data.submitted_at;
-      document.getElementById('ticket-title').innerText = data.title;
-      document.getElementById('ticket-address').innerText = data.address;
-      document.getElementById('ticket-severity').innerText = data.severity;
-      document.getElementById('ai-report-text').innerText = data.ai_report;
-      document.getElementById('estimated-budget').innerText = "Est. Budget: " + data.estimated_budget;
+      // Store in localStorage for reports.html feed
+      const existing = JSON.parse(localStorage.getItem('user_reports') || '[]');
+      existing.unshift(newReport);
+      localStorage.setItem('user_reports', JSON.stringify(existing));
 
-      document.getElementById('tech-name').innerText = data.technician.name;
-      document.getElementById('tech-role').innerText = data.technician.role;
-      document.getElementById('tech-rating').innerText = data.technician.rating;
-      document.getElementById('tech-jobs').innerText = data.technician.jobs;
-      document.getElementById('tech-avatar').src = data.technician.avatar;
-      document.getElementById('eta-time').innerText = data.technician.eta;
-      document.getElementById('traffic-info').innerText = data.technician.traffic;
-
-      // Render Tracking Map
-      map = L.map('tracking-map', { zoomControl: true }).setView([data.incident_lat, data.incident_lng], 14);
-
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; OpenStreetMap'
-      }).addTo(map);
-
-      incidentMarker = L.marker([data.incident_lat, data.incident_lng]).addTo(map)
-        .bindPopup(`<b>Incident: #${data.report_id}</b><br/>${data.title}`)
-        .openPopup();
-
-      techMarker = L.marker([data.technician.tech_lat, data.technician.tech_lng]).addTo(map)
-        .bindPopup(`<b>Technician: ${data.technician.name}</b><br/>En Route`);
-
-      setTimeout(() => { map.invalidateSize(); }, 300);
-    }
-
-    // Local Interactive Chat Simulation
-    function sendChatMessage() {
-      const input = document.getElementById('chat-input');
-      const messageText = input.value.trim();
-      if (!messageText) return;
-
-      const chatBox = document.getElementById('chat-box');
-
-      // User Message
-      const userMsg = document.createElement('div');
-      userMsg.className = "bg-teal-600/30 text-teal-100 p-2 rounded-lg max-w-[80%] self-end ml-auto text-right";
-      userMsg.innerHTML = `<span class="block text-[9px] text-teal-300 font-bold">You</span>${messageText}`;
-      chatBox.appendChild(userMsg);
-
-      input.value = '';
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      // Simulated Tech Reply
+      // Simulate searching delay (3 seconds) then reveal tracker
       setTimeout(() => {
-        const techReply = document.createElement('div');
-        techReply.className = "bg-zinc-800 text-zinc-200 p-2 rounded-lg max-w-[80%] self-start";
-        techReply.innerHTML = `<span class="block text-[9px] text-teal-400 font-bold">Tech - Marcus</span>Acknowledged! Arriving at your location shortly.`;
-        chatBox.appendChild(techReply);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 1000);
+        window.location.href = `tech.html?id=${ticketId}&view=track`;
+      }, 3000);
     }
-
-    window.onload = loadTicketData;
   </script>
 </body>
 </html>
