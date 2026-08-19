@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Map - Citizen App</title>
-
-  <!-- Circular Favicon -->
-  <link rel="icon" type="image/png" href="citizen_platform_logo.png" />
+  <title>Citizen App - Map</title>
 
   <!-- Tailwind CSS v4 -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -19,70 +16,81 @@
       background-color: #0b0f17;
       color: #ffffff;
     }
-    #map {
-      height: calc(100vh - 120px);
-      width: 100%;
-      border-radius: 1.5rem;
-      z-index: 10;
+    /* Style custom Leaflet zoom control to fit top-left of rounded container */
+    .leaflet-top.leaflet-left {
+      top: 12px;
+      left: 12px;
     }
-    .leaflet-popup-content-wrapper {
-      background-color: #18181b;
-      color: #ffffff;
-      border: 1px solid #27272a;
-      border-radius: 1rem;
-      padding: 4px;
+    .leaflet-control-zoom {
+      border: none !important;
+      border-radius: 8px !important;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
     }
-    .leaflet-popup-tip {
-      background-color: #18181b;
+    .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+      background-color: #ffffff !important;
+      color: #333333 !important;
+      font-weight: bold !important;
     }
   </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between pb-24">
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6 overflow-hidden">
 
   <!-- Top Navigation Header -->
-  <header class="w-full max-w-5xl mx-auto px-6 pt-6 flex items-center justify-between">
+  <header class="w-full max-w-6xl mx-auto flex items-center justify-between pb-4">
     <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='citizen.html'">
-      <img src="citizen_platform_logo.png" alt="Citizen Logo" class="w-9 h-9 rounded-full object-cover border border-neutral-800 shadow-sm" />
-      <span class="font-bold text-lg">Citizen App</span>
+      <div class="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center">
+        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      </div>
+      <span class="font-bold text-lg text-white">Citizen App</span>
     </div>
 
-    <!-- Sign Out Redirects to index.html -->
-    <a href="index.html" class="px-4 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-semibold text-slate-300 hover:bg-neutral-800 transition-all">
+    <a href="index.html" class="px-5 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 transition-all">
       Sign out
     </a>
   </header>
 
-  <!-- Map Main Section -->
-  <main class="w-full max-w-5xl mx-auto px-6 pt-4 flex-1 relative">
+  <!-- Main Content Area with Map -->
+  <main class="w-full max-w-6xl mx-auto flex-1 relative flex flex-col my-2">
     
-    <!-- Filter Bar Overlay (Top Right) -->
-    <div class="absolute top-8 right-10 z-20 flex flex-wrap gap-2">
-      <button onclick="filterMarkers('all')" id="btn-all" class="px-3.5 py-1.5 rounded-full bg-blue-600 text-xs font-bold text-white shadow-lg transition-all cursor-pointer">
-        All Reports
+    <!-- Outer Rounded Map Container -->
+    <div class="relative w-full flex-1 rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl min-h-[500px]">
+      
+      <!-- Leaflet Map Container -->
+      <div id="map" class="w-full h-full z-0"></div>
+
+      <!-- Top-Right Category Filter Overlay -->
+      <div class="absolute top-4 right-4 z-20 flex items-center gap-2 bg-black/30 backdrop-blur-sm p-1.5 rounded-full">
+        <button onclick="filterMap('all')" id="filter-all" class="px-4 py-2 rounded-full bg-blue-600 text-white text-xs font-bold transition-all cursor-pointer shadow-md">
+          All Reports
+        </button>
+        <button onclick="filterMap('my')" id="filter-my" class="px-4 py-2 rounded-full bg-zinc-900/90 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800 text-xs font-bold transition-all cursor-pointer">
+          My Reports
+        </button>
+        <button onclick="filterMap('community')" id="filter-community" class="px-4 py-2 rounded-full bg-zinc-900/90 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800 text-xs font-bold transition-all cursor-pointer">
+          Community Reports
+        </button>
+      </div>
+
+      <!-- Bottom-Right "Where am I?" Action Button -->
+      <button onclick="centerUserLocation()" class="absolute bottom-6 right-6 z-20 px-5 py-3 rounded-2xl bg-zinc-900/95 border border-zinc-800 text-white text-xs font-bold shadow-2xl flex items-center gap-2 hover:bg-zinc-800 transition-all cursor-pointer">
+        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Where am I?</span>
       </button>
-      <button onclick="filterMarkers('mine')" id="btn-mine" class="px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-700 text-xs font-bold text-white hover:bg-zinc-800 backdrop-blur-md shadow-lg transition-all cursor-pointer">
-        My Reports
-      </button>
-      <button onclick="filterMarkers('community')" id="btn-community" class="px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-700 text-xs font-bold text-white hover:bg-zinc-800 backdrop-blur-md shadow-lg transition-all cursor-pointer">
-        Community Reports
-      </button>
+
     </div>
 
-    <!-- Locate Me Overlay Button (Bottom Right) -->
-    <div class="absolute bottom-6 right-10 z-20">
-      <button onclick="locateUser()" title="Where Am I?" class="p-3 rounded-full bg-zinc-900/90 border border-zinc-700 text-white hover:bg-zinc-800 backdrop-blur-md shadow-xl transition-all cursor-pointer flex items-center gap-2">
-        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span class="text-xs font-bold hidden sm:inline">Where am I?</span>
-      </button>
-    </div>
-
-    <!-- Leaflet Map Container -->
-    <div id="map" class="shadow-2xl border border-zinc-800"></div>
   </main>
 
-  <!-- UNIVERSAL FLOATING PILL NAVIGATION DOCK -->
+  <!-- Floating Pill Navigation Dock -->
   <div class="fixed bottom-5 left-0 w-full z-40 px-4 pointer-events-none">
-    <nav class="max-w-md mx-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/80 rounded-full py-2.5 px-4 shadow-2xl shadow-black pointer-events-auto flex items-center justify-between text-center text-xs font-medium text-zinc-400">
+    <nav class="max-w-md mx-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/80 rounded-full py-2.5 px-6 shadow-2xl shadow-black pointer-events-auto flex items-center justify-between text-center text-xs font-medium text-zinc-400">
       
       <!-- Home -->
       <a href="citizen.html" class="flex flex-col items-center gap-0.5 hover:text-zinc-200 transition-colors">
@@ -90,18 +98,18 @@
         <span class="text-[10px]">Home</span>
       </a>
 
-      <!-- Map Active -->
+      <!-- Map (Active) -->
       <a href="map.html" class="flex flex-col items-center gap-0.5 text-blue-400 font-bold">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-        <span class="text-[10px] tracking-tight">Map</span>
+        <span class="text-[10px]">Map</span>
       </a>
 
-      <!-- Center Action Button -->
-      <a href="citizen.html" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/40 hover:scale-105 transition-transform">
+      <!-- Submit Report Action Button -->
+      <a href="report.html" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/40 hover:scale-105 transition-transform">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       </a>
 
-      <!-- Reports -->
+      <!-- Reports List -->
       <a href="reports.html" class="flex flex-col items-center gap-0.5 hover:text-zinc-200 transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
         <span class="text-[10px]">Reports</span>
@@ -122,111 +130,96 @@
   <script>
     let map;
     let markersGroup;
-    let currentFilter = 'all';
+    let allReports = [];
 
     document.addEventListener("DOMContentLoaded", function () {
-      // Initialize Map (Default Accra Coordinates)
-      map = L.map('map').setView([5.6037, -0.1870], 12);
+      // Initialize Leaflet Map centered over Greater Accra
+      map = L.map('map', { zoomControl: true }).setView([5.6148, -0.2058], 12);
 
-      // White OpenStreetMap Tile Layer
+      // Standard OpenStreetMap Tile Layer (matching screenshot style)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap contributors'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
       markersGroup = L.layerGroup().addTo(map);
 
+      // Default mock reports matching Achimota / Airport Residential area
+      const mockReports = [
+        { lat: 5.6180, lng: -0.2110, type: 'Community Problem', address: 'Achimota Forest Area', description: 'Road hazard reported near main bypass.' },
+        { lat: 5.6020, lng: -0.1870, type: 'Technical Help', address: 'Airport Residential Area', description: 'Streetlight maintenance request.' }
+      ];
+
+      // Retrieve user submitted reports from localStorage
+      const userReports = JSON.parse(localStorage.getItem("user_reports") || "[]");
+      allReports = [...mockReports, ...userReports];
+
       renderMarkers('all');
     });
 
-    function renderMarkers(filter) {
+    function renderMarkers(filterType) {
       markersGroup.clearLayers();
 
-      // Sample Community Reports
-      const allReports = [
-        { lat: 5.6100, lng: -0.1900, title: "Broken Streetlight", details: "Light flickering and turning off at night.", status: "Pending", mine: false },
-        { lat: 5.6200, lng: -0.2000, title: "Blocked Drainage", details: "Overflowing water near market square.", status: "Resolved", mine: false }
-      ];
-
-      // Retrieve User-Submitted Reports from localStorage
-      const userReports = JSON.parse(localStorage.getItem("user_reports") || "[]");
-      userReports.forEach(r => {
-        allReports.push({
-          lat: r.lat || 5.6037 + (Math.random() - 0.5) * 0.05,
-          lng: r.lng || -0.1870 + (Math.random() - 0.5) * 0.05,
-          title: r.type || "Personal Report",
-          details: r.description || "Report submitted by current citizen.",
-          status: r.status || "Pending",
-          mine: true
-        });
-      });
-
-      // Filter Logic
       allReports.forEach(report => {
-        if (filter === 'mine' && !report.mine) return;
-        if (filter === 'community' && report.mine) return;
+        let matches = false;
+        if (filterType === 'all') matches = true;
+        else if (filterType === 'my') matches = !!report.phone || !!report.date; // Reports submitted by local user
+        else if (filterType === 'community') matches = (report.type === 'Community Problem' || !report.type);
 
-        const marker = L.marker([report.lat, report.lng]);
-
-        // Hover Popup Content
-        const popupContent = `
-          <div class="p-2 space-y-1">
-            <div class="flex items-center justify-between gap-2">
-              <h4 class="font-extrabold text-sm text-white">${report.title}</h4>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${report.mine ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}">
-                ${report.mine ? 'Mine' : 'Community'}
-              </span>
+        if (matches && report.lat && report.lng) {
+          const popup = `
+            <div style="color: #111827; font-family: sans-serif; padding: 2px;">
+              <strong style="color: #2563eb; font-size: 13px;">${report.type || 'Community Problem'}</strong><br/>
+              <span style="font-size: 11px; font-weight: bold;">${report.address || 'Location Logged'}</span>
+              <p style="margin-top: 4px; font-size: 11px; color: #4b5563;">${report.description}</p>
             </div>
-            <p class="text-xs text-zinc-300 leading-snug">${report.details}</p>
-            <p class="text-[10px] font-semibold text-amber-400 pt-1">Status: ${report.status}</p>
-          </div>
-        `;
+          `;
 
-        marker.bindPopup(popupContent);
-
-        // Open Popup on Mouse Hover
-        marker.on('mouseover', function () {
-          this.openPopup();
-        });
-
-        markersGroup.addLayer(marker);
+          L.marker([report.lat, report.lng])
+            .bindPopup(popup)
+            .addTo(markersGroup);
+        }
       });
     }
 
-    function filterMarkers(type) {
-      currentFilter = type;
+    function filterMap(type) {
+      const btnAll = document.getElementById('filter-all');
+      const btnMy = document.getElementById('filter-my');
+      const btnComm = document.getElementById('filter-community');
 
-      // Update Button Styles
-      ['all', 'mine', 'community'].forEach(f => {
-        const btn = document.getElementById(`btn-${f}`);
-        if (f === type) {
-          btn.className = "px-3.5 py-1.5 rounded-full bg-blue-600 text-xs font-bold text-white shadow-lg transition-all cursor-pointer";
-        } else {
-          btn.className = "px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-700 text-xs font-bold text-white hover:bg-zinc-800 backdrop-blur-md shadow-lg transition-all cursor-pointer";
-        }
-      });
+      // Reset style classes
+      const inactiveClass = "px-4 py-2 rounded-full bg-zinc-900/90 border border-zinc-700/80 text-zinc-200 hover:bg-zinc-800 text-xs font-bold transition-all cursor-pointer";
+      const activeClass = "px-4 py-2 rounded-full bg-blue-600 text-white text-xs font-bold transition-all cursor-pointer shadow-md";
+
+      btnAll.className = inactiveClass;
+      btnMy.className = inactiveClass;
+      btnComm.className = inactiveClass;
+
+      if (type === 'all') btnAll.className = activeClass;
+      if (type === 'my') btnMy.className = activeClass;
+      if (type === 'community') btnComm.className = activeClass;
 
       renderMarkers(type);
     }
 
-    // Geolocation Helper
-    function locateUser() {
+    function centerUserLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          const { latitude, longitude } = position.coords;
-          map.flyTo([latitude, longitude], 15);
-          
-          L.circleMarker([latitude, longitude], {
-            radius: 8,
-            fillColor: "#2563eb",
-            color: "#ffffff",
-            weight: 2,
-            opacity: 1,
-            fillOpacity: 0.9
-          }).addTo(map).bindPopup("<b class='text-xs text-white'>Your Current Position</b>").openPopup();
-        }, () => {
-          alert("Could not access your location. Please check browser permissions.");
-        });
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            map.flyTo([lat, lng], 15);
+            L.popup()
+              .setLatLng([lat, lng])
+              .setContent('<strong style="color:#000;">You are here!</strong>')
+              .openOn(map);
+          },
+          () => {
+            alert("Unable to retrieve location. Defaulting to current view.");
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
       }
     }
   </script>
