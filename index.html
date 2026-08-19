@@ -38,7 +38,8 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <a href="citizen.html" class="text-xs sm:text-sm font-semibold bg-brand-blue hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20">
+        <!-- Directs to auth.html -->
+        <a href="auth.html" class="text-xs sm:text-sm font-semibold bg-brand-blue hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20">
           Open Dashboard
         </a>
       </div>
@@ -63,11 +64,13 @@
       </p>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-        <a href="citizen.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/30 transition-all">
+        <!-- Directs to auth.html -->
+        <a href="auth.html" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/30 transition-all">
           Report an Issue Now
         </a>
-        <a href="#live-map" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all">
-          Explore Live Map
+        <!-- Updated Text and Anchor Target -->
+        <a href="#how-it-works" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-all">
+          See How It Works
         </a>
       </div>
 
@@ -75,7 +78,6 @@
       <div class="pt-8 max-w-3xl mx-auto">
         <div class="relative bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-xl group">
           
-          <!-- Slide Item 1 -->
           <div class="slide-item block relative">
             <img src="report.png" alt="Report Infrastructure Issues" class="w-full h-[320px] sm:h-[400px] object-cover" />
             <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-6 text-left">
@@ -85,7 +87,6 @@
             </div>
           </div>
 
-          <!-- Slide Item 2 -->
           <div class="slide-item hidden relative">
             <img src="plumb.png" alt="Request Utility Technicians" class="w-full h-[320px] sm:h-[400px] object-cover" />
             <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-6 text-left">
@@ -95,7 +96,6 @@
             </div>
           </div>
 
-          <!-- Slide Item 3 -->
           <div class="slide-item hidden relative">
             <img src="car.png" alt="Track Live Response Vehicles" class="w-full h-[320px] sm:h-[400px] object-cover" />
             <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent p-6 text-left">
@@ -105,11 +105,9 @@
             </div>
           </div>
 
-          <!-- Slide Nav Buttons -->
           <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-slate-900 flex items-center justify-center shadow-md transition-all">❮</button>
           <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-slate-900 flex items-center justify-center shadow-md transition-all">❯</button>
 
-          <!-- Slide Indicator Dots -->
           <div class="absolute top-4 right-4 flex gap-1.5 z-20 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full">
             <span class="dot-indicator w-2.5 h-2.5 rounded-full bg-white cursor-pointer" onclick="goToSlide(0)"></span>
             <span class="dot-indicator w-2.5 h-2.5 rounded-full bg-white/40 cursor-pointer" onclick="goToSlide(1)"></span>
@@ -167,13 +165,13 @@
               </div>
             </div>
 
+            <!-- Directs to citizen.html -->
             <a href="citizen.html" class="inline-flex items-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors pt-2">
               <span>View Full Interactive Map</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
           </div>
 
-          <!-- Map Container -->
           <div class="lg:col-span-7">
             <div class="relative w-full h-[420px] rounded-3xl overflow-hidden border border-slate-200 shadow-xl">
               <div class="absolute top-4 left-4 z-20 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 text-xs font-semibold text-emerald-700 flex items-center gap-2 shadow-sm">
@@ -189,7 +187,7 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-200 space-y-12">
+    <section id="how-it-works" class="max-w-6xl mx-auto px-6 py-12 border-t border-slate-200 space-y-12">
       <div class="text-center space-y-2">
         <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900">How It Works</h2>
         <p class="text-slate-600 text-xs sm:text-sm">Three simple steps to make an impact in your area.</p>
@@ -223,7 +221,6 @@
   </footer>
 
   <script>
-    // Slideshow Logic
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide-item');
     const dots = document.querySelectorAll('.dot-indicator');
@@ -258,10 +255,8 @@
     function prevSlide() { showSlide(currentSlide - 1); }
     function goToSlide(index) { showSlide(index); }
 
-    // Auto rotate slides every 5 seconds
     setInterval(nextSlide, 5000);
 
-    // Leaflet Map Logic
     document.addEventListener("DOMContentLoaded", function () {
       const map = L.map('map').setView([5.6744, -0.1989], 14); 
 
