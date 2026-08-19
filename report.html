@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Report an Issue - Citizen Dashboard</title>
-
-  <!-- Tailwind CSS v4 -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
   <style>
     .bg-brand-blue { background-color: #2563eb; }
     .text-brand-blue { color: #3b82f6; }
@@ -31,25 +28,21 @@
 
     <!-- Stepper Indicator -->
     <div class="flex items-center justify-between px-2">
-      <!-- Step 1 -->
       <div class="flex flex-col items-center space-y-1">
         <div id="step-indicator-1" class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-blue-500/30 transition-all">1</div>
         <span class="text-[11px] font-medium text-blue-400">Photo/Video</span>
       </div>
       <div class="flex-1 h-0.5 bg-zinc-800 mx-2 -mt-4"></div>
-      <!-- Step 2 -->
       <div class="flex flex-col items-center space-y-1">
         <div id="step-indicator-2" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all">2</div>
         <span class="text-[11px] font-medium text-zinc-500">Details</span>
       </div>
       <div class="flex-1 h-0.5 bg-zinc-800 mx-2 -mt-4"></div>
-      <!-- Step 3 -->
       <div class="flex flex-col items-center space-y-1">
         <div id="step-indicator-3" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all">3</div>
         <span class="text-[11px] font-medium text-zinc-500">Location</span>
       </div>
       <div class="flex-1 h-0.5 bg-zinc-800 mx-2 -mt-4"></div>
-      <!-- Step 4 -->
       <div class="flex flex-col items-center space-y-1">
         <div id="step-indicator-4" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold flex items-center justify-center text-sm transition-all">4</div>
         <span class="text-[11px] font-medium text-zinc-500">Submit</span>
@@ -63,7 +56,6 @@
         <p class="text-xs text-zinc-400 mt-0.5">Clear photos or videos help identify the problem faster.</p>
       </div>
 
-      <!-- Preview Box -->
       <div class="relative h-56 rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center group">
         <img id="imagePreview" src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f8?auto=format&fit=crop&q=80&w=800" alt="Issue Preview" class="w-full h-full object-cover">
         <video id="videoPreview" class="w-full h-full object-cover hidden" controls></video>
@@ -72,7 +64,6 @@
         </div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="space-y-3">
         <label class="w-full py-3.5 px-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/20 transition-all">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -195,12 +186,12 @@
       description: '',
       phone: '',
       gps: '',
-      lat: null,
-      lng: null,
-      address: ''
+      lat: 5.6037,
+      lng: -0.1870,
+      address: '',
+      date: new Date().toLocaleDateString()
     };
 
-    // Check URL parameters for report type
     const urlParams = new URLSearchParams(window.location.search);
     const typeParam = urlParams.get('type');
     if (typeParam === 'technical') {
@@ -247,19 +238,19 @@
         currentStep++;
         updateView();
       } else {
-        // Collect Final Inputs
         reportData.description = document.getElementById('issueDescription').value || 'No description provided';
         reportData.phone = document.getElementById('phoneNumber').value || 'Not provided';
         reportData.address = document.getElementById('streetAddress').value || 'Not provided';
         reportData.status = 'Pending';
 
-        // Save to localStorage so map.html can render it
+        // Save submitted report to local storage
         const existingReports = JSON.parse(localStorage.getItem("user_reports") || "[]");
-        existingReports.push(reportData);
+        existingReports.unshift(reportData);
         localStorage.setItem("user_reports", JSON.stringify(existingReports));
 
-        alert('Report successfully submitted! Redirecting to map...');
-        window.location.href = 'map.html';
+        alert('Report submitted successfully!');
+        // Redirect directly to the Reports history page on the navigation bar
+        window.location.href = 'reports.html';
       }
     }
 
@@ -352,15 +343,11 @@
             reportData.gps = gpsInput.value;
           },
           () => {
-            reportData.lat = 5.6037;
-            reportData.lng = -0.1870;
             gpsInput.value = "Lat: 5.6037, Lng: -0.1870 (Mocked)";
             reportData.gps = gpsInput.value;
           }
         );
       } else {
-        reportData.lat = 5.6037;
-        reportData.lng = -0.1870;
         gpsInput.value = "Lat: 5.6037, Lng: -0.1870 (Mocked)";
       }
     }
