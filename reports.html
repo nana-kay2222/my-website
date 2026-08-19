@@ -14,10 +14,12 @@
   <!-- Header Navigation -->
   <header class="w-full max-w-4xl mx-auto flex items-center justify-between pb-6 border-b border-zinc-800">
     <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='citizen.html'">
-      <div class="w-9 h-9 rounded-full bg-teal-500/20 border border-teal-500/40 flex items-center justify-center">
-        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <div class="w-9 h-9 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center shadow-lg shadow-teal-500/10">
+        <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H9m4 0V5" />
+        </svg>
       </div>
-      <span class="font-bold text-lg text-white">Citizen App</span>
+      <span class="font-black text-xl tracking-tight text-white">Citizen App</span>
     </div>
     <span class="text-xs font-bold text-zinc-400 bg-zinc-900 border border-zinc-800 px-3 py-1 rounded-full">All Incident Feeds</span>
   </header>
@@ -61,6 +63,7 @@
   </div>
 
   <script>
+    // Fallback Mock Data stored in LocalStorage format
     const defaultReports = [
       {
         id: "739-A",
@@ -76,18 +79,19 @@
         description: "Large road crack on main avenue causing driver hazard.",
         category: "Community Problem",
         date: "Yesterday",
-        image: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?w=600&auto=format&fit=crop&q=60"
+        image: null
       }
     ];
 
     function loadReportsFeed() {
+      // Pull strictly from LocalStorage (merging default mock data if empty)
       const storedReports = JSON.parse(localStorage.getItem('user_reports') || '[]');
-      const allReports = [...storedReports, ...defaultReports];
+      const allReports = storedReports.length > 0 ? storedReports : defaultReports;
       const container = document.getElementById('reports-feed');
 
       container.innerHTML = allReports.map(item => {
         const isTech = item.category === 'Technician Request';
-        const hasMedia = Boolean(item.image);
+        const imageSrc = item.image || item.photo || null; // Reads Base64 / Local URL string from LocalStorage
 
         return `
           <div class="bg-zinc-900/90 border border-zinc-800 hover:border-teal-500/40 rounded-2xl p-5 shadow-xl transition-all space-y-3">
@@ -95,31 +99,40 @@
               <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full ${isTech ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'}">
                 ${item.category || 'Community Problem'}
               </span>
-              <span class="text-[10px] text-zinc-500">${item.date}</span>
+              <span class="text-[10px] text-zinc-500">${item.date || 'Recently'}</span>
             </div>
 
             <div>
-              <h3 class="text-sm font-bold text-white">${item.type}</h3>
+              <h3 class="text-sm font-bold text-white">${item.type || item.title || 'Report Issue'}</h3>
               <p class="text-xs text-zinc-400 mt-1">${item.description}</p>
             </div>
 
-            ${hasMedia ? `
-              <!-- Collapsible Media Container -->
+            ${imageSrc ? `
+              <!-- Collapsible LocalStorage Image Preview -->
               <div class="pt-1">
                 <button onclick="toggleMedia('media-${item.id}')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 focus:outline-none">
                   📷 View Media Attachment
                 </button>
                 <div id="media-${item.id}" class="hidden mt-2 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
-                  <img src="${item.image}" alt="Report Attachment" class="w-full h-44 object-cover" />
+                  <img src="${imageSrc}" alt="Report Attachment" class="w-full h-44 object-cover" />
                 </div>
               </div>
             ` : ''}
 
             <div class="flex items-center justify-between border-t border-zinc-800/80 pt-3 mt-2">
               <span class="text-[10px] font-bold text-zinc-500">Ticket #${item.id}</span>
-              <button onclick="openReportTracker('${item.id}')" class="text-xs font-bold text-teal-400 hover:underline flex items-center gap-1">
-                View Tracker ➔
-              </button>
+              
+              ${isTech ? `
+                <!-- Tracking Button ONLY for Technician Requests -->
+                <button onclick="openReportTracker('${item.id}')" class="text-xs font-bold text-teal-400 hover:underline flex items-center gap-1">
+                  View Tracker ➔
+                </button>
+              ` : `
+                <!-- Static Tag for Community Problems -->
+                <span class="text-[10px] font-bold text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded-full">
+                  Logged Issue
+                </span>
+              `}
             </div>
           </div>
         `;
