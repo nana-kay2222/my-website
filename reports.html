@@ -70,28 +70,34 @@
         type: "Electrical Repair",
         description: "Streetlight outage causing poor visibility near Civic Center.",
         category: "Technician Request",
+        status: "In Progress",
         date: "Today, 09:14 AM",
-        image: null
+        image: null,
+        audio: null
       },
       {
         id: "802-B",
         type: "Pothole Damage",
         description: "Large road crack on main avenue causing driver hazard.",
         category: "Community Problem",
+        status: "Pending Review",
         date: "Yesterday",
-        image: null
+        image: null,
+        audio: null
       }
     ];
 
     function loadReportsFeed() {
-      // Pull strictly from LocalStorage (merging default mock data if empty)
       const storedReports = JSON.parse(localStorage.getItem('user_reports') || '[]');
       const allReports = storedReports.length > 0 ? storedReports : defaultReports;
       const container = document.getElementById('reports-feed');
 
       container.innerHTML = allReports.map(item => {
         const isTech = item.category === 'Technician Request';
-        const imageSrc = item.image || item.photo || null; // Reads Base64 / Local URL string from LocalStorage
+        const imageSrc = item.image || item.photo || null; // Reads Base64 / Local URL from LocalStorage
+        const audioSrc = item.audio || item.voiceNote || null; // Reads audio data from LocalStorage
+        const hasAttachments = Boolean(imageSrc || audioSrc);
+        const reportStatus = item.status || (isTech ? 'Dispatched' : 'Under Review');
 
         return `
           <div class="bg-zinc-900/90 border border-zinc-800 hover:border-teal-500/40 rounded-2xl p-5 shadow-xl transition-all space-y-3">
@@ -107,32 +113,49 @@
               <p class="text-xs text-zinc-400 mt-1">${item.description}</p>
             </div>
 
-            ${imageSrc ? `
-              <!-- Collapsible LocalStorage Image Preview -->
+            ${hasAttachments ? `
+              <!-- Expandable Media Accordion -->
               <div class="pt-1">
-                <button onclick="toggleMedia('media-${item.id}')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 focus:outline-none">
-                  📷 View Media Attachment
+                <button onclick="toggleMedia('attachments-${item.id}')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 focus:outline-none">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                  <span>View Attachments ${imageSrc ? '(Photo)' : ''} ${audioSrc ? '(Voice Note)' : ''}</span>
                 </button>
-                <div id="media-${item.id}" class="hidden mt-2 rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950">
-                  <img src="${imageSrc}" alt="Report Attachment" class="w-full h-44 object-cover" />
+
+                <div id="attachments-${item.id}" class="hidden mt-3 space-y-2 p-3 rounded-xl border border-zinc-800 bg-zinc-950">
+                  ${imageSrc ? `
+                    <div class="rounded-lg overflow-hidden border border-zinc-800">
+                      <img src="${imageSrc}" alt="Report Attachment" class="w-full h-44 object-cover" />
+                    </div>
+                  ` : ''}
+
+                  ${audioSrc ? `
+                    <div class="pt-1">
+                      <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">🎤 Voice Note</span>
+                      <audio controls class="w-full h-8 rounded-lg">
+                        <source src="${audioSrc}" type="audio/mpeg">
+                        <source src="${audioSrc}" type="audio/wav">
+                        Your browser does not support the audio element.
+                      </audio>
+                    </div>
+                  ` : ''}
                 </div>
               </div>
             ` : ''}
 
             <div class="flex items-center justify-between border-t border-zinc-800/80 pt-3 mt-2">
-              <span class="text-[10px] font-bold text-zinc-500">Ticket #${item.id}</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-zinc-500">#${item.id}</span>
+                <!-- Community & Tech Status Badge -->
+                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border bg-amber-500/10 text-amber-400 border-amber-500/20">
+                  Status: ${reportStatus}
+                </span>
+              </div>
               
               ${isTech ? `
-                <!-- Tracking Button ONLY for Technician Requests -->
                 <button onclick="openReportTracker('${item.id}')" class="text-xs font-bold text-teal-400 hover:underline flex items-center gap-1">
                   View Tracker ➔
                 </button>
-              ` : `
-                <!-- Static Tag for Community Problems -->
-                <span class="text-[10px] font-bold text-zinc-400 bg-zinc-800 px-2 py-0.5 rounded-full">
-                  Logged Issue
-                </span>
-              `}
+              ` : ''}
             </div>
           </div>
         `;
