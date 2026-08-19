@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Citizen Service Platform - Home</title>
 
+  <!-- Circular Favicon for Browser Tab -->
+  <link rel="icon" type="image/png" href="citizen_platform_logo.png" />
+
   <!-- Tailwind CSS v4 -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
@@ -28,12 +31,9 @@
   <!-- Header -->
   <header class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
     <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
-        <div class="w-9 h-9 rounded-full bg-brand-blue flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-          </svg>
-        </div>
+      <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+        <!-- Circular Logo -->
+        <img src="citizen_platform_logo.png" alt="Citizen Logo" class="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm" />
         <span class="font-bold text-lg tracking-tight text-slate-900">CitizenApp</span>
       </div>
 
