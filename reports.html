@@ -98,7 +98,8 @@
       
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/issues`, {
+        // FIX: Route updated from /issues to /api/reports
+        const response = await fetch(`${API_BASE_URL}/reports`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

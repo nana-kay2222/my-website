@@ -10,10 +10,29 @@
     .text-brand-blue { color: #3b82f6; }
   </style>
 </head>
-<body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between antialiased pt-6 pb-12 px-4 sm:px-6">
+<body class="bg-black text-white font-sans min-h-screen flex flex-col justify-between antialiased pt-4 pb-12 px-4 sm:px-6">
 
-  <!-- Top Navigation Header -->
-  <header class="max-w-xl mx-auto w-full flex items-center justify-between py-4 border-b border-zinc-800">
+  <!-- Main Platform Navigation Header -->
+  <header class="max-w-xl mx-auto w-full mb-4">
+    <nav class="bg-zinc-900/90 border border-zinc-800 backdrop-blur-md rounded-2xl px-4 py-3 flex items-center justify-between shadow-lg">
+      <a href="citizen.html" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+          SI
+        </div>
+        <span class="font-bold text-sm tracking-wide text-white group-hover:text-blue-400 transition-colors">Smart Inspector</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <span id="nav-user-name" class="text-xs font-medium text-zinc-400 hidden sm:inline-block">Citizen</span>
+        <button id="logout-btn" type="button" onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-red-500/10 border border-zinc-700 hover:border-red-500/50 text-zinc-300 hover:text-red-400 text-xs font-semibold transition-all cursor-pointer">
+          Sign Out
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Step Navigation Header -->
+  <div class="max-w-xl mx-auto w-full flex items-center justify-between py-3 border-b border-zinc-800 mb-2">
     <a href="citizen.html" class="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white transition-all cursor-pointer">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
     </a>
@@ -21,10 +40,10 @@
     <a href="citizen.html" class="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white transition-all cursor-pointer">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
     </a>
-  </header>
+  </div>
 
   <!-- Main Multi-Step Container -->
-  <main class="max-w-xl mx-auto w-full flex-1 py-6 space-y-6">
+  <main class="max-w-xl mx-auto w-full flex-1 py-4 space-y-6">
 
     <!-- Stepper Indicator -->
     <div class="flex items-center justify-between px-2">
@@ -180,6 +199,28 @@
   <script src="js/config.js"></script>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Session Authentication Guard
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'auth.html';
+        return;
+      }
+
+      // Dynamic User Header Initialization
+      const storedName = localStorage.getItem('citizen_user_name');
+      const navUserName = document.getElementById('nav-user-name');
+      if (navUserName && storedName) {
+        navUserName.textContent = storedName;
+      }
+    });
+
+    function handleLogout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('citizen_user_name');
+      window.location.href = 'auth.html';
+    }
+
     let currentStep = 1;
     const totalSteps = 4;
     let recordedAudioBlob = null;
@@ -332,8 +373,10 @@
         reportData.address = document.getElementById('streetAddress').value || 'Not provided';
         reportData.status = 'Pending Review';
 
+        let baseUrl = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : '';
+        baseUrl = baseUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+
         try {
-          // Prepare FormData for Backend multipart/form-data upload
           const formData = new FormData();
           formData.append('type', reportData.type);
           formData.append('category', reportData.category);
@@ -353,8 +396,8 @@
             formData.append('audio', recordedAudioBlob, 'voicenote.webm');
           }
 
-          // Send to backend API
-          const response = await fetch(`${API_BASE_URL}/issues`, {
+          // FIX: Route updated from /api/issues to /api/reports
+          const response = await fetch(`${baseUrl}/api/reports`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -372,7 +415,6 @@
         } catch (err) {
           console.error('Error submitting report to backend:', err);
         } finally {
-          // Persist local state backup
           if (selectedImageFile && !isVideoSelected) {
             const compressed = await compressImageFile(selectedImageFile);
             reportData.image = compressed;
