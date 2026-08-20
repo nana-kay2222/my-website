@@ -34,7 +34,7 @@
 
     <!-- Reports Feed -->
     <div id="reports-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Live server reports injected dynamically -->
+      <!-- Live server or fallback reports injected dynamically -->
     </div>
   </main>
 
@@ -98,8 +98,10 @@
       
       try {
         const token = localStorage.getItem('token');
-        // FIX: Explicitly updated to include the /api prefix
-        const response = await fetch(`${API_BASE_URL}/api/reports`, {
+        const baseUrl = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : '';
+        const endpoint = baseUrl ? `${baseUrl}/api/reports` : '/api/reports';
+
+        const response = await fetch(endpoint, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -108,117 +110,134 @@
           }
         });
 
-        if (!response.ok) {
-          throw new Error(`Server returned error code: ${response.status}`);
-        }
+        let reports = [];
 
-        const reports = await response.json();
+        if (response.ok) {
+          const rawData = await response.json();
+          // Normalize responses wrapped inside objects like { data: [...] } or direct arrays
+          reports = Array.isArray(rawData) ? rawData : (rawData.data || rawData.reports || []);
+        } else {
+          console.warn(`Server responded with status: ${response.status}. Falling back to local storage.`);
+          reports = JSON.parse(localStorage.getItem('user_reports') || '[]');
+        }
 
         if (!Array.isArray(reports) || reports.length === 0) {
           container.innerHTML = `
             <div class="col-span-full text-center py-12 border border-dashed border-zinc-800 rounded-2xl">
-              <p class="text-sm font-bold text-zinc-500">No active reports found on the server.</p>
+              <p class="text-sm font-bold text-zinc-500">No active reports found.</p>
             </div>
           `;
           return;
         }
 
-        container.innerHTML = reports.map(item => {
-          const isTech = item.category === 'Technician Request';
-          const imageSrc = item.image || item.photo || null;
-          const videoSrc = item.video || item.videoNote || null;
-          const audioSrc = item.audio || item.voiceNote || null;
-          
-          const hasAttachments = Boolean(imageSrc || videoSrc || audioSrc);
-          const reportStatus = item.status || (isTech ? 'Dispatched' : 'Under Review');
-
-          const attachmentLabels = [];
-          if (imageSrc) attachmentLabels.push('Photo');
-          if (videoSrc) attachmentLabels.push('Video');
-          if (audioSrc) attachmentLabels.push('Voice Note');
-
-          return `
-            <div class="bg-zinc-900/90 border border-zinc-800 hover:border-teal-500/40 rounded-2xl p-5 shadow-xl transition-all space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full ${isTech ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'}">
-                  ${item.category || 'Community Problem'}
-                </span>
-                <span class="text-[10px] text-zinc-500">${item.createdAt || item.date || 'Recently'}</span>
-              </div>
-
-              <div>
-                <h3 class="text-sm font-bold text-white">${item.type || item.title || 'Report Issue'}</h3>
-                <p class="text-xs text-zinc-400 mt-1">${item.description || 'No detailed description provided.'}</p>
-              </div>
-
-              ${hasAttachments ? `
-                <div class="pt-1">
-                  <button onclick="toggleMedia('attachments-${item.id}')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 focus:outline-none cursor-pointer">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
-                    <span>View Attachments (${attachmentLabels.join(', ')})</span>
-                  </button>
-
-                  <div id="attachments-${item.id}" class="hidden mt-3 space-y-3 p-3 rounded-xl border border-zinc-800 bg-zinc-950">
-                    ${imageSrc ? `
-                      <div>
-                        <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">🖼 Photo</span>
-                        <div class="rounded-lg overflow-hidden border border-zinc-800">
-                          <img src="${imageSrc}" alt="Report Attachment" class="w-full max-h-52 object-cover" />
-                        </div>
-                      </div>
-                    ` : ''}
-
-                    ${videoSrc ? `
-                      <div>
-                        <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">📹 Video</span>
-                        <div class="rounded-lg overflow-hidden border border-zinc-800">
-                          <video controls class="w-full max-h-52 bg-black">
-                            <source src="${videoSrc}">
-                            Your browser does not support video playback.
-                          </video>
-                        </div>
-                      </div>
-                    ` : ''}
-
-                    ${audioSrc ? `
-                      <div>
-                        <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">🎤 Voice Note</span>
-                        <audio controls class="w-full h-8 rounded-lg">
-                          <source src="${audioSrc}">
-                          Your browser does not support audio playback.
-                        </audio>
-                      </div>
-                    ` : ''}
-                  </div>
-                </div>
-              ` : ''}
-
-              <div class="flex items-center justify-between border-t border-zinc-800/80 pt-3 mt-2">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-bold text-zinc-500">#${item.id}</span>
-                  <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border bg-amber-500/10 text-amber-400 border-amber-500/20">
-                    Status: ${reportStatus}
-                  </span>
-                </div>
-                
-                ${isTech ? `
-                  <button onclick="openReportTracker('${item.id}')" class="text-xs font-bold text-teal-400 hover:underline flex items-center gap-1">
-                    View Tracker ➔
-                  </button>
-                ` : ''}
-              </div>
-            </div>
-          `;
-        }).join('');
+        renderReportsFeed(reports);
 
       } catch (error) {
-        console.error('Error fetching reports from server:', error);
-        container.innerHTML = `
-          <div class="col-span-full text-center py-12 border border-red-900/50 bg-red-950/20 rounded-2xl">
-            <p class="text-xs font-bold text-red-400">Unable to load reports from the backend server.</p>
+        console.error('Error fetching reports:', error);
+        // Fallback to locally stored offline submission entries if backend is unreachable
+        const localReports = JSON.parse(localStorage.getItem('user_reports') || '[]');
+        
+        if (localReports.length > 0) {
+          renderReportsFeed(localReports);
+        } else {
+          container.innerHTML = `
+            <div class="col-span-full text-center py-12 border border-red-900/50 bg-red-950/20 rounded-2xl">
+              <p class="text-xs font-bold text-red-400">Unable to load reports from server or local storage.</p>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function renderReportsFeed(reports) {
+      const container = document.getElementById('reports-feed');
+      container.innerHTML = reports.map(item => {
+        const isTech = item.category === 'Technician Request' || item.type === 'Technical Help';
+        const imageSrc = item.image || item.photo || item.media || null;
+        const videoSrc = item.video || item.videoNote || null;
+        const audioSrc = item.audio || item.voiceNote || null;
+        
+        const hasAttachments = Boolean(imageSrc || videoSrc || audioSrc);
+        const reportStatus = item.status || (isTech ? 'Dispatched' : 'Under Review');
+
+        const attachmentLabels = [];
+        if (imageSrc) attachmentLabels.push('Photo');
+        if (videoSrc) attachmentLabels.push('Video');
+        if (audioSrc) attachmentLabels.push('Voice Note');
+
+        return `
+          <div class="bg-zinc-900/90 border border-zinc-800 hover:border-teal-500/40 rounded-2xl p-5 shadow-xl transition-all space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full ${isTech ? 'bg-teal-500/10 text-teal-400 border border-teal-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'}">
+                ${item.category || 'Community Problem'}
+              </span>
+              <span class="text-[10px] text-zinc-500">${item.createdAt || item.date || 'Recently'}</span>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-bold text-white">${item.type || item.title || 'Report Issue'}</h3>
+              <p class="text-xs text-zinc-400 mt-1">${item.description || 'No detailed description provided.'}</p>
+            </div>
+
+            ${hasAttachments ? `
+              <div class="pt-1">
+                <button onclick="toggleMedia('attachments-${item.id}')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 focus:outline-none cursor-pointer">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                  <span>View Attachments (${attachmentLabels.join(', ')})</span>
+                </button>
+
+                <div id="attachments-${item.id}" class="hidden mt-3 space-y-3 p-3 rounded-xl border border-zinc-800 bg-zinc-950">
+                  ${imageSrc ? `
+                    <div>
+                      <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">🖼 Photo</span>
+                      <div class="rounded-lg overflow-hidden border border-zinc-800">
+                        <img src="${imageSrc}" alt="Report Attachment" class="w-full max-h-52 object-cover" />
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  ${videoSrc ? `
+                    <div>
+                      <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">📹 Video</span>
+                      <div class="rounded-lg overflow-hidden border border-zinc-800">
+                        <video controls class="w-full max-h-52 bg-black">
+                          <source src="${videoSrc}">
+                          Your browser does not support video playback.
+                        </video>
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  ${audioSrc ? `
+                    <div>
+                      <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">🎤 Voice Note</span>
+                      <audio controls class="w-full h-8 rounded-lg">
+                        <source src="${audioSrc}">
+                        Your browser does not support audio playback.
+                      </audio>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            ` : ''}
+
+            <div class="flex items-center justify-between border-t border-zinc-800/80 pt-3 mt-2">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold text-zinc-500">#${item.id}</span>
+                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border bg-amber-500/10 text-amber-400 border-amber-500/20">
+                  Status: ${reportStatus}
+                </span>
+              </div>
+              
+              ${isTech ? `
+                <button onclick="openReportTracker('${item.id}')" class="text-xs font-bold text-teal-400 hover:underline flex items-center gap-1">
+                  View Tracker ➔
+                </button>
+              ` : ''}
+            </div>
           </div>
         `;
-      }
+      }).join('');
     }
 
     function toggleMedia(elementId) {
