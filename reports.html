@@ -41,7 +41,7 @@
   <!-- Floating Navigation Dock -->
   <div class="fixed bottom-5 left-0 w-full z-40 px-4 pointer-events-none">
     
-    <!-- Action Menu Modal (Triggered by + Button) -->
+    <!-- Action Menu Modal -->
     <div id="create-menu" class="hidden max-w-xs mx-auto mb-3 bg-zinc-900 border border-zinc-800 rounded-2xl p-2 shadow-2xl pointer-events-auto space-y-1">
       <a href="report.html" class="flex items-center gap-3 p-3 rounded-xl hover:bg-zinc-800 transition-colors">
         <div class="w-8 h-8 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center">
@@ -98,7 +98,14 @@
       
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/issues`, {
+        
+        // Sanitize API base URL so it never creates double `/api/api` paths
+        let baseUrl = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : '';
+        baseUrl = baseUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+        
+        const endpoint = `${baseUrl}/api/issues`;
+
+        const response = await fetch(endpoint, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -108,7 +115,7 @@
         });
 
         if (!response.ok) {
-          throw new Error(`Server returned error code: ${response.status}`);
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
 
         const reports = await response.json();
@@ -213,8 +220,9 @@
       } catch (error) {
         console.error('Error fetching reports from server:', error);
         container.innerHTML = `
-          <div class="col-span-full text-center py-12 border border-red-900/50 bg-red-950/20 rounded-2xl">
-            <p class="text-xs font-bold text-red-400">Unable to load reports from the backend server.</p>
+          <div class="col-span-full text-center py-10 px-4 border border-red-900/50 bg-red-950/20 rounded-2xl space-y-2">
+            <p class="text-sm font-bold text-red-400">Unable to load reports from server.</p>
+            <p class="text-xs font-mono text-zinc-400 bg-black/40 p-2 rounded border border-zinc-800 inline-block">${error.message || error}</p>
           </div>
         `;
       }
