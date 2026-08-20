@@ -216,7 +216,17 @@
         });
       });
 
-      // Form Submit & Real Backend Connection
+      // Safely parse JSON or handle HTML/Text error responses
+      async function parseResponse(response) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          return await response.json();
+        }
+        const text = await response.text();
+        throw new Error(`Unexpected server response (${response.status}). Ensure the endpoint path is correct.`);
+      }
+
+      // Form Submit Handler
       if (authForm) {
         authForm.addEventListener('submit', async (e) => {
           e.preventDefault();
@@ -230,6 +240,10 @@
           }
 
           if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+          // Clean up base URL string to prevent formatting bugs
+          let baseUrl = (typeof API_BASE_URL !== 'undefined') ? API_BASE_URL : '';
+          baseUrl = baseUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
 
           try {
             if (isSignUpMode) {
@@ -245,14 +259,14 @@
                 return;
               }
 
-              // Combine name fields into a single string for your backend's `name` property
               const fullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ').trim();
 
-              const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+              // POST /api/auth/signup
+              const response = await fetch(`${baseUrl}/api/auth/signup`, {
                 method: 'POST',
                 headers: { 
                   'Content-Type': 'application/json',
-                  'ngrok-skip-browser-warning': 'true' // Bypasses ngrok interstitial page
+                  'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ 
                   email, 
@@ -263,7 +277,7 @@
                 })
               });
 
-              const data = await response.json();
+              const data = await parseResponse(response);
               if (!response.ok) throw new Error(data.error || 'Failed to sign up');
 
               showAlert("Success! Account created. Redirecting...", "success");
@@ -275,17 +289,17 @@
               }, 1000);
 
             } else {
-              // Matches your backend `/login` route
-              const response = await fetch(`${API_BASE_URL}/auth/login`, {
+              // POST /api/auth/login
+              const response = await fetch(`${baseUrl}/api/auth/login`, {
                 method: 'POST',
                 headers: { 
                   'Content-Type': 'application/json',
-                  'ngrok-skip-browser-warning': 'true' // Bypasses ngrok interstitial page
+                  'ngrok-skip-browser-warning': 'true'
                 },
                 body: JSON.stringify({ email, password })
               });
 
-              const data = await response.json();
+              const data = await parseResponse(response);
               if (!response.ok) throw new Error(data.error || 'Failed to sign in');
 
               showAlert("Signed in successfully! Redirecting...", "success");
@@ -319,6 +333,7 @@
             authCard.classList.add('animate-shake');
           }
         }
+        alertBox.classList.remove('hidden');
         authCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
 
