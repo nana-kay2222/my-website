@@ -1,165 +1,116 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // --- ELEMENT REFERENCES ---
-  const logoutBtn = document.getElementById('logout-btn');
-  const searchInput = document.getElementById('search-input');
-  const filterTabs = document.querySelectorAll('.filter-tab');
-  const taskCards = document.querySelectorAll('.task-card');
-
-  // Modals
-  const updateModal = document.getElementById('update-modal');
-  const detailsModal = document.getElementById('details-modal');
-
-  let activeCard = null; // Currently selected card
-
-  // --- 1. SIGN OUT ROUTER ---
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      window.location.href = "auth.html";
-    });
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Initialize Inspector Profile from localStorage/Session
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  if (user.name) {
+    document.getElementById("user-name").textContent = user.name;
+    document.getElementById("user-role").textContent = user.role || "Senior Field Inspector";
+    
+    // Initials for avatar
+    const initials = user.name.split(" ").map(n => n[0]).join("").slice(0, 2);
+    document.getElementById("user-avatar").textContent = initials;
   }
 
-  // --- 2. UPDATE METRICS COUNTERS ---
-  function recalculateMetrics() {
-    let total = 0;
-    let critical = 0;
-    let inProgress = 0;
-    let resolved = 0;
-
-    document.querySelectorAll('.task-card').forEach(card => {
-      total++;
-      const priority = card.getAttribute('data-priority');
-      const status = card.getAttribute('data-status');
-
-      if (priority === 'CRITICAL') critical++;
-      if (status === 'In Progress') inProgress++;
-      if (status === 'Resolved') resolved++;
-    });
-
-    document.getElementById('cnt-total').innerText = total;
-    document.getElementById('cnt-critical').innerText = critical;
-    document.getElementById('cnt-progress').innerText = inProgress;
-    document.getElementById('cnt-resolved').innerText = resolved;
-  }
-
-  // --- 3. SEARCH & FILTER TABS LOGIC ---
-  let currentFilter = 'All';
-
-  function applyFilterAndSearch() {
-    const query = searchInput.value.toLowerCase().trim();
-
-    taskCards.forEach(card => {
-      const status = card.getAttribute('data-status');
-      const priority = card.getAttribute('data-priority');
-      const cardText = card.innerText.toLowerCase();
-
-      const matchesSearch = cardText.includes(query);
-      let matchesFilter = false;
-
-      if (currentFilter === 'All') matchesFilter = true;
-      else if (currentFilter === 'Critical') matchesFilter = (priority === 'CRITICAL');
-      else matchesFilter = (status === currentFilter);
-
-      if (matchesSearch && matchesFilter) {
-        card.classList.remove('hidden');
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-  }
-
-  filterTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      filterTabs.forEach(t => {
-        t.className = 'filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition cursor-pointer';
-      });
-      tab.className = 'filter-tab py-1.5 px-4 rounded-lg text-xs font-semibold bg-blue-600 text-white transition cursor-pointer';
-
-      currentFilter = tab.getAttribute('data-filter');
-      applyFilterAndSearch();
-    });
+  // Logout listener
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
   });
 
-  if (searchInput) {
-    searchInput.addEventListener('input', applyFilterAndSearch);
-  }
-
-  // --- 4. UPDATE STATUS MODAL HANDLERS ---
-  document.querySelectorAll('.btn-update-status').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      activeCard = e.target.closest('.task-card');
-      
-      const id = activeCard.getAttribute('data-id');
-      const title = activeCard.getAttribute('data-title');
-      const status = activeCard.getAttribute('data-status');
-
-      document.getElementById('modal-update-id').innerText = id;
-      document.getElementById('modal-update-title').innerText = title;
-      document.getElementById('modal-status-select').value = status;
-      document.getElementById('modal-notes-input').value = '';
-
-      updateModal.classList.remove('hidden');
-    });
-  });
-
-  function closeUpdateModal() {
-    updateModal.classList.add('hidden');
-    activeCard = null;
-  }
-
-  document.getElementById('close-update-modal')?.addEventListener('click', closeUpdateModal);
-  document.getElementById('cancel-update-modal')?.addEventListener('click', closeUpdateModal);
-
-  document.getElementById('update-status-form')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    if (activeCard) {
-      const newStatus = document.getElementById('modal-status-select').value;
-      const statusBadge = activeCard.querySelector('.badge-status');
-
-      activeCard.setAttribute('data-status', newStatus);
-      if (statusBadge) statusBadge.innerText = newStatus;
-
-      // Update badge styling based on new selection
-      if (newStatus === 'Resolved') {
-        statusBadge.className = 'badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/60';
-      } else if (newStatus === 'In Progress') {
-        statusBadge.className = 'badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-950 text-amber-300 border border-amber-800/60';
-      } else if (newStatus === 'Pending Inspection') {
-        statusBadge.className = 'badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950 text-blue-300 border border-blue-800/60';
-      } else if (newStatus === 'Escalated') {
-        statusBadge.className = 'badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-950 text-red-300 border border-red-800/60';
-      }
-
-      recalculateMetrics();
-      applyFilterAndSearch();
-    }
-
-    closeUpdateModal();
-  });
-
-  // --- 5. VIEW DETAILS MODAL HANDLERS ---
-  document.querySelectorAll('.btn-view-details').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const card = e.target.closest('.task-card');
-
-      document.getElementById('details-report-id').innerText = card.getAttribute('data-id');
-      document.getElementById('details-title').innerText = card.getAttribute('data-title');
-      document.getElementById('details-desc').innerText = card.getAttribute('data-desc');
-      document.getElementById('details-location').innerText = card.getAttribute('data-location');
-      document.getElementById('details-reporter').innerText = card.getAttribute('data-reporter');
-      document.getElementById('details-img').src = card.getAttribute('data-img');
-
-      detailsModal.classList.remove('hidden');
-    });
-  });
-
-  document.getElementById('close-details-modal')?.addEventListener('click', () => {
-    detailsModal.classList.add('hidden');
-  });
-
-  // Close modals when clicking outside window
-  window.addEventListener('click', (e) => {
-    if (e.target === updateModal) closeUpdateModal();
-    if (e.target === detailsModal) detailsModal.classList.add('hidden');
-  });
+  // Fetch initial tasks
+  fetchReports();
 });
+
+let globalReports = [];
+
+async function fetchReports() {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await fetch(`${API_BASE_URL}/reports`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+    globalReports = await res.json();
+    renderFeed(globalReports);
+    updateMetrics(globalReports);
+  } catch (err) {
+    console.error("Failed to fetch reports:", err);
+  }
+}
+
+function renderFeed(reports) {
+  const container = document.getElementById("task-feed");
+  container.innerHTML = "";
+
+  if (reports.length === 0) {
+    container.innerHTML = `<div class="text-center py-8 text-gray-500 text-sm">No reports found.</div>`;
+    return;
+  }
+
+  reports.forEach(item => {
+    // Pick the primary thumbnail or a fallback image
+    const thumbnail = (item.attachments && item.attachments.length > 0)
+      ? item.attachments[0] 
+      : 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=200&q=80';
+
+    const card = document.createElement("div");
+    card.className = "task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5";
+    
+    card.innerHTML = `
+      <div class="flex items-start sm:items-center gap-4">
+        <img src="${thumbnail}" alt="Thumbnail" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer" onclick="openDetails('${item._id}')" />
+        <div class="space-y-1.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-mono text-gray-500">#${item.reportId || item._id.slice(-6)}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-950 text-red-400 border border-red-800/60">${item.priority || 'MEDIUM'}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-950 text-amber-300 border border-amber-800/60">${item.status}</span>
+          </div>
+          <h3 class="text-base font-bold text-white">${item.title}</h3>
+          <p class="text-xs text-gray-400">${item.description}</p>
+          <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
+            <span>📍 ${item.location}</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 self-end lg:self-center">
+        <button type="button" onclick="openDetails('${item._id}')" class="px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
+        <button type="button" onclick="openUpdateModal('${item._id}')" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function openDetails(id) {
+  const item = globalReports.find(r => r._id === id);
+  if (!item) return;
+
+  document.getElementById("details-report-id").textContent = `#${item.reportId || item._id.slice(-6)}`;
+  document.getElementById("details-title").textContent = item.title;
+  document.getElementById("details-desc").textContent = item.description;
+  document.getElementById("details-location").textContent = `📍 ${item.location}`;
+  document.getElementById("details-reporter").textContent = item.reporterName || "Anonymous";
+
+  // Render Image Gallery
+  const gallery = document.getElementById("details-gallery");
+  gallery.innerHTML = "";
+
+  const attachments = item.attachments && item.attachments.length > 0 
+    ? item.attachments 
+    : ['https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=600&q=80'];
+
+  attachments.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "w-full h-32 object-cover rounded-xl border border-gray-800";
+    gallery.appendChild(img);
+  });
+
+  document.getElementById("details-modal").classList.remove("hidden");
+}
+
+function updateMetrics(reports) {
+  document.getElementById("cnt-total").textContent = reports.length;
+  document.getElementById("cnt-critical").textContent = reports.filter(r => r.priority === "CRITICAL").length;
+  document.getElementById("cnt-progress").textContent = reports.filter(r => r.status === "In Progress").length;
+  document.getElementById("cnt-resolved").textContent = reports.filter(r => r.status === "Resolved").length;
+}
