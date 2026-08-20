@@ -1,1 +1,1 @@
-const API_BASE_URL = "https://poach-spelling-synapse.ngrok-free.app";
+const API_BASE_URL = "https://poach-spelling-synapse.ngrok-free.dev";
