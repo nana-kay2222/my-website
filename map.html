@@ -114,8 +114,10 @@
 
     </nav>
   </div>
-   <!-- backend script-->
-     <script src="js/config.js"></script>
+
+  <!-- Backend Script Config -->
+  <script src="js/config.js"></script>
+
   <!-- Leaflet JavaScript -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -124,11 +126,11 @@
     let markersGroup;
     let allReports = [];
 
-    window.onload = function() {
-      // 1. Initialize Leaflet Map focused on Accra
+    window.onload = async function() {
+      // Initialize Leaflet Map focused on Accra
       map = L.map('map').setView([5.6148, -0.2058], 12);
 
-      // 2. Standard OpenStreetMap Tile Layer (White/Bright Map as in screenshot)
+      // Tile Layer setup
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap contributors'
@@ -136,45 +138,81 @@
 
       markersGroup = L.layerGroup().addTo(map);
 
-      // Force map size re-calculation to prevent gray/blank box glitch
+      // Prevent map rendering glitches
       setTimeout(() => { map.invalidateSize(); }, 300);
 
-      // 3. Mock reports matching Achimota and Airport Residential Area
-      const mockReports = [
-        { lat: 5.6180, lng: -0.2110, type: 'Community Problem', address: 'Achimota Forest', description: 'Road obstruction reported.' },
-        { lat: 5.6020, lng: -0.1870, type: 'Technical Help', address: 'Airport Residential', description: 'Faulty streetlight maintenance required.' }
-      ];
-
-      // 4. Load reports from localStorage
-      const userReports = JSON.parse(localStorage.getItem("user_reports") || "[]");
-      allReports = [...mockReports, ...userReports];
-
-      renderMarkers('all');
+      // Fetch live reports from backend
+      await fetchServerReports();
     };
+
+    async function fetchServerReports() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/issues`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        allReports = Array.isArray(data) ? data : [];
+        renderMarkers('all');
+
+      } catch (error) {
+        console.error('Failed to retrieve reports from server:', error);
+        allReports = [];
+        renderMarkers('all');
+      }
+    }
 
     function renderMarkers(filterType) {
       markersGroup.clearLayers();
+      const bounds = [];
 
       allReports.forEach(report => {
-        let matches = false;
-        if (filterType === 'all') matches = true;
-        else if (filterType === 'my') matches = !!report.phone || !!report.date;
-        else if (filterType === 'community') matches = (report.type === 'Community Problem' || !report.type);
+        // Parse numerical coordinate data
+        const lat = parseFloat(report.lat || report.latitude);
+        const lng = parseFloat(report.lng || report.longitude);
 
-        if (matches && report.lat && report.lng) {
+        let matches = false;
+        const category = report.category || report.type || 'Community Problem';
+
+        if (filterType === 'all') matches = true;
+        else if (filterType === 'my') matches = !!report.isOwner || !!report.userId;
+        else if (filterType === 'community') matches = (category === 'Community Problem');
+
+        if (matches && !isNaN(lat) && !isNaN(lng)) {
+          const title = report.type || report.title || category;
+          const address = report.address || report.location || 'Logged GPS';
+          const description = report.description || 'No details provided.';
+
           const popup = `
-            <div style="color: #111; font-family: sans-serif;">
-              <b style="color: #2563eb;">${report.type || 'Community Problem'}</b><br/>
-              <small><b>Location:</b> ${report.address || 'Logged GPS'}</small>
-              <p style="margin-top: 4px; font-size: 12px; color: #4b5563;">${report.description}</p>
+            <div style="color: #111; font-family: sans-serif; min-width: 140px;">
+              <b style="color: #2563eb;">${title}</b><br/>
+              <small><b>Location:</b> ${address}</small>
+              <p style="margin-top: 4px; font-size: 12px; color: #4b5563;">${description}</p>
             </div>
           `;
 
-          L.marker([report.lat, report.lng])
+          L.marker([lat, lng])
             .bindPopup(popup)
             .addTo(markersGroup);
+
+          bounds.push([lat, lng]);
         }
       });
+
+      // Adjust camera bounds to enclose fetched server points
+      if (bounds.length > 0) {
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+      }
     }
 
     function filterMap(type) {
