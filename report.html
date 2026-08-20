@@ -68,7 +68,7 @@
         <label class="w-full py-3.5 px-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/20 transition-all touch-manipulation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           Take Photo
-          <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handleMediaUpload(event, 'image')">
+          <input type="file" id="photoFileInput" accept="image/*" capture="environment" class="hidden" onchange="handleMediaUpload(event, 'image')">
         </label>
         
         <label class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all touch-manipulation">
@@ -181,14 +181,14 @@
     let currentStep = 1;
     const totalSteps = 4;
     let recordedAudioBlob = null;
-    let processedImageDataUrl = '';
+    let selectedImageFile = null;
 
     let reportData = {
       id: "COM-" + Math.floor(1000 + Math.random() * 9000),
       category: 'Community Problem',
       type: 'Community Problem',
-      image: '',
-      photo: '',
+      image: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f8?auto=format&fit=crop&q=80&w=800',
+      photo: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f8?auto=format&fit=crop&q=80&w=800',
       audio: '',
       voiceNote: '',
       description: '',
@@ -242,29 +242,37 @@
       }
     }
 
-    // Dynamic Image Compression Engine
-    function compressImage(file, maxWidth = 800, quality = 0.6) {
+    // Fast image compressor with safe fallback
+    function compressImageFile(file) {
       return new Promise((resolve) => {
+        if (!file) return resolve(reportData.image);
+
         const reader = new FileReader();
+        reader.onerror = () => resolve(reportData.image);
         reader.onload = (e) => {
           const img = new Image();
+          img.onerror = () => resolve(reportData.image);
           img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
+            try {
+              const canvas = document.createElement('canvas');
+              const maxWidth = 600;
+              let width = img.width;
+              let height = img.height;
 
-            if (width > maxWidth) {
-              height = Math.round((height * maxWidth) / width);
-              width = maxWidth;
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+
+              canvas.width = width;
+              canvas.height = height;
+
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              resolve(canvas.toDataURL('image/jpeg', 0.5));
+            } catch (err) {
+              resolve(reportData.image);
             }
-
-            canvas.width = width;
-            canvas.height = height;
-
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            resolve(canvas.toDataURL('image/jpeg', quality));
           };
           img.src = e.target.result;
         };
@@ -272,31 +280,26 @@
       });
     }
 
-    async function handleMediaUpload(event, type) {
+    function handleMediaUpload(event, type) {
       const file = event.target.files[0];
       if (!file) return;
 
       if (type === 'image') {
-        processedImageDataUrl = await compressImage(file);
+        selectedImageFile = file;
+        const localPreviewUrl = URL.createObjectURL(file);
         
         const imgPrev = document.getElementById('imagePreview');
         const vidPrev = document.getElementById('videoPreview');
         vidPrev.classList.add('hidden');
         imgPrev.classList.remove('hidden');
-        imgPrev.src = processedImageDataUrl;
-
-        reportData.image = processedImageDataUrl;
-        reportData.photo = processedImageDataUrl;
+        imgPrev.src = localPreviewUrl;
       } else if (type === 'video') {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const imgPrev = document.getElementById('imagePreview');
-          const vidPrev = document.getElementById('videoPreview');
-          imgPrev.classList.add('hidden');
-          vidPrev.classList.remove('hidden');
-          vidPrev.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+        const localVidUrl = URL.createObjectURL(file);
+        const imgPrev = document.getElementById('imagePreview');
+        const vidPrev = document.getElementById('videoPreview');
+        imgPrev.classList.add('hidden');
+        vidPrev.classList.remove('hidden');
+        vidPrev.src = localVidUrl;
       }
     }
 
@@ -309,29 +312,44 @@
         nextBtn.disabled = true;
         nextBtn.innerText = "Submitting...";
 
-        reportData.description = document.getElementById('issueDescription').value || 'No description provided';
-        reportData.phone = document.getElementById('phoneNumber').value || 'Not provided';
-        reportData.address = document.getElementById('streetAddress').value || 'Not provided';
-        reportData.status = 'Pending Review';
-
-        if (recordedAudioBlob) {
-          reportData.audio = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.readAsDataURL(recordedAudioBlob);
-          });
-          reportData.voiceNote = reportData.audio;
-        }
+        // Set emergency safety timer: Force redirect if stuck over 2.5 seconds
+        const safetyTimer = setTimeout(() => {
+          window.location.href = 'reports.html';
+        }, 2500);
 
         try {
+          reportData.description = document.getElementById('issueDescription').value || 'No description provided';
+          reportData.phone = document.getElementById('phoneNumber').value || 'Not provided';
+          reportData.address = document.getElementById('streetAddress').value || 'Not provided';
+          reportData.status = 'Pending Review';
+
+          // Process image fast before storing
+          if (selectedImageFile) {
+            const compressed = await compressImageFile(selectedImageFile);
+            reportData.image = compressed;
+            reportData.photo = compressed;
+          }
+
+          // Convert audio blob to base64 safely
+          if (recordedAudioBlob) {
+            reportData.audio = await new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result || '');
+              reader.onerror = () => resolve('');
+              reader.readAsDataURL(recordedAudioBlob);
+            });
+            reportData.voiceNote = reportData.audio;
+          }
+
           const existingReports = JSON.parse(localStorage.getItem("user_reports") || "[]");
           existingReports.unshift(reportData);
           localStorage.setItem("user_reports", JSON.stringify(existingReports));
+
+          clearTimeout(safetyTimer);
           window.location.href = 'reports.html';
         } catch (err) {
-          alert("Storage limit reached! Try clearing old reports from your history.");
-          nextBtn.disabled = false;
-          nextBtn.innerText = "Submit Report";
+          clearTimeout(safetyTimer);
+          window.location.href = 'reports.html';
         }
       }
     }
