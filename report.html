@@ -74,7 +74,7 @@
         <label class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all touch-manipulation">
           <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
           Upload / Record Video
-          <input type="file" accept="video/*" capture="environment" class="hidden" onchange="handleMediaUpload(event, 'video')">
+          <input type="file" id="videoFileInput" accept="video/*" capture="environment" class="hidden" onchange="handleMediaUpload(event, 'video')">
         </label>
       </div>
     </div>
@@ -177,14 +177,14 @@
 
   </main>
 
-
-   <script src="js/config.js"></script>
+  <script src="js/config.js"></script>
 
   <script>
     let currentStep = 1;
     const totalSteps = 4;
     let recordedAudioBlob = null;
     let selectedImageFile = null;
+    let selectedVideoFile = null;
     let isVideoSelected = false;
 
     let reportData = {
@@ -291,6 +291,7 @@
       if (type === 'image') {
         isVideoSelected = false;
         selectedImageFile = file;
+        selectedVideoFile = null;
         const localPreviewUrl = URL.createObjectURL(file);
         
         const imgPrev = document.getElementById('imagePreview');
@@ -300,6 +301,7 @@
         imgPrev.src = localPreviewUrl;
       } else if (type === 'video') {
         isVideoSelected = true;
+        selectedVideoFile = file;
         selectedImageFile = null;
         const localVidUrl = URL.createObjectURL(file);
         
@@ -309,9 +311,7 @@
         vidPrev.classList.remove('hidden');
         vidPrev.src = localVidUrl;
 
-        // Session-level URL for video display on reports page
         reportData.video = localVidUrl;
-        // Fallback video preview card image for persistent storage
         reportData.image = "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=800";
         reportData.photo = reportData.image;
       }
@@ -324,18 +324,55 @@
       } else {
         const nextBtn = document.getElementById('nextBtn');
         nextBtn.disabled = true;
-        nextBtn.innerText = "Submitting...";
+        nextBtn.innerHTML = "<span>Submitting...</span>";
 
-        const safetyTimer = setTimeout(() => {
-          window.location.href = 'reports.html';
-        }, 2500);
+        const token = localStorage.getItem('token');
+        reportData.description = document.getElementById('issueDescription').value || 'No description provided';
+        reportData.phone = document.getElementById('phoneNumber').value || 'Not provided';
+        reportData.address = document.getElementById('streetAddress').value || 'Not provided';
+        reportData.status = 'Pending Review';
 
         try {
-          reportData.description = document.getElementById('issueDescription').value || 'No description provided';
-          reportData.phone = document.getElementById('phoneNumber').value || 'Not provided';
-          reportData.address = document.getElementById('streetAddress').value || 'Not provided';
-          reportData.status = 'Pending Review';
+          // Prepare FormData for Backend multipart/form-data upload
+          const formData = new FormData();
+          formData.append('type', reportData.type);
+          formData.append('category', reportData.category);
+          formData.append('description', reportData.description);
+          formData.append('phone', reportData.phone);
+          formData.append('address', reportData.address);
+          formData.append('latitude', reportData.lat);
+          formData.append('longitude', reportData.lng);
 
+          if (selectedImageFile) {
+            formData.append('image', selectedImageFile);
+          }
+          if (selectedVideoFile) {
+            formData.append('video', selectedVideoFile);
+          }
+          if (recordedAudioBlob) {
+            formData.append('audio', recordedAudioBlob, 'voicenote.webm');
+          }
+
+          // Send to backend API
+          const response = await fetch(`${API_BASE_URL}/issues`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'true'
+            },
+            body: formData
+          });
+
+          if (!response.ok) {
+            console.warn('Backend request failed or unauthenticated, falling back to local storage sync.');
+          } else {
+            const result = await response.json();
+            if (result.id) reportData.id = result.id;
+          }
+        } catch (err) {
+          console.error('Error submitting report to backend:', err);
+        } finally {
+          // Persist local state backup
           if (selectedImageFile && !isVideoSelected) {
             const compressed = await compressImageFile(selectedImageFile);
             reportData.image = compressed;
@@ -356,10 +393,6 @@
           existingReports.unshift(reportData);
           localStorage.setItem("user_reports", JSON.stringify(existingReports));
 
-          clearTimeout(safetyTimer);
-          window.location.href = 'reports.html';
-        } catch (err) {
-          clearTimeout(safetyTimer);
           window.location.href = 'reports.html';
         }
       }
