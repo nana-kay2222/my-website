@@ -30,12 +30,12 @@
       <!-- User Info & Logout -->
       <div class="flex items-center gap-4">
         <div class="hidden md:flex items-center gap-3 border-r border-gray-800 pr-4">
-          <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-bold text-sm text-white border border-blue-400">
-            JD
+          <div id="user-avatar" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-bold text-sm text-white border border-blue-400 uppercase">
+            --
           </div>
           <div class="text-left text-xs">
-            <div class="font-semibold text-gray-200">John Doe</div>
-            <div class="text-gray-400">Senior Field Inspector</div>
+            <div id="user-name" class="font-semibold text-gray-200">Loading...</div>
+            <div id="user-role" class="text-gray-400">Field Inspector</div>
           </div>
         </div>
 
@@ -77,7 +77,7 @@
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Assigned</div>
-          <div id="cnt-total" class="text-3xl font-extrabold text-white mt-2">3</div>
+          <div id="cnt-total" class="text-3xl font-extrabold text-white mt-2">0</div>
         </div>
         <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,7 +90,7 @@
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Critical Priority</div>
-          <div id="cnt-critical" class="text-3xl font-extrabold text-red-400 mt-2">1</div>
+          <div id="cnt-critical" class="text-3xl font-extrabold text-red-400 mt-2">0</div>
         </div>
         <div class="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">In Progress</div>
-          <div id="cnt-progress" class="text-3xl font-extrabold text-amber-400 mt-2">1</div>
+          <div id="cnt-progress" class="text-3xl font-extrabold text-amber-400 mt-2">0</div>
         </div>
         <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,8 +115,8 @@
       <!-- Resolved -->
       <div class="bg-gray-900/80 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
         <div>
-          <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Resolved Today</div>
-          <div id="cnt-resolved" class="text-3xl font-extrabold text-emerald-400 mt-2">1</div>
+          <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Resolved</div>
+          <div id="cnt-resolved" class="text-3xl font-extrabold text-emerald-400 mt-2">0</div>
         </div>
         <div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,91 +144,10 @@
 
       <!-- 4. WORK ORDERS / TASK CARDS CONTAINER -->
       <div id="task-feed" class="space-y-4">
-
-        <!-- Card 1: Critical / In Progress -->
-        <div class="task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
-             data-id="#REP-2026-089" data-priority="CRITICAL" data-status="In Progress" data-title="Main Water Pipeline Leak &amp; Ground Subsidence" data-location="14th Avenue, Sector 4" data-desc="High-pressure water pipe burst causing localized surface flooding near residential intersection." data-reporter="Kwame Mensah (+233 24 123 4567)" data-img="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&amp;fit=crop&amp;w=600&amp;q=80">
-          
-          <div class="flex items-start sm:items-center gap-4">
-            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Leak" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer btn-view-details" />
-
-            <div class="space-y-1.5">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-mono text-gray-500">#REP-2026-089</span>
-                <span class="badge-priority px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-950 text-red-400 border border-red-800/60">CRITICAL</span>
-                <span class="badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-950 text-amber-300 border border-amber-800/60">In Progress</span>
-              </div>
-              <h3 class="text-base font-bold text-white">Main Water Pipeline Leak &amp; Ground Subsidence</h3>
-              <p class="text-xs text-gray-400">High-pressure water pipe burst causing localized surface flooding.</p>
-              <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
-                <span>📍 14th Avenue, Sector 4</span>
-                <span>📅 Reported 2 hrs ago</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 self-end lg:self-center">
-            <button type="button" class="btn-view-details px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
-            <button type="button" class="btn-update-status px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
-          </div>
+        <!-- Dynamically populated via dashboard.js -->
+        <div class="text-center py-12 text-gray-500 text-sm">
+          Loading assigned report tasks...
         </div>
-
-        <!-- Card 2: Medium / Pending -->
-        <div class="task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
-             data-id="#REP-2026-074" data-priority="MEDIUM" data-status="Pending Inspection" data-title="Damaged Streetlight Pole &amp; Exposed Wiring" data-location="Ring Road East, Block B" data-desc="Lighting pole leaning at hazardous angle post-vehicle collision. Live wires exposed." data-reporter="Ama Serwaa (+233 20 987 6543)" data-img="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&amp;fit=crop&amp;w=600&amp;q=80">
-          
-          <div class="flex items-start sm:items-center gap-4">
-            <img src="https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Pole" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer btn-view-details" />
-
-            <div class="space-y-1.5">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-mono text-gray-500">#REP-2026-074</span>
-                <span class="badge-priority px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950 text-amber-400 border border-amber-800/60">MEDIUM</span>
-                <span class="badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-950 text-blue-300 border border-blue-800/60">Pending Inspection</span>
-              </div>
-              <h3 class="text-base font-bold text-white">Damaged Streetlight Pole &amp; Exposed Wiring</h3>
-              <p class="text-xs text-gray-400">Lighting pole leaning post-collision. Electrical hazard reported.</p>
-              <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
-                <span>📍 Ring Road East, Block B</span>
-                <span>📅 Reported 5 hrs ago</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 self-end lg:self-center">
-            <button type="button" class="btn-view-details px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
-            <button type="button" class="btn-update-status px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
-          </div>
-        </div>
-
-        <!-- Card 3: Low / Resolved -->
-        <div class="task-card bg-gray-950/70 border border-gray-800 hover:border-gray-700 rounded-2xl p-5 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
-             data-id="#REP-2026-052" data-priority="LOW" data-status="Resolved" data-title="Deep Road Pothole Impacting Traffic Flow" data-location="Commercial Street, Junction 2" data-desc="Large asphalt pothole patched and resurfaced by road maintenance crew." data-reporter="Kofi Osei (+233 27 555 1212)" data-img="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&amp;fit=crop&amp;w=600&amp;q=80">
-          
-          <div class="flex items-start sm:items-center gap-4">
-            <img src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&amp;fit=crop&amp;w=200&amp;q=80" alt="Pothole" class="w-20 h-20 rounded-xl object-cover border border-gray-800 flex-shrink-0 cursor-pointer btn-view-details" />
-
-            <div class="space-y-1.5">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-mono text-gray-500">#REP-2026-052</span>
-                <span class="badge-priority px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-800 text-gray-300 border border-gray-700">LOW</span>
-                <span class="badge-status px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800/60">Resolved</span>
-              </div>
-              <h3 class="text-base font-bold text-white">Deep Road Pothole Impacting Traffic Flow</h3>
-              <p class="text-xs text-gray-400">Large asphalt pothole patched and resurfaced completely.</p>
-              <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 pt-1">
-                <span>📍 Commercial Street, Junction 2</span>
-                <span>📅 Resolved today</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2 self-end lg:self-center">
-            <button type="button" class="btn-view-details px-3.5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-xl text-xs font-semibold border border-gray-700 transition cursor-pointer">View Details</button>
-            <button type="button" class="btn-update-status px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition cursor-pointer">Update Status</button>
-          </div>
-        </div>
-
       </div>
 
     </div>
@@ -242,7 +161,7 @@
       <div class="flex items-center justify-between border-b border-gray-800 pb-4">
         <div>
           <h3 class="text-lg font-bold text-white">Update Work Order Status</h3>
-          <p id="modal-update-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-2026-000</p>
+          <p id="modal-update-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-000</p>
         </div>
         <button id="close-update-modal" type="button" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -250,9 +169,10 @@
       </div>
 
       <form id="update-status-form" class="space-y-4">
+        <input type="hidden" id="modal-report-db-id" />
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-400 mb-1">Issue</label>
-          <div id="modal-update-title" class="text-sm text-gray-200 bg-gray-950 p-3 rounded-xl border border-gray-800 font-medium">Issue Title</div>
+          <div id="modal-update-title" class="text-sm text-gray-200 bg-gray-950 p-3 rounded-xl border border-gray-800 font-medium">--</div>
         </div>
 
         <div>
@@ -282,35 +202,38 @@
 
   <!-- 6. MODAL 2: PHOTO & DETAILS VIEW DIALOG -->
   <div id="details-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-gray-950/80 backdrop-blur-sm transition-all duration-300">
-    <div class="bg-gray-900 border border-gray-800 w-full max-w-xl rounded-2xl p-6 shadow-2xl relative space-y-4">
+    <div class="bg-gray-900 border border-gray-800 w-full max-w-2xl rounded-2xl p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto">
       
       <div class="flex items-center justify-between border-b border-gray-800 pb-3">
         <div>
           <h3 class="text-base font-bold text-white">Report Detail View</h3>
-          <p id="details-report-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-2026-000</p>
+          <p id="details-report-id" class="text-xs font-mono text-blue-400 mt-0.5">#REP-000</p>
         </div>
         <button id="close-details-modal" type="button" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-800 transition cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
       </div>
 
-      <!-- High-res Image Preview -->
-      <div class="rounded-xl overflow-hidden border border-gray-800 max-h-64 bg-gray-950 flex items-center justify-center">
-        <img id="details-img" src="" alt="Report Attachment" class="w-full h-full object-cover" />
+      <!-- Multiple Attachments / Image Preview Gallery -->
+      <div>
+        <span class="text-gray-400 block text-[10px] uppercase font-bold mb-2">Attached Photos</span>
+        <div id="details-gallery" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <!-- Dynamically inserted images -->
+        </div>
       </div>
 
-      <div class="space-y-3">
-        <h4 id="details-title" class="text-lg font-bold text-white">Title</h4>
-        <p id="details-desc" class="text-xs text-gray-300 leading-relaxed bg-gray-950 p-3 rounded-xl border border-gray-800">Description</p>
+      <div class="space-y-3 pt-2">
+        <h4 id="details-title" class="text-lg font-bold text-white">--</h4>
+        <p id="details-desc" class="text-xs text-gray-300 leading-relaxed bg-gray-950 p-3 rounded-xl border border-gray-800">--</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
           <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
             <span class="text-gray-500 block text-[10px] uppercase font-bold">Location</span>
-            <span id="details-location" class="text-gray-200 font-medium">📍 Sector</span>
+            <span id="details-location" class="text-gray-200 font-medium">📍 --</span>
           </div>
           <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
             <span class="text-gray-500 block text-[10px] uppercase font-bold">Reported By</span>
-            <span id="details-reporter" class="text-gray-200 font-medium">Citizen</span>
+            <span id="details-reporter" class="text-gray-200 font-medium">--</span>
           </div>
         </div>
       </div>
@@ -319,7 +242,7 @@
   </div>
 
   <!-- JavaScript Logic -->
-    <script src="js/config.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>
