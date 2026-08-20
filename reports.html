@@ -23,7 +23,7 @@
     </div>
 
     <div class="flex items-center gap-2">
-      <!-- Reset Storage Button -->
+      <!-- Reset Local Storage Button -->
       <button onclick="clearAllReports()" class="px-3 py-1.5 rounded-xl bg-red-950/40 border border-red-800/50 text-red-400 hover:bg-red-900/60 transition-all text-xs font-semibold flex items-center gap-1.5 cursor-pointer">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -73,7 +73,7 @@
       </a>
     </div>
 
-    <!-- Navigation Bar -->
+    <!-- Navigation Dock -->
     <nav class="max-w-md mx-auto bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/80 rounded-full py-2.5 px-6 shadow-2xl shadow-black pointer-events-auto flex items-center justify-between text-center text-xs font-medium text-zinc-400">
       <a href="citizen.html" class="flex flex-col items-center gap-0.5 hover:text-zinc-200 transition-colors">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -84,7 +84,7 @@
         <span class="text-[10px]">Map</span>
       </a>
       
-      <!-- Plus Button toggles option menu -->
+      <!-- Center Plus Button Toggles Options Bar -->
       <button onclick="toggleCreateMenu()" class="flex items-center justify-center w-11 h-11 -mt-5 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/40 hover:scale-105 transition-transform cursor-pointer">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
       </button>
@@ -140,7 +140,7 @@
         const hasAttachments = Boolean(imageSrc || videoSrc || audioSrc);
         const reportStatus = item.status || (isTech ? 'Dispatched' : 'Under Review');
 
-        // Build list of labels for the expandable trigger button
+        // Dynamic labels based on attached media types
         const attachmentLabels = [];
         if (imageSrc) attachmentLabels.push('Photo');
         if (videoSrc) attachmentLabels.push('Video');
@@ -161,19 +161,20 @@
             </div>
 
             ${hasAttachments ? `
-              <!-- Expandable Media Accordion -->
+              <!-- EXPANDABLE MEDIA SECTION -->
               <div class="pt-1">
                 <button onclick="toggleMedia('attachments-${item.id}')" class="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 focus:outline-none cursor-pointer">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
                   <span>View Attachments (${attachmentLabels.join(', ')})</span>
                 </button>
 
+                <!-- Hidden Drawer Container -->
                 <div id="attachments-${item.id}" class="hidden mt-3 space-y-3 p-3 rounded-xl border border-zinc-800 bg-zinc-950">
                   ${imageSrc ? `
                     <div>
                       <span class="text-[10px] font-bold text-zinc-400 uppercase block mb-1">🖼 Photo</span>
                       <div class="rounded-lg overflow-hidden border border-zinc-800">
-                        <img src="${imageSrc}" alt="Report Photo Attachment" class="w-full max-h-52 object-cover" />
+                        <img src="${imageSrc}" alt="Report Attachment" class="w-full max-h-52 object-cover" />
                       </div>
                     </div>
                   ` : ''}
@@ -222,6 +223,7 @@
       }).join('');
     }
 
+    // Toggle expand/collapse mechanism for media drawer
     function toggleMedia(elementId) {
       const mediaBox = document.getElementById(elementId);
       if (mediaBox) {
@@ -229,6 +231,7 @@
       }
     }
 
+    // Toggle plus button action menu
     function toggleCreateMenu() {
       const menu = document.getElementById('create-menu');
       if (menu) {
@@ -236,8 +239,9 @@
       }
     }
 
+    // Clear saved reports in localStorage
     function clearAllReports() {
-      const confirmed = confirm("Are you sure you want to clear all saved reports and reset test data?");
+      const confirmed = confirm("Are you sure you want to clear all saved reports?");
       if (confirmed) {
         localStorage.removeItem('user_reports');
         loadReportsFeed();
