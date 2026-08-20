@@ -26,7 +26,8 @@ let globalReports = [];
 async function fetchReports() {
   const token = localStorage.getItem("token");
   try {
-    const res = await fetch(`${API_BASE_URL}/reports`, {
+    // FIX: Updated route path to include /api/ prefix
+    const res = await fetch(`${API_BASE_URL}/api/reports`, {
       headers: { "Authorization": `Bearer ${token}` }
     });
     globalReports = await res.json();
@@ -41,7 +42,7 @@ function renderFeed(reports) {
   const container = document.getElementById("task-feed");
   container.innerHTML = "";
 
-  if (reports.length === 0) {
+  if (!reports || reports.length === 0) {
     container.innerHTML = `<div class="text-center py-8 text-gray-500 text-sm">No reports found.</div>`;
     return;
   }
