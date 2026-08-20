@@ -128,10 +128,33 @@
       }
     ];
 
-    function loadReportsFeed() {
-      const storedReports = JSON.parse(localStorage.getItem('user_reports') || '[]');
-      const allReports = storedReports.length > 0 ? storedReports : defaultReports;
+    async function loadReportsFeed() {
       const container = document.getElementById('reports-feed');
+      let allReports = [];
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/issues`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true'
+          }
+        });
+
+        if (response.ok) {
+          const apiReports = await response.json();
+          if (Array.isArray(apiReports) && apiReports.length > 0) {
+            allReports = apiReports;
+          }
+        }
+      } catch (error) {
+        console.warn('Backend fetch failed, using local storage fallback.', error);
+      }
+
+      if (allReports.length === 0) {
+        const storedReports = JSON.parse(localStorage.getItem('user_reports') || '[]');
+        allReports = storedReports.length > 0 ? storedReports : defaultReports;
+      }
 
       container.innerHTML = allReports.map(item => {
         const isTech = item.category === 'Technician Request';
