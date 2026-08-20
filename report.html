@@ -182,6 +182,7 @@
     const totalSteps = 4;
     let recordedAudioBlob = null;
     let selectedImageFile = null;
+    let isVideoSelected = false;
 
     let reportData = {
       id: "COM-" + Math.floor(1000 + Math.random() * 9000),
@@ -189,6 +190,7 @@
       type: 'Community Problem',
       image: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f8?auto=format&fit=crop&q=80&w=800',
       photo: 'https://images.unsplash.com/photo-1515162816999-a0c47dc192f8?auto=format&fit=crop&q=80&w=800',
+      video: '',
       audio: '',
       voiceNote: '',
       description: '',
@@ -242,7 +244,6 @@
       }
     }
 
-    // Fast image compressor with safe fallback
     function compressImageFile(file) {
       return new Promise((resolve) => {
         if (!file) return resolve(reportData.image);
@@ -285,6 +286,7 @@
       if (!file) return;
 
       if (type === 'image') {
+        isVideoSelected = false;
         selectedImageFile = file;
         const localPreviewUrl = URL.createObjectURL(file);
         
@@ -294,12 +296,21 @@
         imgPrev.classList.remove('hidden');
         imgPrev.src = localPreviewUrl;
       } else if (type === 'video') {
+        isVideoSelected = true;
+        selectedImageFile = null;
         const localVidUrl = URL.createObjectURL(file);
+        
         const imgPrev = document.getElementById('imagePreview');
         const vidPrev = document.getElementById('videoPreview');
         imgPrev.classList.add('hidden');
         vidPrev.classList.remove('hidden');
         vidPrev.src = localVidUrl;
+
+        // Session-level URL for video display on reports page
+        reportData.video = localVidUrl;
+        // Fallback video preview card image for persistent storage
+        reportData.image = "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=800";
+        reportData.photo = reportData.image;
       }
     }
 
@@ -312,7 +323,6 @@
         nextBtn.disabled = true;
         nextBtn.innerText = "Submitting...";
 
-        // Set emergency safety timer: Force redirect if stuck over 2.5 seconds
         const safetyTimer = setTimeout(() => {
           window.location.href = 'reports.html';
         }, 2500);
@@ -323,14 +333,12 @@
           reportData.address = document.getElementById('streetAddress').value || 'Not provided';
           reportData.status = 'Pending Review';
 
-          // Process image fast before storing
-          if (selectedImageFile) {
+          if (selectedImageFile && !isVideoSelected) {
             const compressed = await compressImageFile(selectedImageFile);
             reportData.image = compressed;
             reportData.photo = compressed;
           }
 
-          // Convert audio blob to base64 safely
           if (recordedAudioBlob) {
             reportData.audio = await new Promise((resolve) => {
               const reader = new FileReader();
