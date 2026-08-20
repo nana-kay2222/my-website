@@ -1,84 +1,155 @@
-<script src="js/config.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Citizen App - Submit Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0b0f17; color: #ffffff; }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col justify-between p-4 sm:p-6 pb-28">
 
-<script>
-  document.getElementById('report-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  <!-- Header Navigation -->
+  <header class="w-full max-w-2xl mx-auto flex items-center justify-between pb-6 border-b border-zinc-800">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='citizen.html'">
+      <div class="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </div>
+      <span class="font-black text-xl tracking-tight text-white">Back to Home</span>
+    </div>
+  </header>
 
-    const submitBtn = document.getElementById('submit-btn');
-    const statusBox = document.getElementById('status-message');
-    
-    // Disable button to prevent double submissions
-    submitBtn.disabled = true;
-    submitBtn.innerText = "Submitting Report...";
+  <!-- Main Form Area -->
+  <main class="w-full max-w-2xl mx-auto flex-1 mt-6">
+    <h1 class="text-2xl font-black text-white mb-6">Submit a Community Report</h1>
 
-    try {
-      const formData = new FormData();
+    <form id="report-form" class="space-y-4 bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl">
+      
+      <!-- Category -->
+      <div>
+        <label class="block text-xs font-bold text-zinc-400 mb-1">Category</label>
+        <select id="category" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-blue-500">
+          <option value="Community Problem">Community Problem</option>
+          <option value="Pothole / Road Work">Pothole / Road Work</option>
+          <option value="Sanitation / Waste">Sanitation / Waste</option>
+          <option value="Public Safety">Public Safety</option>
+        </select>
+      </div>
 
-      // 1. Text & Location Metadata
-      const category = document.getElementById('category')?.value || 'Community Problem';
-      const description = document.getElementById('description')?.value || '';
-      const latitude = document.getElementById('latitude')?.value || '';
-      const longitude = document.getElementById('longitude')?.value || '';
+      <!-- Description -->
+      <div>
+        <label class="block text-xs font-bold text-zinc-400 mb-1">Description</label>
+        <textarea id="description" rows="3" required placeholder="Describe the issue..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-blue-500"></textarea>
+      </div>
 
-      formData.append('category', category);
-      formData.append('description', description);
-      formData.append('latitude', latitude);
-      formData.append('longitude', longitude);
+      <!-- Hidden Coordinates (Optional inputs) -->
+      <input type="hidden" id="latitude" value="0.0" />
+      <input type="hidden" id="longitude" value="0.0" />
 
-      // 2. Attach File Inputs (Using exact Multer field names)
-      const photoInput = document.getElementById('photo-input'); // Image file input element
-      const videoInput = document.getElementById('video-input'); // Video file input element
-      const audioInput = document.getElementById('audio-input'); // Audio file input element
+      <!-- Photo Upload (Field key: media) -->
+      <div>
+        <label class="block text-xs font-bold text-zinc-400 mb-1">Photo Attachment (Optional)</label>
+        <input type="file" id="photo-input" accept="image/*" class="w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700"/>
+      </div>
 
-      // CRITICAL: Key must be 'media' for Multer matching
-      if (photoInput && photoInput.files[0]) {
-        formData.append('media', photoInput.files[0]);
+      <!-- Video Upload (Field key: video) -->
+      <div>
+        <label class="block text-xs font-bold text-zinc-400 mb-1">Video Attachment (Optional)</label>
+        <input type="file" id="video-input" accept="video/*" class="w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700"/>
+      </div>
+
+      <!-- Audio Upload (Field key: audio) -->
+      <div>
+        <label class="block text-xs font-bold text-zinc-400 mb-1">Voice Note (Optional)</label>
+        <input type="file" id="audio-input" accept="audio/*" class="w-full text-xs text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-zinc-800 file:text-zinc-200 hover:file:bg-zinc-700"/>
+      </div>
+
+      <!-- Error Message Box -->
+      <div id="status-message" class="hidden p-3 rounded-xl bg-red-950/50 border border-red-800 text-xs text-red-400 font-bold"></div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/20 transition-all cursor-pointer">
+        Submit Report
+      </button>
+    </form>
+  </main>
+
+  <script src="js/config.js"></script>
+
+  <script>
+    document.getElementById('report-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submit-btn');
+      const statusBox = document.getElementById('status-message');
+      
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Submitting Report...";
+
+      try {
+        const formData = new FormData();
+
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+        const latitude = document.getElementById('latitude').value;
+        const longitude = document.getElementById('longitude').value;
+
+        formData.append('category', category);
+        formData.append('description', description);
+        formData.append('latitude', latitude);
+        formData.append('longitude', longitude);
+
+        const photoInput = document.getElementById('photo-input');
+        const videoInput = document.getElementById('video-input');
+        const audioInput = document.getElementById('audio-input');
+
+        // Field key must match Multer middleware: 'media'
+        if (photoInput && photoInput.files[0]) {
+          formData.append('media', photoInput.files[0]);
+        }
+
+        if (videoInput && videoInput.files[0]) {
+          formData.append('video', videoInput.files[0]);
+        }
+
+        if (audioInput && audioInput.files[0]) {
+          formData.append('audio', audioInput.files[0]);
+        }
+
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/api/reports`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'ngrok-skip-browser-warning': 'true'
+          },
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || `Server Error: ${response.status}`);
+        }
+
+        alert("Report submitted successfully!");
+        window.location.href = 'reports.html';
+
+      } catch (error) {
+        console.error("Submission failed:", error);
+        if (statusBox) {
+          statusBox.classList.remove('hidden');
+          statusBox.innerText = `Error: ${error.message}`;
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Report";
       }
-
-      // Key must be 'video'
-      if (videoInput && videoInput.files[0]) {
-        formData.append('video', videoInput.files[0]);
-      }
-
-      // Key must be 'audio'
-      if (audioInput && audioInput.files[0]) {
-        formData.append('audio', audioInput.files[0]);
-      }
-
-      // 3. Send POST Request
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/api/reports`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'ngrok-skip-browser-warning': 'true'
-          // Note: Do NOT set 'Content-Type' manually when sending FormData; 
-          // the browser will automatically add multipart/form-data with the boundary.
-        },
-        body: formData
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || `Server Error: ${response.status}`);
-      }
-
-      // Success Feedback
-      alert("Report submitted successfully!");
-      window.location.href = 'reports.html';
-
-    } catch (error) {
-      console.error("Submission failed:", error);
-      if (statusBox) {
-        statusBox.classList.remove('hidden');
-        statusBox.innerText = `Error: ${error.message}`;
-      } else {
-        alert(`Failed to submit: ${error.message}`);
-      }
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerText = "Submit Report";
-    }
-  });
-</script>
+    });
+  </script>
+</body>
+</html>
