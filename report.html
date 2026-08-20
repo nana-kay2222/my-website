@@ -65,13 +65,13 @@
       </div>
 
       <div class="space-y-3">
-        <label class="w-full py-3.5 px-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/20 transition-all">
+        <label class="w-full py-3.5 px-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-500/20 transition-all touch-manipulation">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           Take Photo
           <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handleMediaUpload(event, 'image')">
         </label>
         
-        <label class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
+        <label class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-200 font-semibold text-sm flex items-center justify-center gap-2 cursor-pointer transition-all touch-manipulation">
           <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
           Upload / Record Video
           <input type="file" accept="video/*" capture="environment" class="hidden" onchange="handleMediaUpload(event, 'video')">
@@ -94,7 +94,7 @@
 
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Voice Note</label>
-          <button type="button" onclick="toggleRecord()" id="recordBtn" class="w-full py-3 px-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-zinc-300 text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer">
+          <button type="button" onclick="toggleRecord()" id="recordBtn" class="w-full py-3 px-4 rounded-2xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 text-zinc-300 text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer touch-manipulation">
             <span id="recordDot" class="w-3 h-3 rounded-full bg-red-500"></span>
             <span id="recordText">Tap to Record Voice Note</span>
           </button>
@@ -120,7 +120,7 @@
       </div>
 
       <div class="space-y-4">
-        <button type="button" onclick="fetchGPS()" class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer">
+        <button type="button" onclick="fetchGPS()" class="w-full py-3.5 px-4 rounded-2xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer touch-manipulation">
           <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           Detect Current GPS Location
         </button>
@@ -166,10 +166,10 @@
 
     <!-- Bottom Navigation Controls -->
     <div class="flex items-center gap-3 pt-2">
-      <button id="prevBtn" type="button" onclick="prevStep()" class="w-1/3 py-4 rounded-2xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-semibold text-sm transition-all hidden cursor-pointer">
+      <button id="prevBtn" type="button" onclick="prevStep()" class="w-1/3 py-4 rounded-2xl bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-semibold text-sm transition-all hidden cursor-pointer touch-manipulation">
         Back
       </button>
-      <button id="nextBtn" type="button" onclick="nextStep()" class="w-full py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all cursor-pointer">
+      <button id="nextBtn" type="button" onclick="handleNextClick()" class="w-full py-4 rounded-2xl bg-brand-blue hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20 transition-all cursor-pointer touch-manipulation">
         <span>Next</span>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
@@ -180,9 +180,15 @@
   <script>
     let currentStep = 1;
     const totalSteps = 4;
+    let recordedAudioBlob = null;
     let reportData = {
+      id: "COM-" + Math.floor(1000 + Math.random() * 9000),
+      category: 'Community Problem',
       type: 'Community Problem',
-      media: '',
+      image: '',
+      photo: '',
+      audio: '',
+      voiceNote: '',
       description: '',
       phone: '',
       gps: '',
@@ -195,6 +201,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const typeParam = urlParams.get('type');
     if (typeParam === 'technical') {
+      reportData.category = 'Technician Request';
       reportData.type = 'Technical Help';
       document.getElementById('headerTitle').textContent = 'Request Technical Help';
     }
@@ -233,23 +240,34 @@
       }
     }
 
-    function nextStep() {
+    async function handleNextClick() {
       if (currentStep < totalSteps) {
         currentStep++;
         updateView();
       } else {
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.disabled = true;
+        nextBtn.innerText = "Submitting...";
+
         reportData.description = document.getElementById('issueDescription').value || 'No description provided';
         reportData.phone = document.getElementById('phoneNumber').value || 'Not provided';
         reportData.address = document.getElementById('streetAddress').value || 'Not provided';
-        reportData.status = 'Pending';
+        reportData.status = 'Pending Review';
 
-        // Save submitted report to local storage
+        // Convert audio Blob to Base64 for local storage persistence
+        if (recordedAudioBlob) {
+          reportData.audio = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(recordedAudioBlob);
+          });
+          reportData.voiceNote = reportData.audio;
+        }
+
         const existingReports = JSON.parse(localStorage.getItem("user_reports") || "[]");
         existingReports.unshift(reportData);
         localStorage.setItem("user_reports", JSON.stringify(existingReports));
 
-        alert('Report submitted successfully!');
-        // Redirect directly to the Reports history page on the navigation bar
         window.location.href = 'reports.html';
       }
     }
@@ -277,7 +295,8 @@
             imgPrev.classList.remove('hidden');
             imgPrev.src = e.target.result;
           }
-          reportData.media = e.target.result;
+          reportData.image = e.target.result;
+          reportData.photo = e.target.result;
         }
         reader.readAsDataURL(file);
       }
@@ -305,16 +324,15 @@
           };
 
           mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-            const audioUrl = URL.createObjectURL(audioBlob);
-            audioPlayback.src = audioUrl;
+            recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            audioPlayback.src = URL.createObjectURL(recordedAudioBlob);
             playerContainer.classList.remove('hidden');
           };
 
           mediaRecorder.start();
           isRecording = true;
           dot.classList.add('animate-ping');
-          text.textContent = "Recording voice note... (Tap to stop)";
+          text.textContent = "Recording... (Tap to stop)";
           btn.classList.add('border-red-500', 'bg-red-950/20');
         } catch (err) {
           alert('Microphone access is required to record voice notes.');
@@ -323,7 +341,7 @@
         mediaRecorder.stop();
         isRecording = false;
         dot.classList.remove('animate-ping');
-        text.textContent = "Voice note recorded successfully ✓ (Tap to re-record)";
+        text.textContent = "Voice note recorded ✓ (Tap to re-record)";
         btn.classList.remove('border-red-500', 'bg-red-950/20');
         btn.classList.add('border-emerald-500', 'text-emerald-400');
       }
